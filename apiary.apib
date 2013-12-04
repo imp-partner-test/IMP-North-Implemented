@@ -1,0 +1,1794 @@
+HOST: https://imp-app1.t.imp.mobilitaetsdienste.de/imp-endpoint/api/
+
+--- IMP North: Implemented ---
+
+--
+Some Notes
+
+The following is a description of the NORTH-bound REST interface, as it is currently implemented as part of the user stories.
+
+The major and dominant "ServiceProvider" is currently POINT. Furthermore, ParkoPedia and OpenData Berlin are (partially) integrated.
+
+The standard WGS 84 is used for polar coordinates.
+--
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 
+Handy Ticket
+--
+# General Description
+List of available product for specified origin and destination.
+
+# Query Parameters 
+`action=book`
+
+# Input in request body: 
+
+- origin: point id and address string
+- destination: point id and address string
+- viaPoints: list of geo locations that the route should use
+- numberOfTickets: number of tickets
+- ticketingCategory: specifies zone with possible values - B0, B1, B2, B3
+
+# Response 
+List of available product for buying.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of actions possible on this resource (buy/confirm)
+id | Number | Resource id
+description | String | 
+type | String | 
+uri | URI | URI to request more detailed information
+location | Object | 
+provider | String | 
+operator | String | Name of Ticket Operator
+tariffText | String | Contains Zone and Validity inforation
+tariffInformation | String | Conditions applied for ticket
+price | double | Price of ticket
+currency | String | Currency
+
+
+POST /V0/Resources/Ticketing/Tickets
+> Accept: application/json
+> Content-Type: application/json
+{   "origin": { 
+    "id": "{pointId}", 
+    "address": "Dresden Hauptbahnhof"
+    },
+    "destination": { 
+  	"id": "{pointId}",         
+	"address": "Dresden Postplatz"      
+    },
+    "numberOfTickets": "1",
+    "ticketingCategory": "B0",
+    "viaPoints": []
+}
+< 200
+< Content-Type: application/json
+[
+    {
+        "actions": [
+            {
+                "name": "buy",
+                "method": "POST",
+                "uri": "Resources/Ticketing/Tickets/{resourceId}/Process?action=buy"
+            }
+        ],
+        "id": {resourceId},
+        "description": null,
+        "type": null,
+        "uri": "Resources/Ticketing/Tickets/157",
+        "location": null,
+        "provider": null,
+        "operator": "handyticket",
+        "tariffText": "DVB VVO-Einzelfahrt normal Preisstufe 1 für Zone Dresden gültig 18.11.13 12:21 Uhr bis 13:21 Uhr.",
+        "tariffInformation": "Gilt in der angegebenen Tarifzone; max. 1 Std.",
+        "price": 2.2,
+        "currency": "EUR"
+    }
+]
+
+
+# General Description
+Buy ticket request with resource Id.
+
+# Query Parameters 
+`action=buy`
+
+# Request Path Parameters
+- `resourceId={String}, Resource id`
+
+# Input in request body: 
+
+- name: Name of Ticket Operator
+- userId: User id for buying ticket
+- password: Password for buying ticket
+
+# Response 
+Details of a bought ticket, identified by {ticketIds} and {ticketContent}.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of actions possible on this resource (confirm)
+processId | Number | BPMN process id
+confirmation | Object | Buy ticket response data
+
+
+confirmation contains following fileds,
+
+attribute | json data type | comments
+--- | --- | ---
+ticketIds | Array | Array of ticket ids 
+ticketContent | Base64Binary | Content of Ticket
+
+
+
+POST /V0/Resources/Ticketing/Tickets/{resourceId}/Process
+> Accept: application/json
+> Content-Type: application/json
+{
+    "operator": {
+        "name": "handyticket",
+        "userId": "01805006013",
+        "password": "7555"
+    }
+}
+< 201
+< Content-Type: application/json
+{
+    "actions": [
+        {
+            "name": "confirm",
+            "method": "PUT",
+            "uri": "Processes/{processId}?action=confirm"
+        }
+    ],
+    "processId": {processId},
+    "confirmation": {
+        "featureType": "BUY",
+        "confirmationId": null,
+        "confirmationData": {
+            "ticketIds": [
+                "274946704480125"
+            ],
+            "ticketContent": "UEQ5NGJXd2dkbVZ5YzJsdmJqMGlNUzR3SWlCbGJtTnZaR2x1WnowaVZWUkdMVGdpUHo0TkNqeDBhV05yWlhSRmNuZGxjbUp6VUhKdmVtVnpjMUpsYzNCdmJuTmxQZzBLSUNBOGNISmxhWE0rTWl3eU1Ed3ZjSEpsYVhNK0RRb2dJRHgzWVdWb2NuVnVaejVGVlZJOEwzZGhaV2h5ZFc1blBnMEtJQ0E4WVdkVVpYaDBQakY0SUVSV1FpQldWazh0UldsdWVtVnNabUZvY25RZ2JtOXliV0ZzSUZCeVpXbHpjM1IxWm1VZ01TQm13N3h5SUZwdmJtVWdSSEpsYzJSbGJpQm53N3hzZEdsbklERXpMakV4TGpFeklEQTFPalV6SUZWb2NpQmlhWE1nTURZNk5UTWdWV2h5TGp3dllXZFVaWGgwUGcwS0lDQThiV1Z6YzJGblpTQjBlWEJsUFNKM1lYSnVhVzVuSWo0OEwyMWxjM05oWjJVK0RRb2dJRHh1ZFhSNlpYSWdMejROQ2lBZ1BHSmxjbVZqYUhScFozVnVaMlZ1UGcwS0lDQWdJRHhpWlhKbFkyaDBhV2QxYm1jK0RRb2dJQ0FnSUNBOGMzUmhkSFZ6UGpBOEwzTjBZWFIxY3o0TkNpQWdJQ0FnSUR4MGVYQStNVHd2ZEhsd1BnMEtJQ0FnSUNBZ1BIQjJQall3TmpBOEwzQjJQZzBLSUNBZ0lDQWdQSEJ5YVcxaFpYSkxkbkErTmpBeE16d3ZjSEpwYldGbGNrdDJjRDROQ2lBZ0lDQWdJRHh6Wld0MWJtUmhaWEpMZG5BK05qQXhNend2YzJWcmRXNWtZV1Z5UzNad1BnMEtJQ0FnSUNBZ1BIQnliMlIxYTNSRGIyUmxQakU4TDNCeWIyUjFhM1JEYjJSbFBnMEtJQ0FnSUNBZ1BHZGxZbWxsZEhOSGRXVnNkR2xuYTJWcGRENHdQQzluWldKcFpYUnpSM1ZsYkhScFoydGxhWFErRFFvZ0lDQWdJQ0E4ZW1WcGRFZDFaV3gwYVdkclpXbDBQakE4TDNwbGFYUkhkV1ZzZEdsbmEyVnBkRDROQ2lBZ0lDQWdJRHh1ZFhSNlpYSlVlWEErTUR3dmJuVjBlbVZ5Vkhsd1BnMEtJQ0FnSUNBZ1BITjBZWEowV205dVpUNHhNRHd2YzNSaGNuUmFiMjVsUGcwS0lDQWdJQ0FnUEd0dmJXWnZjblErTVR3dmEyOXRabTl5ZEQ0TkNpQWdJQ0FnSUR4eGRXRnNhWFJoWlhRK01Ud3ZjWFZoYkdsMFlXVjBQZzBLSUNBZ0lDQWdQR0psYzJOb2NtVnBZblZ1Wno1RVZrSWdWbFpQTFVWcGJucGxiR1poYUhKMElHNXZjbTFoYkNCUWNtVnBjM04wZFdabElERWdac084Y2lCYWIyNWxJRVJ5WlhOa1pXNGdaOE84YkhScFp5QXhNeTR4TVM0eE15QXdOVG8xTXlCVmFISWdZbWx6SURBMk9qVXpJRlZvY2k0OEwySmxjMk5vY21WcFluVnVaejROQ2lBZ0lDQWdJRHgwWVhKcFptbHVabTgrUjJsc2RDQnBiaUJrWlhJZ1lXNW5aV2RsWW1WdVpXNGdWR0Z5YVdaNmIyNWxPeUJ0WVhndUlERWdVM1JrTGp3dmRHRnlhV1pwYm1adlBnMEtJQ0FnSUNBZ1BITnBZMmhsY21obGFYUnpUV1Z5YTIxaGJENUZUakV0TVRBdE1UTXhNVEExTlRNS1VDb3FNekV5TXpFeU16aDJDazF2ZEdsMklEUXhPVFV6TlRNM05qY0tMUzFVUlZOVUxTMVVTVU5MUlZRdExRbzhMM05wWTJobGNtaGxhWFJ6VFdWeWEyMWhiRDROQ2lBZ0lDQWdJRHhpWVhKamIyUmxQbWxXUWs5U2R6QkxSMmR2UVVGQlFVNVRWV2hGVldkQlFVRkpORUZCUVVOUFEwRk5RVUZCUkZGSk9FRTJRVUZCUVVKc1FrMVdSVmd2THk4NFFVRkJRbFozZEU0clFVRkJSVFZGYkVWUlZsSTBNblV5WXpJeU4ycE5RWGhGYkdZdkx6WlhNVkppUXpKU05UbEVjR3NyWTJoQ1ZHSlpTa3haT0hScGFHVm9jVTl6TVRsbVppdDJjamRtYmpJNVpuUTFaSEk1WkRNdk1TdDJZaXQyYmpWNlpsZ3laR051SzNodU4wVmtkSEpKU25nclkyOVdNRzV1ZDA1MlRVODBMMjR2WlVsMEwwRmtaSHA0UlU5TVoyNUJSREozWlhWcVVFZEhZMFV4Y1ZBeU1pdHZNM1EwS3pkbWRUUmxXRVJQVGpBdkwzazBUbnB0ZEhveFlWQnphMVpaVFRoR2VrbGlUbkJzZFZCaVMwMUdkMlZ1VERkMGRYTkxZM2hVYTNReWJGWkljbTFQZHpaT0szVktaMnhQV0U5VWJFZFhjbnB1UWxOeFVXVnpSbnBuV0daSVowMU5PVVJMWlRaeGRUWTRkWFYxY1VRM2MySTNORXg0T1M5UGNTc3ZkVVpHWjI1SVJqTnhaR3RQY21rMk4zUjFkMDlsU1RsV2IyNTNSRkUwWm1GR1YxTkNXVzByV2t0Vk1FWlZiME0yVUVJM0wwOUtaM3BOV2pKbGVua3JjMDkyTkdGWEt6RnJWM2xZZW5OT1JHaHRabmd2YldWVWRtNVJkRXBVU2tsSk5tSkViMDU2YkdsNE0yZFpRMHRHU1djMGNsSlRjVlJ5UWs4eWFrWlBSVXA0TlhOMWVsVmhVbTR6VFVaRlpGSllNRWxTTlVGSmFFMVFiWGd4VUdjM016STJOa1pOVFVsdFJuZGxhMHBsUm5sUFZubEVlRnB1V0hsM1prczRVMFY0ZFhkTlJHaEZha1pEY1RsV04yZGFSbEJzT0UxdVJtUkNiMk50Tmt0bGRVNVBVVkpKZHpSM1kxTnRXRVpNWlV0RWFXTkJSbEZFY0VaVGFUQjZRbXN2YmpBMU9VOUxlREZQWjNoalJEYzRhbk5RY0RSWk1sTkxVM0E0VDBsRmQzQjZaVlo2ZEhWWldWaERTVzVxV25FeGMzUXJUV3MxTWtOV1RsRkZjbUk0WTFScGRHUkdPRk16YWtKRk9XdFRjVXB0TlVjeFIwRmFTR2RsYm14cFVtTjNiRmhwYmpST2NGUXlhM0JuUVhsQ1MxRnZUM1EwWlZsdmNYcEZTRVJsU25sRFNIZFRUREJ6VTBsT1ZFb3lhRXRKWlc1NmVWbFlNakZKTTBwWE4wTmxSMFJvT1c5bVpWVnhObHBWU0ZSNlJGcEljVUY1VVZBeFQzY3ZRMWxZUzFKcGJERjVRMGd5YVhKaWJsZFJlbGR0ZUZkR2R6VnJVMEpEY0djclMxWTBVVGxqYkhWaVQwRkRNbmR0UW5kNVduQmtTMWR1TkVaUGVtbEtjM1JzVG1scmQyRkZWMVZETDJKb1FuZFRTM05XWTNkclFsQTVkRVpETkVWNlEwSnVXbTR2VW5scVkzRXlWWEJDY3k5U1EwVm9ZMDFwY0dOWlNrWTBTbmhsYjAxWVRVeG9UMU55ZVVFME0wWjZNSFJJVW1oVk5EWkxTVFphTmtvNFpWTkNiMlJHUTI0d05VODNia2xXVEN0V1VUbDNWMkZJTkRWRFRUWklNek5HSzNnNWVqZHNUVFUzVnpKcFpXTkhiMEpHTmtabFJrcDRaUzl1ZFhvemJWWTBabE5zWW5jMWMwUk9jMU56UTBScVZWaHdOVVp1WWpNMWN6QlVkakJvWmpaWGNsQlJTbWM0VDJ4NlRqTnhWMmRRUVdwU2FHc3dTVWxUSzJ0M1QwSTBWMDlVYm5kcFpreHJNVWRXTjNjeVVrZDNTbTFUY1RSdGRXMHdjMkp0ZUZseGFWVjBlVWRuWmtoRFQyVTNZWEJ4YjJKck9HZHhSR2RYTUZWTldVaEhkRFJ0VTNsTGIyOHlZazlOYkhCWFZIRmhRMWxsYTB3MVlrVnpOamwzVFhOdVJHaExjSGhaSzBGM1EyUkJXRXMxYldkdFZGbG1kMk5GWVhCalJYaGpUSEo0YzI5NVlXRmFXa3BEYlRKRlJFMXJRbE53UTBsblkwNTViVXhWYlhOd1lrVnBWVlJ1YlRoVVVGcFhNWEJqUzJkb05YUkpjbTkzV2xsM1IyVkhNRVpRWmxKU1JUSkJRVFJZT0hrMU4xaFdiM0Y2YlZJMFRqSnphSEkyVEdkMVJXcExUbTlMVWl0SGIyMWxlV1pwY1d4M2NFUk5Oa2d6TTJ4dVpuaGhXSFZ3TWxGek5WbDBNRGM1VnpocVFURnNkM0pJVWtkTmEyVkhTR0ZyYjJkRFNUaFhPWE5hUVVob01YVnNURWhhTWtOYVJWaFJWVGQyV1hKdlYwSlpaRVphWWpaU1ltdHZVV1ZQZGtKMFIxY3hRbHByZDA5SFUzbHlaMmxpYUZJMVZEQnFWMHg2YkhOMVIwRlFTRlZ6Y0ZvNVIwSmljQ3MyVEZGaFdWbFJVREJXUVVsak0wRlZOME5QYmk5ek5WQjRaRXBKUTBOdGVrRTBka1ZJVTFKYU5WUkJOVXB2Uldwa2RHRllhRWgzWlVoNWFFUmpNR1ZWZGtGcmVFWnhTMWhEUTJWMFFrNU5XRU5KYlcxWFFqUlRVMFI0YlROallYaEpURWs0WjNkUFExbG5TWGh1YlV4TGVUVXlNRUl4YkRZMlFqVjJVbmhQUlhoQk9HdFpaak5wUW05UU1IWnBlbFY0TWtWeWJIZG1SbEJWZGtremNHNWxPVGsyYTBOclNHZGlTSFExY1N0MU5tMVJURzVYTTFWa2NHOXBSRkUwYkhCUGVFOUllbUZXTUVkMWEwRjZXSEZXTjJOR0wyOXZia0VyTHpoNFpqbEVkRTlLVEd4emQwMXpObVJMT0hSRmREazVkV2x2VEdwTVZtNHZjVkpKYW5sTGJEaG1iR05YWlRGQlIxVllRalJoTjJFeGFqbGhZWEJKTW5weVNIZFRiRGhpUWl0UlpXcFVRMWx3Vm1aMlEwZFJRVUZCUVVKS1VsVTFSWEpyU21kblp6MDlQQzlpWVhKamIyUmxQZzBLSUNBZ0lDQWdQR0psY21WamFIUnBaM1Z1WjNORVlYUmxQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakVyTURFd01Ed3ZZbVZ5WldOb2RHbG5kVzVuYzBSaGRHVStEUW9nSUNBZ0lDQThaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakFyTURFd01Ed3ZaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQZzBLSUNBZ0lDQWdQR2QxWld4MGFXZHJaV2wwYzBWdVpHVStNakF4TXkweE1TMHhNMVF3TmpvMU16b3lNQ3N3TVRBd1BDOW5kV1ZzZEdsbmEyVnBkSE5GYm1SbFBnMEtJQ0FnSUNBZ1BHWnZjbTFoZEhSbFpGQnlaV2x6UGpJc01qQWdSVlZTUEM5bWIzSnRZWFIwWldSUWNtVnBjejROQ2lBZ0lDQWdJRHgzWVdWb2NuVnVaejR1UEM5M1lXVm9jblZ1Wno0TkNpQWdJQ0FnSUR4cmIyNTBjbTlzYkdWMWNuTkRiMlJsUGtWT01TMHhNQzB4TXpFeE1EVTFNend2YTI5dWRISnZiR3hsZFhKelEyOWtaVDROQ2lBZ0lDQWdJRHhyYjI1MGNtOXNiRzFsWkdsMWJUNVFLaW96TVRJek1USXpPSFk4TDJ0dmJuUnliMnhzYldWa2FYVnRQZzBLSUNBZ0lDQWdQSFJoWjJWelEyOWtaVDVOYjNScGRqd3ZkR0ZuWlhORGIyUmxQZzBLSUNBZ0lDQWdQSFJwWTJ0bGRFbEVQakkzTkRrME5qY3dORFE0TURFeU5Ud3ZkR2xqYTJWMFNVUStEUW9nSUNBZ0lDQThjMmxuYm1GMGRYSmxQaTB0VkVWVFZDMHRWRWxEUzBWVUxTMDhMM05wWjI1aGRIVnlaVDROQ2lBZ0lDQThMMkpsY21WamFIUnBaM1Z1Wno0TkNpQWdQQzlpWlhKbFkyaDBhV2QxYm1kbGJqNE5Dand2ZEdsamEyVjBSWEozWlhKaWMxQnliM3BsYzNOU1pYTndiMjV6WlQ0TkNnMEs="
+        }
+    }
+}
+
+
+# General Description
+Confirm ticket delivered.
+
+# Query Parameters 
+`action=confirm`
+
+# Request Path Parameters
+- `processId={String}, BPMN process id`
+
+
+# Input in request body: 
+- requestId: Resource id
+- ticketIds: Tickets ids for confirmation
+- operator: Name of Ticket Operator
+
+# Response 
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of actions possible on this resource (confirm)
+processId | Number | BPMN process id
+confirmation | Object | Confirm ticket response data
+
+
+confirmation contains following fileds,
+
+attribute | json data type | comments
+--- | --- | ---
+featureType | String | Feature type
+confirmationId | String | 
+confirmationData | Object | Response of confirm ticket request
+
+confirmationData contains following fileds,
+
+attribute | json data type | comments
+--- | --- | ---
+confirmed | Boolean | Value indiucationg success/failure
+
+
+PUT /V0/Processes/{processId}
+> Accept: application/json
+> Content-Type: application/json
+{
+  "requestId": "{resourceId}",
+  "ticketIds": [
+                "274946704480125"
+               ],
+   "operator": {
+        "name": "handyticket"        
+    }
+}
+< 200
+< Content-Type: application/json
+{
+    "process": {
+        "actions": [],
+        "processId": "{processId}",
+        "confirmation": {
+            "featureType": "CONFIRM",
+            "confirmationId": null,
+            "confirmationData": {
+                "confirmed": true
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 
+Parking Garages
+--
+# General Description
+List parking garages in a specific region: return list of parking garages with basic information.
+
+# Query Parameters 
+Describe region of interest as circle or box.
+ 
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of parking garages with basic information within the defined region of interest and a URI to request more detailed information.
+
+The data structure "ParkingGarage" of the response is described in https://confluence.imp.mobilitaetsdienste.de/display/IMP/Parking;
+some parts of the data structure might be omitted because the information is not available.
+GET /V0/Resources/Parking/Garages
+> Accept: application/json
+< 200
+< Content-Type: application/json
+[   {   "description":"Mitte, Int. Handelszentrum",
+        "type":"ParkingGarage",
+        "url":"Resources/Parking/Garages/408",
+        "location": {
+            "latitude":52.519180000000006,
+            "longitude":13.391060000000001,
+            "system":"WGS_84"
+        },
+        "provider":"Parkinglot",
+        "operator":"Parkinglot",
+        "totalnumber": { "others":457,"handicappedOnly":2,"womenOnly":39} ,
+        "lottype":"Parkhaus"
+    },
+    {
+        "description":"Mitte, Parkplatz Friedrichstadtpalast",
+        "type":"ParkingGarage",
+        "url":"Resources/Parking/Garages/72",
+        "location": {
+            "latitude":52.524330000000006,
+            "longitude":13.390300000000002,
+            "system":"WGS_84"},
+        "provider":"Parkinglot",
+        "operator":"Parkinglot",
+        "totalnumber": {"others":260,"handicappedOnly":0,"womenOnly":0},
+        "lottype":"Parkplatz"
+    }
+]
+
+# General Description
+Show detailed information for a specific parking garage.
+
+# Query Parameters 
+
+- currently none
+
+# Response 
+Details of a specific parking garages, identified by `{id}` as it is obtained by the request `GET /V0/Resources/Parking/Garages`.
+
+GET /V0/Resources/Parking/Garages/{id}
+< 200
+< Content-Type: application/json
+{
+    "partnerUrl": "/Partners/1",
+    "url": "/Resources/Parking/Garages/10",
+    "description": "Mitte, Am Polizeipräsidium",
+    "address": {"citycode": "10178", "city": "Berlin", "street": "Wadzeckstr.", "houseno": "1" },
+    "location" : { "longitude": 13.416, "latitude": 52.52514000000001, "system": "WGS_84" }
+    "category": "P+R",
+    "openingHours:" Mo-Fr 8:00-19:00, Sa-So 10:00-20:00”,
+    "pricing": "EUR 1,00 pro Stunde",
+    "bookable" : true,
+    "heightLimit": { "value": 200, "unit": "cm" },   
+    "payment": [ "CoinPay", “BanknotePay”, "CreditcardPay"  ]
+    "occupancyRate": 50,
+    "allowedStay": { "value": 2, "unit": "hour" }
+    "general information": " ",
+    "restrictions": [ "VisitorsOnly", "CustomersOnly" ] ,
+    "services":  [ "WomanParking”,”ChargingStation" ] ,  
+    "operator":  "BR" ,
+    "securityComment": [ "bewacht" ],
+    "entrance" : "Einfahrt Stralauer Platz" 
+}
+
+
+-- 
+Public Transportation 
+--
+
+# General Description
+List stations (U/S/train/bus/tram) in a specific region: return list of stations with basic information.
+
+# Query Parameters
+Describe region of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of public transport stations with basic information and a URI to get more detailed information.
+
+GET /V0/Resources/PublicTransport/Stations
+> Accept: application/json
+< 200
+< Content-Type: application/json
+[
+    {
+        "description": "Berlin, Georgenstr./Am Kupfergraben",
+        "type": "PublicTransportStation",
+        "url": "Resources/PublicTransport/Stations/36",
+        "location": {
+            "latitude": 52.520484,
+            "longitude": 13.394158,
+            "system": "WGS_84"
+        },
+        "provider": "VBBStation",
+        "operator": "VBBStation"
+    },
+    {
+        "description": "U Mohrenstr./Glinkastr. (Berlin)",
+        "type": "PublicTransportStation",
+        "url": "Resources/PublicTransport/Stations/37",
+        "location": {
+            "latitude": 52.511936,
+            "longitude": 13.38661,
+            "system": "WGS_84"
+        },
+        "provider": "VBBStation",
+        "operator": "VBBStation"
+    }
+] 
+
+
+# General Description
+Get WMS PNG file for public transport stations.
+
+# Query Parameters
+Describe region of interest as a box.
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameters
+
+### width
+- `width={w}`: width of map output in pixels (semantics according to WMS GetMap request)
+- the default value is width=250
+
+### height 
+- `height={h}`: height of map output in pixels (semantics according to WMS GetMap request)
+- the default value is height=250
+
+# Response
+A PNG content which displays the current public transport stations.
+
+Please note: The accept-header of this request must be set to `image/png`.
+
+GET /V0/Resources/PublicTransport?width={w}&heigth={h}&system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&rigth_upper_lng={max_lng}&right_upper_lat={max_lat} 
+> accept: image/png
+< 200
+< Content-Type: image/png
+{ "... this should be a PNG ... "
+}
+
+
+# General Description
+Get arrival and departure times at a given station.
+
+# Query Parameters
+
+- currently none
+
+# Response 
+
+arrival and/or departure times for a station specified by `{stationId}`.
+
+Please note: estimated times are not always available.
+GET /V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
+< 200
+< Content-Type: application/json
+{ [
+    {
+    "description": "Berlin, Marschallbrücke",
+    "type": "PublicTransportStation",
+    "url": "Resources/PublicTransport/Stations/36/TimeTables/",
+    "location": {
+        "latitude": 52.520551,
+        "longitude": 13.380001,
+        "system": "WGS_84"
+    },
+    "provider": "VBBStation",
+    "operator": "VBBStation",
+    "arrivals": [ {"direction": "S+U Alexanderplatz", "line": "Bus TXL", "aimedTime": "2013-05-30T17:40:00.Z", "estimatedTime": "2013-05-30T17:45:00.Z"},
+                                            {"direction": "S+U Alexanderplatz", "line": "Bus TXL", "aimedTime": "2013-05-30T17:50:00.Z"}],
+    "departures": [ {"direction": "S+U Alexanderplatz", "line": "Bus TXL", "aimedTime": "2013-05-30T17:41:00.Z", "estimatedTime": "2013-05-30T17:46:00.Z"},
+                                              {"direction": "S+U Alexanderplatz", "line": "Bus TXL", "aimedTime": "2013-05-30T17:51:00.Z"}],
+    }
+  ]
+} 
+
+
+
+-- 
+Bike Sharing 
+--
+
+# General Description
+Get list of bike sharing stations (for station-based bike sharing).
+
+# Query Parameters
+Describe region of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+A list of bike sharing stations qualified by the query parameters, with basic information and a URI to acquire more detailed information.
+
+GET /V0/Resources/BikeSharing/Stations
+< 200
+< Content-Type: application/json
+[
+   {
+        "description": "U-Bhf. Mohrenstraße",
+        "type": "BikeSharingStation",
+        "url": "Resources/BikeSharing/Stations/19",
+        "location": {
+            "latitude": 52.511844635009766,
+            "longitude": 13.384378433227539,
+            "system": "WGS_84"
+        },
+        "provider": "CallABike",
+        "operator": "CallABike",
+        "phoneNo": null,
+        "numberOfBikes": 13,
+        "numberOfFreeBikes": 5,
+        "services": null,
+        "operatorURI": null,
+        "operatorName": "CallABike"
+    },
+    {
+        "description": "Friedrichstadtpalast",
+        "type": "BikeSharingStation",
+        "url": "Resources/BikeSharing/Stations/18",
+        "location": {
+            "latitude": 52.52393341064453,
+            "longitude": 13.387476921081543,
+            "system": "WGS_84"
+        },
+        "provider": "CallABike",
+        "operator": "CallABike",
+        "phoneNo": null,
+        "numberOfBikes": 18,
+        "numberOfFreeBikes": 9,
+        "services": null,
+        "operatorURI": null,
+        "operatorName": "CallABike"
+    }
+]
+
+-- 
+Car Sharing 
+--
+
+# General Description
+Get list of available cars (offered as free-floating and/or station-based) in a specific region.
+
+# Query Parameters
+Describe region of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+A list of available car sharing locations, both free-floating and/or station-based qualified by the query parameters, 
+with basic information and a URI to acquire more detailed information.
+In case of station-based cars, only the URI of the Car Sharing station is returned; 
+in case of free-floating cars, the URI to the car itself.
+
+GET /V0/Resources/CarSharing/All
+< 200
+< Content-Type: application/json
+[
+     {
+        "description": "400989",
+        "type": "Stations",
+        "url": "Resources/CarSharing/Stations/104",
+        "location": {
+            "latitude": 52.492842847964,
+            "longitude": 13.421504348516464,
+            "system": "WGS_84"
+        },
+        "provider": "FlinksterDB",
+        "operator": "FlinksterDB"
+    },
+    {
+        "description": "B-GO3182",
+        "type": "Cars",
+        "url": "Resources/CarSharing/Cars/224",
+        "location": {
+            "latitude": 52.5269,
+            "longitude": 13.38489,
+            "system": "WGS_84"
+        },
+        "provider": "Car2Go",
+        "operator": "Car2Go"
+    }
+]
+
+
+
+# General Description
+Get list of car sharing stations (for station-based car sharing).
+
+# Query Parameters 
+Describe region of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameter
+- `operatorId={id}`
+
+Examples: category of required car (e.g., FullSize), pickup/return station
+
+# Response 
+All car sharing stations qualified by the query parameters, together with geo location, name, URI (to acquire further details) and some basic information.
+
+GET /V0/Resources/CarSharing/Stations
+< 200
+< Content-Type: application/json
+[
+    {
+        "description": "400989",
+        "type": "Stations",
+        "url": "Resources/CarSharing/Stations/104",
+        "location": {
+            "latitude": 52.492842847964,
+            "longitude": 13.421504348516464,
+            "system": "WGS_84"
+        },
+        "provider": "FlinksterDB",
+        "operator": "FlinksterDB",
+        "phoneNo": null,
+        "operatorURI": null,
+        "operatorName": "FlinksterDB",
+        "categories": null
+    },
+    {
+        "description": "402677",
+        "type": "Stations",
+        "url": "Resources/CarSharing/Stations/105",
+        "location": {
+            "latitude": 52.53662543927196,
+            "longitude": 13.432269394397736,
+            "system": "WGS_84"
+        },
+        "provider": "FlinksterDB",
+        "operator": "FlinksterDB",
+        "phoneNo": null,
+        "operatorURI": null,
+        "operatorName": "FlinksterDB",
+        "categories": null
+    }
+]
+
+
+# General Description
+Get details about a specific car sharing station.
+
+# Query Parameters
+
+- currently none
+
+# Response
+Details about a car sharing station determined by `{stationId}`.
+
+GET /V0/Resources/CarSharing/Stations/{stationId}
+< 200
+< Content-Type: application/json
+{ 
+    "id":"id1", 
+    "description":"Station1", 
+    "location": { "longitude": 13.39552, "latitude":52.55157, system="WGS_84" }, 
+    "address": { "cityCode": "13357", "city": "Berlin", "street": "Ellerbeker Straße", "houseNo": "7 - 8" },
+    "phoneno": "...", "provider": "Flinkster", 
+    "services": [  ],
+    "availableCars": [ ],
+    "notes": [ "Die Stellplätze befinden sich hinter den Schönhauser Arcaden. Die Zufahrt erfolgt über die Schönhauser Allee, dann Wichertstraße in die Greifenhagener Straße.",
+               "Die Stellplätze befinden sich direkt gegenüber vom Parkhaus - Schönhauser Arcaden- auf dem, mit Schrankenanlage versehenen Grundstück. Der Stellplatz ist frei wählbar. Sie öffnen die Schranke mit den Parkkarten im Fahrzeug. Bitte halten Sie zum Öffnen der Schranke die Parkkarte an das Lesefeld der Schrankenanlage." ],
+}
+
+
+
+# General Description
+Get list of available cars at a specific car sharing station.
+
+# Query Parameters
+Optional time interval in the future:
+
+- `from={datetime1}`
+- `to={datetime2}`  
+
+# Response
+A list of available cars at a specific car sharing station determined by `{stationId}`.
+
+GET /V0/Resources/CarSharing/Stations/{stationId}/Cars
+< 200
+< Content-Type: application/json
+[
+    {  
+        "id": "WME4513341K581403",   
+        "description": "B-GO2999", 
+        "type": "Car", 
+        "url": "/Resources/CarSharing/Cars/B-GO2999", 
+        "address": { "cityCode": "13357", "city": "Berlin", "street": "Ellerbeker Straße", "houseNo": "7 - 8" }, 
+        "location" : {  
+                "latitude" : 52.55157,
+                "longitude": 13.39552,
+                "system": "WGS_84"
+            },
+        "licenceId": "B-GO2999",  
+        "category": "Compact",
+        "provider": "Car2Go"
+    }    
+]
+
+
+
+
+-- 
+EV Charging Station 
+--
+
+# General Description
+Get list of EV Charging Stations.
+
+# Query Parameters 
+Describe region of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+List of all electric vehicle (EV) charging stations qualified by query parameters (and body), 
+together with geo location, name, and a URI to acquire more detailed information.
+
+GET /V0/Resources/EVCharging/Stations
+< 200
+< Content-Type: application/json
+[
+    {
+        "description": "vor Mini",
+        "type": "EVChargingStation",
+        "url": "Resources/EVCharging/Stations/227",
+        "location": {
+            "latitude": 52.5108049,
+            "longitude": 13.3897369,
+            "system": "WGS_84"
+        },
+        "provider": "Vattenfall",
+        "operator": "Vattenfall",
+        "address": {
+            "citycode": "10117",
+            "city": "Berlin",
+            "street": "Friedrichstraße",
+            "houseno": "191",
+            "district": null,
+            "region": null,
+            "country": null
+        }
+    },
+    {
+        "description": "Conti",
+        "type": "EVChargingStation",
+        "url": "Resources/EVCharging/Stations/228",
+        "location": {
+            "latitude": 52.51474,
+            "longitude": 13.38639,
+            "system": "WGS_84"
+        },
+        "provider": "Vattenfall",
+        "operator": "Vattenfall",
+        "address": {
+            "citycode": "10117",
+            "city": "Berlin",
+            "street": "Glinkastr.",
+            "houseno": "38",
+            "district": null,
+            "region": null,
+            "country": null
+        }
+    }
+]
+
+
+# General Description
+Get detail information for a specific EV Charging Station. 
+
+# Query Parameters
+
+- currently none
+
+# Response
+Details for the EV charging station specified by `{id}`.
+
+GET /V0/Resources/EVCharging/Stations/{id}
+< 200
+< Content-Type: application/json
+{
+    "description": "vor Mini",
+    "type": "EVChargingStationDetails",
+    "url": "Resources/EVCharging/Stations/227/",
+    "location": {
+        "latitude": 52.5108049,
+        "longitude": 13.3897369,
+        "system": "WGS_84"
+    },
+    "provider": "Vattenfall",
+    "operator": "Vattenfall",
+    "address": {
+        "citycode": "10117",
+        "city": "Berlin",
+        "street": "Friedrichstraße",
+        "houseno": "191",
+        "district": null,
+        "region": null,
+        "country": null
+    },
+    "chargingStationType": "Doppelsäule 32A",
+    "managedChargeable": false,
+    "owner": "Berlin",
+    "plugTypes": null,
+    "power": 22080,
+    "voltage": 230,
+    "chargingPoints": [
+        "015013=!=015013_R",
+        "015013=!=015013_L"
+    ],
+    "properties": null
+}
+
+--
+Traffic Info Level-of-Service (WMS)
+--
+
+
+# General Description
+Get WMS PNG file for road traffic (Level of Service).
+
+# Query Parameters
+Describe region of interest as box.
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameters
+
+### width
+- `width={w}`: width of map output in pixels (semantics according to WMS GetMap request).
+- the default value is width=250
+
+### height
+- `height={h}`: height of map output in pixels (semantics according to WMS GetMap request).
+- the default value is height=250
+  
+Behavior: additional parameters have to be passed to WMS server such as format=image/png.
+
+# Response
+A PNG content which dispays the current traffic situation.
+
+Please note: The accept-header of this request must be set to "image/png".
+GET /V0/Info/TrafficInfo
+> accept: image/png
+< 200
+< Content-Type: image/png
+{ "... this should be a PNG ..."
+}
+
+
+--
+WMS
+--
+
+# General Description
+Get WMS PNG file for several service categories.
+
+# Query Parameters
+Describe region of interest as a bounding box and with further optional parameters.
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameters
+
+### service names
+- `serviceNames={categories}`: comma-separated list of service categories (currently offered as WMS layers by VMZ), e.g. PublicTransport, Parking
+
+### width
+- `width={w}`: width of map output in pixels (semantics according to WMS GetMap request)
+- the default value is width=250
+  
+### heigth
+- `height={h}`: height of map output in pixels (semantics according to WMS GetMap request)
+- the default value is height=250
+ 
+# Response
+PNG file with requested service categories.
+
+Please note: The accept-header of this request must be set to "image/png"
+GET /V0/Resources?system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&right_upper_lng={max_lng}&right_upper_lat={max_lat}&width={w}&heigth={h}&serviceNames={categories}
+> accept: image/png
+< 200
+< Content-Type: image/png
+{   "... this should be a PNG ..."
+}
+
+--
+Partners
+Registered IMP Partners
+--
+
+Request for new Partner (starts "New Partner" Process).
+POST /V0/Partners
+> Content-Type: application/json
+> Accept: application/json
+{ "companyName":"ContiPark", roles": [ "ServiceProvider" ]}
+< 201
+< Content-Type: application/json
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: POST, GET, UPDATE, DELETE, OPTIONS
+< Access-Control-Allow-Headers: content-type, x-http-method-override, x-requested-with
+{ "name":"Partner 1" }
+
+Show details of specified Partner.
+GET /V0/Partners/{PartnerId}
+< 200
+< Content-Type: application/json
+{ "status": "requested", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] }
+
+Request update of Partner details (starts "Update Partner" Process) [UC PM-1].
+PUT /Partners/{PartnerId}
+> Content-Type: application/json
+> Accept: application/json
+{ "companyName":"Partner 1 new" }
+< 200
+< Content-Type: application/json
+{ "status": "requested", "url": "/Partners/1", "companyName":"Partner 1 new", "roles": [ "ServiceProvider" ] }
+
+Request deletion of specified Partner (starts "Delete Partner" Process) [UC PM-1].
+DELETE /Partners/{PartnerId}
+< 204
+
+List all registered Partners (only for Admin).
+GET /V0/Partners
+< 200
+< Content-Type: application/json
+{ "items": [
+    { "status": "registered", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] },
+    { "status": "registered", "url": "/Partners/2", "companyName":"Partner 2", "roles": [ "ServiceProvider" ] },
+    { "status": "registered", "url": "/Partners/3", "companyName":"Partner 3", "roles": [ "MobilityProvider" ] }
+] }
+
+To be described
+GET /Partners/verify?{verificationHash}
+< 200
+
+
+--
+ServiceOfferings (per Partner)
+--
+
+Request registration of new Service for Partner (starts "New Service" Process) [UC PM-3].
+POST /V0/Partners/{PartnerId}/ServiceOfferings
+> Content-Type: application/json
+> Accept: application/json
+{ "companyName":"Parking / Partner 1", "url": "..." }
+< 201
+< Content-Type: application/json
+< Location: /Partners/1/Service/1
+{ "status": "requested", "url": "/Partners/1/ServiceOfferings/1", "companyName":"Parking / Partner 1" }
+
+Request deletion of specified Service (starts "Delete Service" Process) [UC PM-3].
+DELETE /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+< 204
+
+Show details of specified Service.
+GET /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+< 200
+< Content-Type: application/json
+{ "offeringStatus": "requested", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" }
+
+Show availability of specified Service [IMP-222].
+GET /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}/Availability?from={from_time}&to={to_time}
+< 200
+< Content-Type: application/json
+{ "offeringStatus": "available", "url": "/Partners/1/ServiceOfferings/1/Availability" }
+
+Request update of Service details (starts "Update Service" Process)  [UC PM-3].
+PUT /Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+> Content-Type: application/json
+> Accept: application/json
+{ "name":"Parking / Partner 1 new" }
+< 200
+< Content-Type: application/json
+{ "offeringStatus": "requested", "type": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1 new" }
+
+--
+ServiceOfferings (for all Partners)
+--
+
+List all offered Services.
+GET /V0/ServiceOfferings
+< 200
+< Content-Type: application/json
+{ "items": [
+    { "offeringStatus": "provided", "type": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" },
+    { "offeringStatus": "provided", "type": "Car Rental", "url": "/Partners/2/ServiceOfferings/1", "name":"Car Rental / Partner 2" }
+] }
+
+List all offered Services of a given type.
+GET /V0/ServiceOfferings?category=Parking
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "offeringStatus": "provided", "category": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" }
+] }
+
+
+--
+Service Subscriptions
+--
+
+List all Subscriptions for specified Partner (requested by MobilityProvider).
+GET /V0/Partners/{PartnerId}/ServiceSubscriptions
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
+] }
+
+MobilityProvider subscribes to ServiceOffering
+POST /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+> Content-Type: application/json
+> Accept: application/json
+{ "partnerId" : "1" }
+< 201
+< Content-Type: application/json
+< Location: /ServiceOfferings/1/ServiceSubscriptions/4711
+{ "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
+
+List all ServiceSubscriptions for a ServiceOffering (requested by ServiceProvider)
+GET /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
+] }
+
+Unsubscribe Service
+DELETE /V0/ServiceOfferings/1/ServiceSubscriptions/4711
+< 204
+
+--
+Service Categories
+--
+
+List all available Service Categories
+GET /V0/ServiceCategories
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "name": "Parking", "url": "/ServiceCategories/Parking" , "displayText":"Store Parking" ,"resources": "/Resources/Parking" }
+] }
+
+
+--
+--
+
+Options (for CORS, only for mock).
+OPTIONS /V0/Partners
+< 200
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: POST, GET, PUT, UPDATE, DELETE, OPTIONS
+< Access-Control-Allow-Headers: content-type, x-http-method-override, x-requested-with
+
+--
+Taxi
+--
+
+
+# General Description
+Get available taxis in a specified region.
+
+# Query Parameters
+Describe region of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+List of available taxis with basic information.
+
+
+GET /V0/Resources/TaxiService/Taxis
+< 200
+< Content-Type: application/json
+[
+    { 
+        "id": 5120, 
+        "location": {"latitude":52.5244,  "longitude":13.2541, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-TA 4820" 
+    },
+    { 
+        "id": 5393, 
+        "location": {"latitude":52.58421, "longitude":13.36627, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-GA 4518" 
+    },
+    { 
+        "id": 4911, 
+        "location": {"latitude":52.5206,  "longitude":13.38284, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-TA 4270" 
+    },
+    { 
+        "id": 5357, 
+        "location": {"latitude":52.55726, "longitude":13.52817, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-I 6606" 
+    },
+    { 
+        "id": 5006, 
+        "location": {"latitude":52.53803, "longitude":13.31234, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-T 4100" 
+    },
+    { 
+        "id": 5109, 
+        "location": {"latitude":52.54481, "longitude":13.40668, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-JW 448" 
+    }
+]
+
+
+# General Description
+Get estimated fare for trips from origin to destination.
+
+# Query Parameters 
+Either of both variants:
+
+## origin and destination
+`origin_lat={lat}&origin_lng={lng}&dest_lat={lat}&dest_lng={lng}`
+
+## origin and distance from origin
+`origin_lat={lat}&origin_lng={lng}&radius={r}`
+
+Further conditions might specify: number of passengers, extra luggage, start time, ...
+
+# Response
+fare information for the specified trip.
+
+GET /V0/Info/TaxiService/Fares
+< 200
+< Content-Type: application/json
+{
+    "fareQuality": 1.0,
+    "startTime": "2013-07-09T08:09:17",
+    "arrivalTime": { "value": 360, "unit": "sec"},
+    "totalTime":   { "value": 660, "unit": "sec"},
+    "totalDistance": { "value": 5000, "unit": "m" },
+    "costs": { 
+        "flagFall": { "value":300, "currency":"EuroCent"},
+        "total":    { "value":960, "currency":"EuroCent"}, 
+        "distance": { "value":660, "currency":"EuroCent"}, 
+        "other":    { },
+        "passengers": [
+           { "value":0,   "currency":"EuroCent" },
+           { "value":0,   "currency":"EuroCent" },
+           { "value":0,   "currency":"EuroCent" },
+           { "value":0,   "currency":"EuroCent" },
+           { "value":150, "currency":"EuroCent" },
+           { "value":300, "currency":"EuroCent" },
+           { "value":450, "currency":"EuroCent" },
+           { "value":600, "currency":"EuroCent" }
+        ]
+    }
+    "services": {
+        "bookingAvailable": true,
+        "paymentAvailable": false,
+        "privateHireVehicleAvailable": true,
+        "taxiSharing": false,
+        "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
+    }      
+}
+
+
+# General Description
+
+Book a Taxi: The taxi ride is specified by providing the starting point (address and/or geo location) and the destination.
+This means that no specific, previously selected taxi, is booked.
+
+# Query Parameters
+
+- `action={Book}`: Must be "Book" to perform a booking
+
+Input in request body: 
+
+- operator: name, userId and password (for authentication)
+- origin of the taxi ride and optional start time
+- destination of the taxi ride
+- further parameters might later detail the request by specifying the number of passengers, availability of child seats, extra luggage etc.
+
+# Failures
+
+- booking is not possible: response body explains the reason why
+
+# Output
+- the estimated costs, the taxi's licence id, and a booking id are returned; the latter can be used to cancel the booking.
+
+Please note: 
+
+- Since data about the traveler is usually requested by the taxi SP, we assume that the end-user (or the mobility provider) himself is responsible to register at the service provider.
+- We currently require one operator in the input body.
+
+POST /V0/Resources/TaxiService/Taxis/Processes?action=Book
+> Accept: application/json
+> Content-Type: application/json
+{
+    "operator": {
+        "name": "BetterTaxi",
+        "userId": "MP1_1",
+        "password": "TopSecret!"
+    },
+    "origin" : {
+        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+        "time": "2013-05-01T12:00:00" 
+    },
+    "destination" : {
+        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+    }
+}
+< 201
+< Location: /V0/Process/4711
+< Content-Type: application/json
+{
+    "processId" : 123,
+    "confirmation" : {
+        "confirmationId" : 456,
+        "featureType": "BOOKING"
+    },
+    "origin" : {
+        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+        "time": "2013-05-01 12:00:00" 
+    },
+    "destination" : {
+        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+    },
+    "operatorId": "BetterTaxi",
+    "licenceId": "B-OB 007",
+    "arrivalTime": "2013-05-01T12:05:00",
+    "services": {
+        "bookingAvailable": true,
+        "paymentAvailable": false,
+        "privateHireVehicleAvailable": true,
+        "taxiSharing": false,
+        "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
+    },
+    "actions": [
+        {
+            "name": "Cancel",
+            "method": "PUT",
+            "uri": "/V0/Processes/123?action=Cancel"
+        }
+    ]
+}
+
+
+# General Descrition 
+Cancel a booking for a taxi that has been booked before with a booking id 4711.
+
+# Query Parameters
+
+- `action={Cancel}`: Must be "Cancel" for performing a booking
+
+Input in request body: 
+
+- userId and password (for authentication)
+
+# Failures
+
+- cancelation is not possible: the response body explains the reason why.
+
+# Output
+information about the originally planned taxi ride and the cancelation fee
+PUT /V0/Process/123?action=Cancel
+> Accept: application/json
+> Content-Type: application/json
+{ 
+    "operator": { 
+        "name": "BetterTaxi", 
+        "userId": "MP1_1",
+        "password": "TopSecret!"
+    }
+}
+< 201
+< Location: /V0/Process/123
+< Content-Type: application/json
+{
+    "userId": "MP1_1",
+    "ride": { 
+        "origin" : {
+            "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+            "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+            "time": "2013-05-01 12:00:00" 
+        },
+        "destination" : {
+            "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+        }
+    },
+    "confirmation": {
+        "featureType": "CANCELATION",
+        "confirmationId": "17",
+        "fee": { "value": 0, "currency": "EUR" }
+    },
+    "actions": [ ]
+}
+
+
+--
+Routing Planner (Trip Proposal)
+--
+
+# General Description
+Get trip information for specified trip criteria with basic information.
+
+# Query Parameters 
+
+- `language={lang}` : de, en (currently not supported; de is the default)
+
+# Selection criteria 
+specified in the request body as described in the sample request 
+
+- origin: start point specified by a geo location 
+  (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
+- destination: start point specified by a geo location
+- either orgin or destination might specify a time
+- viaPoints: list of geo locations that the route should use
+- costFunction: list of cost factors (such as Distance, Duration, Price, Economy), each with a percentual weight 
+- trafficTypes: list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
+- routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
+- userId: user that requests a trip
+
+# Response
+list of trip proposals with basic information such as distance, duration and an URI for detailled information.
+
+Please note: 
+
+The "distanceFromOrigin"-value in the "costs" of a guidingPoint now counts the distance from guidingPoint to guidingPoint; the misleading name will be replaced soon. 
+(In the past, the distanceFromOrigin-value accumulated the distance from the beginning of the trip.) 
+
+POST /V0/TripProposals
+> Content-Type: application/json
+> Accept: application/json
+{ 
+    "origin": { 
+        "location": { "longitude": 13.386759757995605, "latitude": 52.4781608581543, "system": "WGS84" }, 
+        "time": "2013-07-24T15:10:00UTC+2"
+        },
+    "destination": { 
+        "location": { "longitude": 13.3606595993042, "latitude": 52.49085998535156, "system": "WGS84" },
+        "time": null
+        },
+    "viaPoints": [ { "longitude": 13.388156, "latitude": 52.493578, "system": "WGS84" } ],
+    "costFunctions": [ { "costType": "Distance", "percentage": 100.0 } ],
+    "trafficTypes": [ "Car", "Metro" ],
+    "routingConstraints": [ {   "routingConstraintType": "Distance",
+                                "trafficType": "Walk", 
+                                "min": { "value": 0,   "unit": "Meter" }, 
+                                "max": { "value": 600, "unit": "Meter" }
+                              } ],
+    "userId": "4711/10" 
+}
+< 200
+< Content-Type: application/json
+[
+    {
+        "url": "TripProposals/2",
+        "origin": {
+            "location": {
+                "latitude": 52.50917053222656,
+                "longitude": 13.377630233764648,
+                "system": "WGS_84"
+            },
+            "time": "2013-06-25T15:10:35MESZ"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.5100212097168,
+                "longitude": 13.384160041809082,
+                "system": "WGS_84"
+            },
+            "time": "2013-06-25T15:11:35MESZ"
+        },
+        "trafficTypes": [
+            "Car"
+        ],
+        "description": null,
+        "costs": {
+            "distanceFromOrigin": {
+                "unit": "Meter",
+                "value": 503
+            },
+            "duration": {
+                "unit": "Second",
+                "value": 96
+            },
+            "price": null,
+            "emission": null
+        }
+    }
+]
+
+
+# General Description
+Get details about a trip proposal.
+
+# Query Parameters: 
+
+- `language={lang}` : de, en (currently not supported; de is the default)
+
+Each trip proposal consists of several segments, one segment for one transportation modality such as bike, car, train, etc. 
+There is also a separate segment if the traveler shall use different lines of the same transport modality, 
+for instance, first U5 from A to B and then U4 from B to C.
+
+Each segement has an origin and a destination with corresponding timestamps when to arrive and depart.
+
+A segment consists of a sequence of way points and guiding points.
+
+A way point describes an intermediate geo location useful for displaying the trip proposal in a map.
+
+A guiding point gives a traveler hints how to travel, e.g., whenever to change the road at a crossing.
+
+# Response
+detailed information about a single trip proposal determined by [proposalId}
+
+Please note:
+
+The "distanceFromOrigin"-value in the "costs" of a guidingPoint now counts the distance from guidingPoint to guidingPoint; the misleading name will be replaced soon.
+(In the past, the distanceFromOrigin-value accumulated the distance from the beginning of the trip.) 
+
+The trip proposals as returned by "GET /V0/TripProposals" are internally stored only for a certain time; afterward they expire and details are no longer available. 
+The current expiration time is 10 minutes.
+
+GET /V0/TripProposals/{proposalId}
+< 200
+< Content-Type: application/json
+{
+    "url": "TripProposals/1/",
+    "segments": [
+        {
+            "segmentId": "1",
+            "description": null,
+            "origin": {
+                "location": {
+                    "latitude": 52.50917053222656,
+                    "longitude": 13.377630233764648,
+                    "system": "WGS_84"
+                },
+                "time": "2013-06-25T15:10:35MESZ"
+            },
+            "destination": {
+                "location": {
+                    "latitude": 52.5100212097168,
+                    "longitude": 13.384160041809082,
+                    "system": "WGS_84"
+                },
+                "time": "2013-06-25T15:11:35MESZ"
+            },
+            "trafficType": "Car",
+            "cost": {
+                "distanceFromOrigin": {
+                    "unit": "Meter",
+                    "value": 503
+                },
+                "duration": {
+                    "unit": "Second",
+                    "value": 96
+                },
+                "price": null,
+                "emission": null
+            },
+            "wayPoints": [
+                {
+                    "latitude": 52.50917053222656,
+                    "longitude": 13.377630233764648,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.509239196777344,
+                    "longitude": 13.3774995803833,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.50926971435547,
+                    "longitude": 13.377470016479492,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.509498596191406,
+                    "longitude": 13.377449989318848,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.509521484375,
+                    "longitude": 13.377750396728516,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.50959014892578,
+                    "longitude": 13.377889633178711,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.509700775146484,
+                    "longitude": 13.379480361938477,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.509891510009766,
+                    "longitude": 13.381830215454102,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5100212097168,
+                    "longitude": 13.384160041809082,
+                    "system": "WGS_84"
+                }
+            ],
+            "guidingPoints": [
+                {
+                    "description": "Losfahren in  Leipziger Platz, Mitte (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.50917053222656,
+                            "longitude": 13.377630233764648,
+                            "system": "WGS_84"
+                        },
+                        "time": null
+                    },
+                    "cost": {
+                        "distanceFromOrigin": {
+                            "unit": "Meter",
+                            "value": 0
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 0
+                        },
+                        "price": null,
+                        "emission": null
+                    },
+                    "operator": null,
+                    "locationId": "009013103#86"
+                },
+                {
+                    "description": "Biegen Sie rechts ab auf B1 Leipziger Platz",
+                    "location": {
+                        "location": {
+                            "latitude": 52.509498596191406,
+                            "longitude": 13.377449989318848,
+                            "system": "WGS_84"
+                        },
+                        "time": null
+                    },
+                    "cost": {
+                        "distanceFromOrigin": {
+                            "unit": "Meter",
+                            "value": 41
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 12
+                        },
+                        "price": null,
+                        "emission": null
+                    },
+                    "operator": null
+                },
+                {
+                    "description": "Ankunft in  B1 Leipziger Straße - Wilhelmstraße, Mitte (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5100212097168,
+                            "longitude": 13.384160041809082,
+                            "system": "WGS_84"
+                        },
+                        "time": null
+                    },
+                    "cost": {
+                        "distanceFromOrigin": {
+                            "unit": "Meter",
+                            "value": 503
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 84
+                        },
+                        "price": null,
+                        "emission": null
+                    },
+                    "operator": null
+                }
+            ]
+        }
+    ]
+}
+
+
+-- 
+Incidents / Traffic Info
+--
+
+# General Description
+Get recent general incidents / traffic info in a specific region.
+
+# Query Parameters
+Describe region of interest as circle or box.
+ 
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+List of traffic information in the specified geo location qualified by query parameters.
+GET /V0/Info/Incidents
+< 200
+< Content-Type: application/json
+[   {
+        "description": "Roadworks road closed",
+        "type": "IndividualTransport",
+        "uri": null,
+        "location": {
+            "latitude": 52.51642,
+            "longitude": 13.38888,
+            "system": "WGS_84"
+        },
+        "provider": "News",
+        "category": "Blockade",
+        "message": "Closed Road",
+        "timePeriod": {
+            "from": "2012-07-13T07:00:00MESZ",
+            "to": "2013-12-31T17:00:59MEZ"
+        },
+        "coordinates": [
+            {
+                "latitude": 52.51642,
+                "longitude": 13.38888,
+                "system": "WGS_84"
+            }
+        ],
+        "reason": null,
+        "reasonShort": null,
+        "consequence": null,
+        "consequenceShort": null,
+        "location": "bidirectional between Unter den Linden and Behrenstr.",
+        "source": "INKO",
+        "affectedTrips": null,
+        "net": []
+    },
+    {
+        "description": "Baumaßnahme",
+        "type": "PublicTransportation",
+        "uri": null,
+        "provider": "News",
+        "category": "Other",
+        "message": "Disruption",
+        "timePeriod": {
+            "from": "2012-08-22T04:00:00MESZ",
+            "to": "2013-11-01T03:30:00MEZ"
+        },
+        "coordinates": [
+            {
+                "latitude": 52.52035888888889,
+                "longitude": 13.388417777777777,
+                "system": "WGS_84"
+            }
+        ],
+        "reason": "Sperrung wegen Bauarbeiten der BVG",
+        "reasonShort": "Sperrung wegen Bauarbeiten der BVG",
+        "consequence": "Die Linie ist zwischen U Friedrichstraße und U Französische Str. unterbrochen. Zwischen U Friedrichstr. und U Stadtmitte können Sie die Buslinie 147 nutzen oder alternativ ab U Französische Str. die Strecke von 500 Metern zu Fuß gehen.",
+        "consequenceShort": "Unterbrechung wegen Bauarbeiten",
+        "location": null,
+        "source": "PT",
+        "affectedTrips": null,
+        "net": []
+    }
+]
+
+# General Description
+Get recent individual transportation incidents / traffic info in a specific region.
+
+# Query Parameters
+Describe region of interest as circle or box.
+ 
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of traffic information in the specified geo location qualified by query parameters.
+
+GET /V0/Info/Incidents/IndividualTransport
+< 200
+< Content-Type: application/json
+[    {
+        "description": "Roadworks carriageway reduced from 2 to 1 lane traffic, congestion has to be expected road closed",
+        "type": "IncidentIndividualTransport",
+        "uri": null,
+        "provider": "News",
+        "category": "Blockade",
+        "message": "Closed Road",
+        "timePeriod": {
+            "from": "2012-11-09T12:00:00MEZ",
+            "to": "2013-12-31T17:00:59MEZ"
+        },
+        "coordinates": [
+            {
+                "latitude": 52.51774,
+                "longitude": 13.38868,
+                "system": "WGS_84"
+            }
+        ],
+        "reason": null,
+        "reasonShort": null,
+        "consequence": null,
+        "consequenceShort": null,
+        "location": "towards Unter den Linden at crossing Unter den Linden",
+        "source": "INKO",
+        "affectedTrips": null,
+        "net": [],
+        "roadName": "Friedrichstr. (Mitte)"
+    }
+]
+
+
+# General Description
+Get recent public transportation incidents / traffic info in a specific region.
+
+# Query Parameters
+Describe region of interest as circle or box.
+ 
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of traffic data in the specified geo location qualified by query parameters.
+
+GET /V0/Info/Incidents/PublicTransport
+< 200
+< Content-Type: application/json
+[   {
+        "description": "Umleitung / geänderte Haltestellenbedienung",
+        "type": "IncidentPublicTransport",
+        "uri": null,
+        "provider": "News",
+        "category": "Other",
+        "message": "Disruption",
+        "timePeriod": {
+            "from": "2013-01-21T05:00:00MEZ",
+            "to": null
+        },
+        "coordinates": [
+            {
+                "latitude": 52.51748527777778,
+                "longitude": 13.388815833333332,
+                "system": "WGS_84"
+            }
+        ],
+        "reason": "Sperrung wegen Bauarbeiten der BVG",
+        "reasonShort": "Sperrung wegen Bauarbeiten der BVG",
+        "consequence": "Die Linie muss von der Fischerinsel über Gertraudenstr., Leipziger Str., Mauerstr., Glinkastr., Neustädtische Kirchstr. und Dorotheenstr. zur Friedrichstr. bzw. entgegengesetzt umgeleitet werden. Die Haltestellen Neumannsgasse, Werderscher Markt, U Französische Str. und Unter den Linden/Friedrichstr. werden nicht bedient. Die auf dem Umleitungsweg befindlichen Haltestellen werden angefahren.",
+        "consequenceShort": "Bauarbeiten, Umleitung",
+        "location": null,
+        "source": "PT",
+        "affectedTrips": null,
+        "net": [],
+        "direction": "Beide",
+        "firstStop": "Fischerinsel",
+        "lastStop": "S+U Friedrichstr.",
+        "lineName": {
+            "name": "147",
+            "trafficType": "Bus"
+        }
+    }
+]
