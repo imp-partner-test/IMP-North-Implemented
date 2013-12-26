@@ -24,8 +24,8 @@
       "Chapters": [
         "Introduction",
         "Parking Garages",
-        "Traffic Info",
-        "Traffic Info Level-of-Service (WMS)",
+        "Incidents / Traffic Info",
+        "Level-of-Service in WMS",
         "Bike Sharing",
         "Car Sharing"
       ],
@@ -36,7 +36,7 @@
       "Title": "OMB: Daimler",
       "Chapters": [
         "Introduction",
-        "Route Planner (Individual Transport)"
+        "Routing Planner IV"
       ],
       "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
@@ -46,8 +46,8 @@
       "Chapters": [
         "Introduction",
         "Parking Garages",
-        "Traffic Info"
-        "Traffic Info Level-of-Service (WMS)",
+        "Incidents / Traffic Info",
+        "Level-of-Service in WMS",
         "Bike Sharing",
         "Car Sharing"
       ],
@@ -59,8 +59,8 @@
       "Chapters": [
         "Introduction",
         "Parking Garages",
-        "Traffic Info"
-        "Traffic Info Level-of-Service (WMS)",
+        "Incidents / Traffic Info",
+        "Level-of-Service in WMS",
         "Bike Sharing",
         "Car Sharing"
       ],
@@ -72,8 +72,8 @@
       "Chapters": [
         "Introduction",
         "Parking Garages",
-        "Traffic Info"
-        "Traffic Info Level-of-Service (WMS)",
+        "Incidents / Traffic Info",
+        "Level-of-Service in WMS",
         "Bike Sharing",
         "Car Sharing"
       ],
