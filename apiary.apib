@@ -13,18 +13,19 @@ The standard WGS 84 is used for polar coordinates.
 --
 
 
+--
+Introduction
+--
 
+Attention: this is a generated documentation. Please do only modify in project IMP-North-Implemented.
 
+The following is a description of the public REST interface offered by IMP to mobility provider, as it is currently implemented as part of the user stories.
+The described functionality can be tested as well using APIary mock server as the production server (URLs are listed on the right). 
+The currently integrated service provider list is available on https://as.production.imp.mobilitaetsdienste.de/imp-ui/#AllServiceOfferings:
+All functionality can be tested using APIary Mock Server.
+For access to production system please contact: `henrik.koberg@siemens.com`
 
-
-
-
-
-
-
-
-
--- 
+--
 Handy Ticket
 --
 # General Description
@@ -264,7 +265,7 @@ PUT /V0/Processes/{processId}
 
 
 
--- 
+--
 Parking Garages
 --
 # General Description
@@ -352,7 +353,7 @@ GET /V0/Resources/Parking/Garages/{id}
 }
 
 
--- 
+--
 Public Transportation 
 --
 
@@ -472,7 +473,7 @@ GET /V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
 
 
 
--- 
+--
 Bike Sharing 
 --
 
@@ -533,7 +534,7 @@ GET /V0/Resources/BikeSharing/Stations
     }
 ]
 
--- 
+--
 Car Sharing 
 --
 
@@ -709,7 +710,7 @@ GET /V0/Resources/CarSharing/Stations/{stationId}/Cars
 
 
 
--- 
+--
 EV Charging Station 
 --
 
@@ -1608,7 +1609,7 @@ GET /V0/TripProposals/{proposalId}
 }
 
 
--- 
+--
 Incidents / Traffic Info
 --
 
@@ -1792,3 +1793,8 @@ GET /V0/Info/Incidents/PublicTransport
         }
     }
 ]
+
+--
+Last Dummy Section
+--
+Please do not remove this section and leave it the last one. This makes the RegEx for extracting sections from generate script much easier.
