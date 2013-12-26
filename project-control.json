@@ -1,0 +1,13 @@
+{
+  "Projects": [
+    {
+      "Project": "OMB-bmw",
+      "Title": "OMB: BMW",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages"
+      ],
+      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    }
+  ]
+}
