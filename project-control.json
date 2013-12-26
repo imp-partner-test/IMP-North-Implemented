@@ -8,6 +8,76 @@
         "Parking Garages"
       ],
       "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    },
+    {
+      "Project": "OMB-bosch",
+      "Title": "OMB: BOSCH",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages"
+      ],
+      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    },
+    {
+      "Project": "OMB-comove",
+      "Title": "OMB: comove",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages",
+        "Traffic Info",
+        "Traffic Info Level-of-Service (WMS)",
+        "Bike Sharing",
+        "Car Sharing"
+      ],
+      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    },
+    {
+      "Project": "OMB-daimler",
+      "Title": "OMB: Daimler",
+      "Chapters": [
+        "Introduction",
+        "Route Planner (Individual Transport)"
+      ],
+      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    },
+    {
+      "Project": "OMB-tom-jell",
+      "Title": "OMB: Tom Jell",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages",
+        "Traffic Info"
+        "Traffic Info Level-of-Service (WMS)",
+        "Bike Sharing",
+        "Car Sharing"
+      ],
+      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    },
+    {
+      "Project": "OMB-verkehrsmittelvergleich",
+      "Title": "OMB: Verkehrsmittelvergleich",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages",
+        "Traffic Info"
+        "Traffic Info Level-of-Service (WMS)",
+        "Bike Sharing",
+        "Car Sharing"
+      ],
+      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    },
+    {
+      "Project": "OMB-volkswagen",
+      "Title": "OMB: Volkswagen",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages",
+        "Traffic Info"
+        "Traffic Info Level-of-Service (WMS)",
+        "Bike Sharing",
+        "Car Sharing"
+      ],
+      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     }
   ]
 }
