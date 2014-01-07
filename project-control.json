@@ -5,7 +5,7 @@
       "Title": "OMB: BMW",
       "Chapters": [
         "Introduction",
-        "Parking Garages"
+        "Handy Ticket"
       ],
       "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
