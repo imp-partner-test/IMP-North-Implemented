@@ -414,6 +414,44 @@ GET /V0/Resources/Parking/Garages/{id}
     "entrance" : "Einfahrt Stralauer Platz" 
 }
 
+# General Description
+Enter/Leave parking garage.
+
+# Query Parameters 
+
+- `action=consume`
+
+# Request Path Parameters
+- `tagId={String}, NFC Tag Id at parking entry/exit`
+
+# Response 
+Using a specific parking garage, identified by `{tagId}` as it is from user.
+POST /V0/Resources/Parking/Garages/{tagId}/Process
+> Accept: application/json
+> Content-Type: application/json
+> userToken: {userToken}
+< 201
+< Content-Type: application/json
+{
+    "actions": [],
+    "processId": "{processId}",
+    "confirmation": {
+        "featureType": "CONSUME",
+        "confirmationId": null,
+        "confirmationData": {
+            "entryTagId": "{entryTagId}",
+            "exitTagId": "{exitTagId}",
+            "from": "2014-01-08T14:53:08+0530",
+            "to": "2014-01-08T14:53:31+0530",
+            "parkingCost": {
+                "unit": "EUR",
+                "value": 0.759
+            },
+            "parkingGarageId": "{parkingGarageId}"
+        }
+    }
+}
+
 
 -- 
 Public Transportation 
