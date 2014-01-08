@@ -706,9 +706,140 @@ GET /V0/Resources/CarSharing/All
 ]
 
 
+# General Description
+Get list of available free-floating cars in a specific region (NOTE: for free-floating car sharing only!).
+
+# Query Parameters
+Describe region of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameter
+- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter ecars ("ELECTRICITY") or petrol cars ("PETROL")
+
+# Response
+A list of available free-floating cars qualified by the query parameters, 
+with basic information and a URI to acquire more detailed information.
+
+GET /V0/Resources/CarSharing/Cars
+< 200
+< Content-Type: application/json
+[
+     {
+        "actions": [
+            {
+                "name": "book",
+                "method": "POST",
+                "uri": "Resources/CarSharing/Cars/37917/Process?action=book"
+            }
+        ],
+        "id": 37917,
+        "description": "151669",
+        "type": "Cars",
+        "uri": "Resources/CarSharing/Cars/37917",
+        "location": {
+            "latitude": 52.515995,
+            "longitude": 13.3923817,
+            "system": "WGS_84"
+        },
+        "provider": "FlinksterDB",
+        "operator": "FlinksterDB",
+        "address": null,
+        "licenseId": "B-MC 2680",
+        "category": null,
+        "fuelType": "ELECTRICITY",
+        "imageLink": "www.flinkster.de/common/gethashdata.php?uniquebid=e839f1f54648d3cfd501cebf0173453e"
+    },
+    {
+        "actions": [
+            {
+                "name": "book",
+                "method": "POST",
+                "uri": "Resources/CarSharing/Cars/37916/Process?action=book"
+            }
+        ],
+        "id": 37916,
+        "description": "151642",
+        "type": "Cars",
+        "uri": "Resources/CarSharing/Cars/37916",
+        "location": {
+            "latitude": 52.5190233,
+            "longitude": 13.380195,
+            "system": "WGS_84"
+        },
+        "provider": "FlinksterDB",
+        "operator": "FlinksterDB",
+        "address": null,
+        "licenseId": "B-MC 2639",
+        "category": null,
+        "fuelType": "ELECTRICITY",
+        "imageLink": "www.flinkster.de/common/gethashdata.php?uniquebid=b239978f55826a660c3f405467aeafc4"
+    }
+]
 
 # General Description
-Get list of car sharing stations (for station-based car sharing).
+Get detailed information about a specific free-floating car.
+
+# Query Parameters
+currently none  
+
+# Response
+Detailed information about a specific free-floating car determined by `{carId}`.
+
+GET /V0/Resources/CarSharing/Cars/{carId}
+< 200
+< Content-Type: application/json
+{
+    "actions": [
+        {
+            "name": "book",
+            "method": "POST",
+            "uri": "Resources/CarSharing/Cars/37917/37943/Process?action=book"
+        }
+    ],
+    "id": 37943,
+    "description": "151669",
+    "type": "CarSharingStationCarDetails",
+    "uri": "Resources/CarSharing/Cars/37917/37943",
+    "location": {
+        "latitude": 52.515995,
+        "longitude": 13.3923817,
+        "system": "WGS_84"
+    },
+    "provider": "FlinksterDB",
+    "operator": "FlinksterDB",
+    "address": null,
+    "licenseId": "B-MC 2680",
+    "category": null,
+    "fuelType": "ELECTRICITY",
+    "imageLink": "www.flinkster.de/common/gethashdata.php?uniquebid=089fc849059c9ff1f97454ecbf72d237",
+    "model": "Citroën C-Zero ",
+    "name": "Citroën C-Zero ",
+    "power": null,
+    "seatCount": 4,
+    "doorCount": 4,
+    "colour": null,
+    "properties": [
+        "ABS"
+    ],
+    "locationNote": null,
+    "operatorURI": null,
+    "fee": {
+        "money": 11.4,
+        "duration": {
+            "unit": "Hour",
+            "value": 1
+        }
+    }
+}
+
+
+# General Description
+Get list of car sharing stations (NOTE: for station-based car sharing only!).
 
 # Query Parameters 
 Describe region of interest as circle or box.
