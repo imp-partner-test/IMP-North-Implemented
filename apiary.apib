@@ -1051,7 +1051,7 @@ Generate user token (starts "User Token Generation" Process).
 Query Parameters
 
 - `action={register}`: Must be "register" to start token generation
-POST /V0/Partners/User/Process?action=register
+POST /V0/Partners/User/Process
 > Content-Type: application/json
 > Accept: application/json
 < 201
@@ -1068,7 +1068,7 @@ Query Parameters (optional - if date range not provided then results are fetched
  
 - `startDate={fromDate}`
 - `endDate={toDate}`
-GET /V0/Partners/User/Transactions?startDate={fromDate}&endDate={toDate}
+GET /V0/Partners/User/Transactions
 > Content-Type: application/json
 > Accept: application/json
 > userToken: {userToken}
@@ -2373,5 +2373,61 @@ GET /V0/Info/Incidents/PublicTransport
             "name": "147",
             "trafficType": "Bus"
         }
+    }
+]
+
+
+-- 
+Reporting
+--
+
+# General Description
+Get service usage statistics for specified date range.
+
+# Query Parameters
+ 
+- `startDate={fromDate}`
+- `endDate={toDate}`
+ 
+# Response
+List of service with usage statistics.
+GET /V0/Reporting/serviceUsageStatistics
+< 200
+< Content-Type: application/json
+[   
+    {
+        "id": null,
+        "featureType": "LIST",
+        "serviceCategory": "PUBLIC_TRANSPORT",
+        "mobilityProvider": "MP1",
+        "serviceProvider": "IMP",
+        "numberOfCalls": 1,
+        "serviceAlias": "Offline Stations",
+        "time": null
+    }
+]
+
+
+# General Description
+Get service performance statistics for specified date range.
+
+# Query Parameters
+ 
+- `startDate={fromDate}`
+- `endDate={toDate}`
+ 
+# Response
+List of service with performance statistics.
+GET /V0/Reporting/servicePerformanceStatistics
+< 200
+< Content-Type: application/json
+[   
+    {
+        "id": null,
+        "serviceName": "bettertaxi_booking",
+        "responseCode": "200",
+        "avgResponseTime": 14.3333333333,
+        "maxResponseTime": 41.0,
+        "serviceProvider": "BetterTaxi"
     }
 ]
