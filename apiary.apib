@@ -3,28 +3,28 @@ HOST: https://imp-app1.t.imp.mobilitaetsdienste.de/imp-endpoint/api/
 --- IMP North: Implemented ---
 
 --
-Introduction
---
-
-Attention: this is a generated documentation. Please do only modify in project IMP-North-Implemented.
-
-The following is a description of the public REST interface offered by IMP to mobility provider, as it is currently implemented as part of the user stories.
-The described functionality can be tested as well using APIary mock server as the production server (URLs are listed on the right). 
-The currently integrated service provider list is available on https://as.production.imp.mobilitaetsdienste.de/imp-ui/#AllServiceOfferings:
-All functionality can be tested using APIary Mock Server.
-For access to production system please contact: `henrik.koberg@siemens.com`
-
---
 Some Notes
---
 
 The following is a description of the NORTH-bound REST interface, as it is currently implemented as part of the user stories.
 
 The major and dominant "ServiceProvider" is currently POINT. Furthermore, ParkoPedia and OpenData Berlin are (partially) integrated.
 
 The standard WGS 84 is used for polar coordinates.
-
 --
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 
 Handy Ticket
 --
 # General Description
@@ -242,10 +242,33 @@ PUT /V0/Processes/{processId}
 }
 
 
---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 
 Parking Garages
 --
-
 # General Description
 List parking garages in a specific region: return list of parking garages with basic information.
 
@@ -331,7 +354,7 @@ GET /V0/Resources/Parking/Garages/{id}
 }
 
 
---
+-- 
 Public Transportation 
 --
 
@@ -451,8 +474,8 @@ GET /V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
 
 
 
---
-Bike Sharing
+-- 
+Bike Sharing 
 --
 
 # General Description
@@ -512,9 +535,8 @@ GET /V0/Resources/BikeSharing/Stations
     }
 ]
 
-
---
-Car Sharing
+-- 
+Car Sharing 
 --
 
 # General Description
@@ -689,7 +711,7 @@ GET /V0/Resources/CarSharing/Stations/{stationId}/Cars
 
 
 
---
+-- 
 EV Charging Station 
 --
 
@@ -805,7 +827,7 @@ GET /V0/Resources/EVCharging/Stations/{id}
 }
 
 --
-Level-of-Service in WMS
+Traffic Info Level-of-Service (WMS)
 --
 
 
@@ -880,6 +902,7 @@ GET /V0/Resources?system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&r
 }
 
 --
+Partners
 Registered IMP Partners
 --
 
@@ -923,6 +946,47 @@ GET /V0/Partners
     { "status": "registered", "url": "/Partners/2", "companyName":"Partner 2", "roles": [ "ServiceProvider" ] },
     { "status": "registered", "url": "/Partners/3", "companyName":"Partner 3", "roles": [ "MobilityProvider" ] }
 ] }
+
+Generate user token (starts "User Token Generation" Process).
+
+Query Parameters
+
+- `action={register}`: Must be "register" to start token generation
+POST /V0/Partners/User/Process?action=register
+> Content-Type: application/json
+> Accept: application/json
+< 201
+< Content-Type: application/json
+{
+    "id": 251,
+    "partnerId": 92,
+    "token": "587c8e09-cd63-48d2-b889-b6903221e8b4"
+}
+
+Request user transactions for a {userToken}.
+
+Query Parameters (optional - if date range not provided then results are fetched for last one month)
+ 
+- `startDate={fromDate}`
+- `endDate={toDate}`
+GET /V0/Partners/User/Transactions?startDate={fromDate}&endDate={toDate}
+> Content-Type: application/json
+> Accept: application/json
+> userToken: {userToken}
+< 200
+< Content-Type: application/json
+[
+    {
+        "userToken": "f192b127-5281-4175-a7fa-a18cc1581706",
+        "serviceCategory": "Parking",
+        "serviceType": "consumption",
+        "serviceDescription": "vmzParking : consumption",
+        "unit": "EUR",
+        "value": 0,
+        "startTime": "2014-01-07T12:38:39+0530",
+        "endTime": "2014-01-07T12:38:39+0530"
+    }
+]
 
 To be described
 GET /Partners/verify?{verificationHash}
@@ -1035,6 +1099,10 @@ GET /V0/ServiceCategories
 { "items": [
         { "name": "Parking", "url": "/ServiceCategories/Parking" , "displayText":"Store Parking" ,"resources": "/Resources/Parking" }
 ] }
+
+
+--
+--
 
 Options (for CORS, only for mock).
 OPTIONS /V0/Partners
@@ -1294,7 +1362,7 @@ PUT /V0/Process/123?action=Cancel
 
 
 --
-Routing Planner IV
+Routing Planner (Trip Proposal)
 --
 
 # General Description
@@ -1583,7 +1651,7 @@ GET /V0/TripProposals/{proposalId}
 }
 
 
---
+-- 
 Incidents / Traffic Info
 --
 
@@ -1767,8 +1835,3 @@ GET /V0/Info/Incidents/PublicTransport
         }
     }
 ]
-
---
-Dummy Chapter
---
-please do not remove this chapter because it is needed for automatic docu generation
