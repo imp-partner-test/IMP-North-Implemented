@@ -141,6 +141,7 @@ ticketContent | Base64Binary | Content of Ticket
 POST /V0/Resources/Ticketing/Tickets/{resourceId}/Process
 > Accept: application/json
 > Content-Type: application/json
+> userToken: {userToken}
 {
     "operator": {
         "name": "handyticket",
@@ -216,6 +217,7 @@ confirmed | Boolean | Value indiucationg success/failure
 PUT /V0/Processes/{processId}
 > Accept: application/json
 > Content-Type: application/json
+> userToken: {userToken}
 {
   "requestId": "{resourceId}",
   "ticketIds": [
@@ -1258,6 +1260,7 @@ Please note:
 POST /V0/Resources/TaxiService/Taxis/Processes?action=Book
 > Accept: application/json
 > Content-Type: application/json
+> userToken: {userToken}
 {
     "operator": {
         "name": "BetterTaxi",
@@ -1330,6 +1333,7 @@ information about the originally planned taxi ride and the cancelation fee
 PUT /V0/Process/123?action=Cancel
 > Accept: application/json
 > Content-Type: application/json
+> userToken: {userToken}
 { 
     "operator": { 
         "name": "BetterTaxi", 
