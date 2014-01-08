@@ -650,6 +650,9 @@ Describe region of interest as circle or box.
 ## box
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
+## optional parameter
+- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter ecars ("ELECTRICITY") or petrol cars ("PETROL")
+
 # Response
 A list of available car sharing locations, both free-floating and/or station-based qualified by the query parameters, 
 with basic information and a URI to acquire more detailed information.
@@ -661,28 +664,44 @@ GET /V0/Resources/CarSharing/All
 < Content-Type: application/json
 [
      {
-        "description": "400989",
-        "type": "Stations",
-        "url": "Resources/CarSharing/Stations/104",
+        "actions": [
+            {
+                "name": "book",
+                "method": "POST",
+                "uri": "Resources/CarSharing/Cars/37921/Process?action=book"
+            }
+        ],
+        "id": 37921,
+        "description": "B-GO2739",
+        "type": "Cars",
+        "uri": "Resources/CarSharing/Cars/37921",
         "location": {
-            "latitude": 52.492842847964,
-            "longitude": 13.421504348516464,
+            "latitude": 52.51269,
+            "longitude": 13.38644,
+            "system": "WGS_84"
+        },
+        "provider": "Car2Go_Berlin",
+        "operator": "Car2Go_Berlin"
+    },
+    {
+        "actions": [
+            {
+                "name": "book",
+                "method": "POST",
+                "uri": "Resources/CarSharing/Cars/37919/Process?action=book"
+            }
+        ],
+        "id": 37919,
+        "description": "151576",
+        "type": "Cars",
+        "uri": "Resources/CarSharing/Cars/37919",
+        "location": {
+            "latitude": 52.5185667,
+            "longitude": 13.3846733,
             "system": "WGS_84"
         },
         "provider": "FlinksterDB",
         "operator": "FlinksterDB"
-    },
-    {
-        "description": "B-GO3182",
-        "type": "Cars",
-        "url": "Resources/CarSharing/Cars/224",
-        "location": {
-            "latitude": 52.5269,
-            "longitude": 13.38489,
-            "system": "WGS_84"
-        },
-        "provider": "Car2Go",
-        "operator": "Car2Go"
     }
 ]
 
@@ -702,6 +721,7 @@ Describe region of interest as circle or box.
 
 ## optional parameter
 - `operatorId={id}`
+- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter ecars ("ELECTRICITY") or petrol cars ("PETROL")
 
 Examples: category of required car (e.g., FullSize), pickup/return station
 
@@ -713,12 +733,20 @@ GET /V0/Resources/CarSharing/Stations
 < Content-Type: application/json
 [
     {
-        "description": "400989",
-        "type": "Stations",
-        "url": "Resources/CarSharing/Stations/104",
+        "actions": [
+            {
+                "name": "book",
+                "method": "POST",
+                "uri": "Resources/CarSharing/Stations/37940/Process?action=book"
+            }
+        ],
+        "id": 37940,
+        "description": "The Ritz-Carlton",
+        "type": null,
+        "uri": "Resources/CarSharing/Stations/37940",
         "location": {
-            "latitude": 52.492842847964,
-            "longitude": 13.421504348516464,
+            "latitude": 52.509990227446885,
+            "longitude": 13.375629186630249,
             "system": "WGS_84"
         },
         "provider": "FlinksterDB",
@@ -726,15 +754,31 @@ GET /V0/Resources/CarSharing/Stations
         "phoneNo": null,
         "operatorURI": null,
         "operatorName": "FlinksterDB",
-        "categories": null
+        "address": {
+            "citycode": "10785",
+            "city": "Berlin",
+            "street": "Potsdamer Platz",
+            "houseno": "2",
+            "district": "Mitte",
+            "region": null,
+            "country": null
+        }
     },
     {
-        "description": "402677",
-        "type": "Stations",
-        "url": "Resources/CarSharing/Stations/105",
+        "actions": [
+            {
+                "name": "book",
+                "method": "POST",
+                "uri": "Resources/CarSharing/Stations/37941/Process?action=book"
+            }
+        ],
+        "id": 37941,
+        "description": "Friedrichstr.",
+        "type": null,
+        "uri": "Resources/CarSharing/Stations/37941",
         "location": {
-            "latitude": 52.53662543927196,
-            "longitude": 13.432269394397736,
+            "latitude": 52.5083274841,
+            "longitude": 13.3902387619,
             "system": "WGS_84"
         },
         "provider": "FlinksterDB",
@@ -742,7 +786,15 @@ GET /V0/Resources/CarSharing/Stations
         "phoneNo": null,
         "operatorURI": null,
         "operatorName": "FlinksterDB",
-        "categories": null
+        "address": {
+            "citycode": "10117",
+            "city": "Berlin",
+            "street": "Friedrichstr.",
+            "houseno": "50-55",
+            "district": null,
+            "region": null,
+            "country": null
+        }
     }
 ]
 
@@ -760,16 +812,44 @@ Details about a car sharing station determined by `{stationId}`.
 GET /V0/Resources/CarSharing/Stations/{stationId}
 < 200
 < Content-Type: application/json
-{ 
-    "id":"id1", 
-    "description":"Station1", 
-    "location": { "longitude": 13.39552, "latitude":52.55157, system="WGS_84" }, 
-    "address": { "cityCode": "13357", "city": "Berlin", "street": "Ellerbeker Straße", "houseNo": "7 - 8" },
-    "phoneno": "...", "provider": "Flinkster", 
-    "services": [  ],
-    "availableCars": [ ],
-    "notes": [ "Die Stellplätze befinden sich hinter den Schönhauser Arcaden. Die Zufahrt erfolgt über die Schönhauser Allee, dann Wichertstraße in die Greifenhagener Straße.",
-               "Die Stellplätze befinden sich direkt gegenüber vom Parkhaus - Schönhauser Arcaden- auf dem, mit Schrankenanlage versehenen Grundstück. Der Stellplatz ist frei wählbar. Sie öffnen die Schranke mit den Parkkarten im Fahrzeug. Bitte halten Sie zum Öffnen der Schranke die Parkkarte an das Lesefeld der Schrankenanlage." ],
+{
+    "actions": [
+        {
+            "name": "book",
+            "method": "POST",
+            "uri": "Resources/CarSharing/Stations/37940//Process?action=book"
+        }
+    ],
+    "id": 37940,
+    "description": "The Ritz-Carlton",
+    "type": null,
+    "uri": "Resources/CarSharing/Stations/37940/",
+    "location": {
+        "latitude": 52.509990227446885,
+        "longitude": 13.375629186630249,
+        "system": "WGS_84"
+    },
+    "provider": "FlinksterDB",
+    "operator": "FlinksterDB",
+    "phoneNo": null,
+    "operatorURI": null,
+    "operatorName": "FlinksterDB",
+    "address": {
+        "citycode": "10785",
+        "city": "Berlin",
+        "street": "Potsdamer Platz",
+        "houseno": "2",
+        "district": "Mitte",
+        "region": null,
+        "country": null
+    },
+    "notes": [
+        "Unsere Ladesäule steht genau gegenüber Haupteingang Hotel Ritz-Carlton.",
+        "<u>An dieser Station befinden sich Elektrofahrzeuge</u>. Führen Sie das Ladekabel bitte immer im Auto mit. Detaillierte Informationen zum An- und Abschließen befinden sich auch im Bordbuch.<br><br>Bitte das Fahrzeug innerhalb der gelben Markierung abstellen und <b> IMMER</b> an die Ladesäule anschließen, sonst wird das Fahrzeug abgeschleppt. Vor dem Losfahren das Ladekabel ERST am Fahrzeug abziehen und DANACH an der Ladestation. Bei Fahrtende das Ladekabel einfach in die Steckdose an der Ladesäule stecken, der Ladevorgang startet automatisch und endet mit dem entfernen des Ladekabels. <br><br> Ihr Flinkster-Team",
+        "S-Bahn: S1, S2 <br>\nU-Bahn: U2 <br>\nBus: 123, 148, 200<br>"
+    ],
+    "services": null,
+    "availableCars": 0
 }
 
 
