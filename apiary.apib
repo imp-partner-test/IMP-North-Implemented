@@ -211,7 +211,7 @@ confirmationData contains following fileds,
 
 attribute | json data type | comments
 --- | --- | ---
-confirmed | Boolean | Value indiucationg success/failure
+confirmed | Boolean | Value indicating success/failure
 
 
 PUT /V0/Processes/{processId}
@@ -244,9 +244,68 @@ PUT /V0/Processes/{processId}
 }
 
 
+# General Description
+Get Unconfirmed Tickets for a user.
+
+# Query Parameters 
+- currently none
+
+# Request Path Parameters
+- currently none
 
 
+# Input in request body: 
+- currently none
 
+# Response 
+List of tickets bought, identified by {ticketIds} and {ticketContent}.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of actions possible on this resource (confirm)
+processId | Number | BPMN process id
+confirmation | Object | Buy ticket response data
+
+
+confirmation contains following fileds,
+
+attribute | json data type | comments
+--- | --- | ---
+requestId | String | Resource id received while initiating the booking
+ticketIds | Array | Array of ticket ids 
+ticketContent | Base64Binary | Content of Ticket
+
+
+GET /V0/Resources/Ticketing/Tickets
+> Accept: application/json
+> Content-Type: application/json
+> userToken: {userToken}
+< 200
+< Content-Type: application/json
+[
+    {
+        "actions": [
+            {
+                "name": "confirm",
+                "method": "PUT",
+                "uri": "Processes/{processId}?action=confirm"
+            }
+        ],
+        "processId": {processId},
+        "confirmation": {
+            "featureType": "BUY",
+            "confirmationId": null,
+            "confirmationData": {
+                "requestId": "{resourceid}"
+                "ticketIds": [
+                    "274946704480125"
+                ],
+                "ticketContent": "UEQ5NGJXd2dkbVZ5YzJsdmJqMGlNUzR3SWlCbGJtTnZaR2x1WnowaVZWUkdMVGdpUHo0TkNqeDBhV05yWlhSRmNuZGxjbUp6VUhKdmVtVnpjMUpsYzNCdmJuTmxQZzBLSUNBOGNISmxhWE0rTWl3eU1Ed3ZjSEpsYVhNK0RRb2dJRHgzWVdWb2NuVnVaejVGVlZJOEwzZGhaV2h5ZFc1blBnMEtJQ0E4WVdkVVpYaDBQakY0SUVSV1FpQldWazh0UldsdWVtVnNabUZvY25RZ2JtOXliV0ZzSUZCeVpXbHpjM1IxWm1VZ01TQm13N3h5SUZwdmJtVWdSSEpsYzJSbGJpQm53N3hzZEdsbklERXpMakV4TGpFeklEQTFPalV6SUZWb2NpQmlhWE1nTURZNk5UTWdWV2h5TGp3dllXZFVaWGgwUGcwS0lDQThiV1Z6YzJGblpTQjBlWEJsUFNKM1lYSnVhVzVuSWo0OEwyMWxjM05oWjJVK0RRb2dJRHh1ZFhSNlpYSWdMejROQ2lBZ1BHSmxjbVZqYUhScFozVnVaMlZ1UGcwS0lDQWdJRHhpWlhKbFkyaDBhV2QxYm1jK0RRb2dJQ0FnSUNBOGMzUmhkSFZ6UGpBOEwzTjBZWFIxY3o0TkNpQWdJQ0FnSUR4MGVYQStNVHd2ZEhsd1BnMEtJQ0FnSUNBZ1BIQjJQall3TmpBOEwzQjJQZzBLSUNBZ0lDQWdQSEJ5YVcxaFpYSkxkbkErTmpBeE16d3ZjSEpwYldGbGNrdDJjRDROQ2lBZ0lDQWdJRHh6Wld0MWJtUmhaWEpMZG5BK05qQXhNend2YzJWcmRXNWtZV1Z5UzNad1BnMEtJQ0FnSUNBZ1BIQnliMlIxYTNSRGIyUmxQakU4TDNCeWIyUjFhM1JEYjJSbFBnMEtJQ0FnSUNBZ1BHZGxZbWxsZEhOSGRXVnNkR2xuYTJWcGRENHdQQzluWldKcFpYUnpSM1ZsYkhScFoydGxhWFErRFFvZ0lDQWdJQ0E4ZW1WcGRFZDFaV3gwYVdkclpXbDBQakE4TDNwbGFYUkhkV1ZzZEdsbmEyVnBkRDROQ2lBZ0lDQWdJRHh1ZFhSNlpYSlVlWEErTUR3dmJuVjBlbVZ5Vkhsd1BnMEtJQ0FnSUNBZ1BITjBZWEowV205dVpUNHhNRHd2YzNSaGNuUmFiMjVsUGcwS0lDQWdJQ0FnUEd0dmJXWnZjblErTVR3dmEyOXRabTl5ZEQ0TkNpQWdJQ0FnSUR4eGRXRnNhWFJoWlhRK01Ud3ZjWFZoYkdsMFlXVjBQZzBLSUNBZ0lDQWdQR0psYzJOb2NtVnBZblZ1Wno1RVZrSWdWbFpQTFVWcGJucGxiR1poYUhKMElHNXZjbTFoYkNCUWNtVnBjM04wZFdabElERWdac084Y2lCYWIyNWxJRVJ5WlhOa1pXNGdaOE84YkhScFp5QXhNeTR4TVM0eE15QXdOVG8xTXlCVmFISWdZbWx6SURBMk9qVXpJRlZvY2k0OEwySmxjMk5vY21WcFluVnVaejROQ2lBZ0lDQWdJRHgwWVhKcFptbHVabTgrUjJsc2RDQnBiaUJrWlhJZ1lXNW5aV2RsWW1WdVpXNGdWR0Z5YVdaNmIyNWxPeUJ0WVhndUlERWdVM1JrTGp3dmRHRnlhV1pwYm1adlBnMEtJQ0FnSUNBZ1BITnBZMmhsY21obGFYUnpUV1Z5YTIxaGJENUZUakV0TVRBdE1UTXhNVEExTlRNS1VDb3FNekV5TXpFeU16aDJDazF2ZEdsMklEUXhPVFV6TlRNM05qY0tMUzFVUlZOVUxTMVVTVU5MUlZRdExRbzhMM05wWTJobGNtaGxhWFJ6VFdWeWEyMWhiRDROQ2lBZ0lDQWdJRHhpWVhKamIyUmxQbWxXUWs5U2R6QkxSMmR2UVVGQlFVNVRWV2hGVldkQlFVRkpORUZCUVVOUFEwRk5RVUZCUkZGSk9FRTJRVUZCUVVKc1FrMVdSVmd2THk4NFFVRkJRbFozZEU0clFVRkJSVFZGYkVWUlZsSTBNblV5WXpJeU4ycE5RWGhGYkdZdkx6WlhNVkppUXpKU05UbEVjR3NyWTJoQ1ZHSlpTa3haT0hScGFHVm9jVTl6TVRsbVppdDJjamRtYmpJNVpuUTFaSEk1WkRNdk1TdDJZaXQyYmpWNlpsZ3laR051SzNodU4wVmtkSEpKU25nclkyOVdNRzV1ZDA1MlRVODBMMjR2WlVsMEwwRmtaSHA0UlU5TVoyNUJSREozWlhWcVVFZEhZMFV4Y1ZBeU1pdHZNM1EwS3pkbWRUUmxXRVJQVGpBdkwzazBUbnB0ZEhveFlWQnphMVpaVFRoR2VrbGlUbkJzZFZCaVMwMUdkMlZ1VERkMGRYTkxZM2hVYTNReWJGWkljbTFQZHpaT0szVktaMnhQV0U5VWJFZFhjbnB1UWxOeFVXVnpSbnBuV0daSVowMU5PVVJMWlRaeGRUWTRkWFYxY1VRM2MySTNORXg0T1M5UGNTc3ZkVVpHWjI1SVJqTnhaR3RQY21rMk4zUjFkMDlsU1RsV2IyNTNSRkUwWm1GR1YxTkNXVzByV2t0Vk1FWlZiME0yVUVJM0wwOUtaM3BOV2pKbGVua3JjMDkyTkdGWEt6RnJWM2xZZW5OT1JHaHRabmd2YldWVWRtNVJkRXBVU2tsSk5tSkViMDU2YkdsNE0yZFpRMHRHU1djMGNsSlRjVlJ5UWs4eWFrWlBSVXA0TlhOMWVsVmhVbTR6VFVaRlpGSllNRWxTTlVGSmFFMVFiWGd4VUdjM016STJOa1pOVFVsdFJuZGxhMHBsUm5sUFZubEVlRnB1V0hsM1prczRVMFY0ZFhkTlJHaEZha1pEY1RsV04yZGFSbEJzT0UxdVJtUkNiMk50Tmt0bGRVNVBVVkpKZHpSM1kxTnRXRVpNWlV0RWFXTkJSbEZFY0VaVGFUQjZRbXN2YmpBMU9VOUxlREZQWjNoalJEYzRhbk5RY0RSWk1sTkxVM0E0VDBsRmQzQjZaVlo2ZEhWWldWaERTVzVxV25FeGMzUXJUV3MxTWtOV1RsRkZjbUk0WTFScGRHUkdPRk16YWtKRk9XdFRjVXB0TlVjeFIwRmFTR2RsYm14cFVtTjNiRmhwYmpST2NGUXlhM0JuUVhsQ1MxRnZUM1EwWlZsdmNYcEZTRVJsU25sRFNIZFRUREJ6VTBsT1ZFb3lhRXRKWlc1NmVWbFlNakZKTTBwWE4wTmxSMFJvT1c5bVpWVnhObHBWU0ZSNlJGcEljVUY1VVZBeFQzY3ZRMWxZUzFKcGJERjVRMGd5YVhKaWJsZFJlbGR0ZUZkR2R6VnJVMEpEY0djclMxWTBVVGxqYkhWaVQwRkRNbmR0UW5kNVduQmtTMWR1TkVaUGVtbEtjM1JzVG1scmQyRkZWMVZETDJKb1FuZFRTM05XWTNkclFsQTVkRVpETkVWNlEwSnVXbTR2VW5scVkzRXlWWEJDY3k5U1EwVm9ZMDFwY0dOWlNrWTBTbmhsYjAxWVRVeG9UMU55ZVVFME0wWjZNSFJJVW1oVk5EWkxTVFphTmtvNFpWTkNiMlJHUTI0d05VODNia2xXVEN0V1VUbDNWMkZJTkRWRFRUWklNek5HSzNnNWVqZHNUVFUzVnpKcFpXTkhiMEpHTmtabFJrcDRaUzl1ZFhvemJWWTBabE5zWW5jMWMwUk9jMU56UTBScVZWaHdOVVp1WWpNMWN6QlVkakJvWmpaWGNsQlJTbWM0VDJ4NlRqTnhWMmRRUVdwU2FHc3dTVWxUSzJ0M1QwSTBWMDlVYm5kcFpreHJNVWRXTjNjeVVrZDNTbTFUY1RSdGRXMHdjMkp0ZUZseGFWVjBlVWRuWmtoRFQyVTNZWEJ4YjJKck9HZHhSR2RYTUZWTldVaEhkRFJ0VTNsTGIyOHlZazlOYkhCWFZIRmhRMWxsYTB3MVlrVnpOamwzVFhOdVJHaExjSGhaSzBGM1EyUkJXRXMxYldkdFZGbG1kMk5GWVhCalJYaGpUSEo0YzI5NVlXRmFXa3BEYlRKRlJFMXJRbE53UTBsblkwNTViVXhWYlhOd1lrVnBWVlJ1YlRoVVVGcFhNWEJqUzJkb05YUkpjbTkzV2xsM1IyVkhNRVpRWmxKU1JUSkJRVFJZT0hrMU4xaFdiM0Y2YlZJMFRqSnphSEkyVEdkMVJXcExUbTlMVWl0SGIyMWxlV1pwY1d4M2NFUk5Oa2d6TTJ4dVpuaGhXSFZ3TWxGek5WbDBNRGM1VnpocVFURnNkM0pJVWtkTmEyVkhTR0ZyYjJkRFNUaFhPWE5hUVVob01YVnNURWhhTWtOYVJWaFJWVGQyV1hKdlYwSlpaRVphWWpaU1ltdHZVV1ZQZGtKMFIxY3hRbHByZDA5SFUzbHlaMmxpYUZJMVZEQnFWMHg2YkhOMVIwRlFTRlZ6Y0ZvNVIwSmljQ3MyVEZGaFdWbFJVREJXUVVsak0wRlZOME5QYmk5ek5WQjRaRXBKUTBOdGVrRTBka1ZJVTFKYU5WUkJOVXB2Uldwa2RHRllhRWgzWlVoNWFFUmpNR1ZWZGtGcmVFWnhTMWhEUTJWMFFrNU5XRU5KYlcxWFFqUlRVMFI0YlROallYaEpURWs0WjNkUFExbG5TWGh1YlV4TGVUVXlNRUl4YkRZMlFqVjJVbmhQUlhoQk9HdFpaak5wUW05UU1IWnBlbFY0TWtWeWJIZG1SbEJWZGtremNHNWxPVGsyYTBOclNHZGlTSFExY1N0MU5tMVJURzVYTTFWa2NHOXBSRkUwYkhCUGVFOUllbUZXTUVkMWEwRjZXSEZXTjJOR0wyOXZia0VyTHpoNFpqbEVkRTlLVEd4emQwMXpObVJMT0hSRmREazVkV2x2VEdwTVZtNHZjVkpKYW5sTGJEaG1iR05YWlRGQlIxVllRalJoTjJFeGFqbGhZWEJKTW5weVNIZFRiRGhpUWl0UlpXcFVRMWx3Vm1aMlEwZFJRVUZCUVVKS1VsVTFSWEpyU21kblp6MDlQQzlpWVhKamIyUmxQZzBLSUNBZ0lDQWdQR0psY21WamFIUnBaM1Z1WjNORVlYUmxQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakVyTURFd01Ed3ZZbVZ5WldOb2RHbG5kVzVuYzBSaGRHVStEUW9nSUNBZ0lDQThaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakFyTURFd01Ed3ZaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQZzBLSUNBZ0lDQWdQR2QxWld4MGFXZHJaV2wwYzBWdVpHVStNakF4TXkweE1TMHhNMVF3TmpvMU16b3lNQ3N3TVRBd1BDOW5kV1ZzZEdsbmEyVnBkSE5GYm1SbFBnMEtJQ0FnSUNBZ1BHWnZjbTFoZEhSbFpGQnlaV2x6UGpJc01qQWdSVlZTUEM5bWIzSnRZWFIwWldSUWNtVnBjejROQ2lBZ0lDQWdJRHgzWVdWb2NuVnVaejR1UEM5M1lXVm9jblZ1Wno0TkNpQWdJQ0FnSUR4cmIyNTBjbTlzYkdWMWNuTkRiMlJsUGtWT01TMHhNQzB4TXpFeE1EVTFNend2YTI5dWRISnZiR3hsZFhKelEyOWtaVDROQ2lBZ0lDQWdJRHhyYjI1MGNtOXNiRzFsWkdsMWJUNVFLaW96TVRJek1USXpPSFk4TDJ0dmJuUnliMnhzYldWa2FYVnRQZzBLSUNBZ0lDQWdQSFJoWjJWelEyOWtaVDVOYjNScGRqd3ZkR0ZuWlhORGIyUmxQZzBLSUNBZ0lDQWdQSFJwWTJ0bGRFbEVQakkzTkRrME5qY3dORFE0TURFeU5Ud3ZkR2xqYTJWMFNVUStEUW9nSUNBZ0lDQThjMmxuYm1GMGRYSmxQaTB0VkVWVFZDMHRWRWxEUzBWVUxTMDhMM05wWjI1aGRIVnlaVDROQ2lBZ0lDQThMMkpsY21WamFIUnBaM1Z1Wno0TkNpQWdQQzlpWlhKbFkyaDBhV2QxYm1kbGJqNE5Dand2ZEdsamEyVjBSWEozWlhKaWMxQnliM3BsYzNOU1pYTndiMjV6WlQ0TkNnMEs="
+            }
+        }
+    }
+]
 
 
 
@@ -960,12 +1019,12 @@ POST /V0/Partners/User/Process?action=register
 < 201
 < Content-Type: application/json
 {
-    "id": 251,
-    "partnerId": 92,
+    "id": {id},
+    "partnerId": {partnerId},
     "token": "587c8e09-cd63-48d2-b889-b6903221e8b4"
 }
 
-Request user transactions for a {userToken}.
+Request user transactions.
 
 Query Parameters (optional - if date range not provided then results are fetched for last one month)
  
@@ -979,7 +1038,7 @@ GET /V0/Partners/User/Transactions?startDate={fromDate}&endDate={toDate}
 < Content-Type: application/json
 [
     {
-        "userToken": "f192b127-5281-4175-a7fa-a18cc1581706",
+        "userToken": "{userToken}",
         "serviceCategory": "Parking",
         "serviceType": "consumption",
         "serviceDescription": "vmzParking : consumption",
