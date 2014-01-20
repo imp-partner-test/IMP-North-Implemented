@@ -25,7 +25,7 @@
         "Introduction",
         "Parking Garages",
         "Incidents / Traffic Info",
-        "Level-of-Service in WMS",
+        "Traffic Info Level-of-Service. WMS",
         "Bike Sharing",
         "Car Sharing"
       ],
@@ -36,7 +36,7 @@
       "Title": "OMB: Daimler",
       "Chapters": [
         "Introduction",
-        "Routing Planner IV"
+        "Routing Planner. IV"
       ],
       "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
@@ -47,7 +47,7 @@
         "Introduction",
         "Parking Garages",
         "Incidents / Traffic Info",
-        "Level-of-Service in WMS",
+        "Traffic Info Level-of-Service. WMS",
         "Bike Sharing",
         "Car Sharing"
       ],
@@ -60,7 +60,7 @@
         "Introduction",
         "Parking Garages",
         "Incidents / Traffic Info",
-        "Level-of-Service in WMS",
+        "Traffic Info Level-of-Service. WMS",
         "Bike Sharing",
         "Car Sharing"
       ],
@@ -73,7 +73,7 @@
         "Introduction",
         "Parking Garages",
         "Incidents / Traffic Info",
-        "Level-of-Service in WMS",
+        "Traffic Info Level-of-Service. WMS",
         "Bike Sharing",
         "Car Sharing"
       ],
