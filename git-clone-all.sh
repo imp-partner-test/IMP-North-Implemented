@@ -1,5 +1,6 @@
 #!/bin/sh
 cd ..
+git clone https://github.com/imp-partner-test/IMP-RSH.git
 git clone https://github.com/imp-partner-test/IMP-North-Ideas.git
 git clone https://github.com/imp-partner-test/IMP-North-Ready.git
 git clone https://github.com/imp-partner-test/OMB-verkehrsmittelvergleich.git

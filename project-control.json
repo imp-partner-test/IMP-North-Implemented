@@ -79,6 +79,31 @@
         "Car Sharing"
       ],
       "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    },
+    {
+      "Project": "IMP-RSH",
+      "Title": "IMP: RSH",
+      "Chapters": [
+        "Introduction",
+	"Handy Ticket",
+	"Parking Garages",
+	"Public Transportation",
+	"Bike Sharing",
+	"Car Sharing",
+	"EV Charging Station",
+	"Traffic Info Level-of-Service. WMS",
+	"WMS",
+	"Partners",
+	"ServiceOfferings (per Partner)",
+	"ServiceOfferings (for all Partners)",
+	"Service Subscriptions",
+	"Service Categories",
+	"Taxi",
+	"Routing Planner. IV",
+	"Incidents / Traffic Info",
+	"Reporting"
+      ],
+      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     }
   ]
 }
