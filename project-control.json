@@ -8,7 +8,7 @@
         "Parking Garages",
 	"Public Transportation"
       ],
-      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
     {
       "Project": "OMB-bosch",
@@ -17,7 +17,7 @@
         "Introduction",
         "Parking Garages"
       ],
-      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
     {
       "Project": "OMB-comove",
@@ -30,7 +30,7 @@
         "Bike Sharing",
         "Car Sharing"
       ],
-      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
     {
       "Project": "OMB-daimler",
@@ -39,7 +39,7 @@
         "Introduction",
         "Routing Planner. IV"
       ],
-      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
     {
       "Project": "OMB-tom-jell",
@@ -52,7 +52,7 @@
         "Bike Sharing",
         "Car Sharing"
       ],
-      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
     {
       "Project": "OMB-verkehrsmittelvergleich",
@@ -65,7 +65,7 @@
         "Bike Sharing",
         "Car Sharing"
       ],
-      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
     {
       "Project": "OMB-volkswagen",
@@ -78,7 +78,7 @@
         "Bike Sharing",
         "Car Sharing"
       ],
-      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
     {
       "Project": "IMP-RSH",
@@ -103,7 +103,7 @@
 	"Incidents / Traffic Info",
 	"Reporting"
       ],
-      "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     }
   ]
 }
