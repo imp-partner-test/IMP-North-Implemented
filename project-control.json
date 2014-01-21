@@ -6,16 +6,7 @@
       "Chapters": [
         "Introduction",
         "Parking Garages",
-	"Public Transportation",
-	"Car Sharing",
-	"Bike Sharing",
-	"EV Charging Station",
-	"WMS",
-        "Traffic Info Level-of-Service. WMS",
-	"Routing Planner. IV",
-        "Incidents / Traffic Info",        
-	"Taxi",
-	"Handy Ticket"
+	"Public Transportation"
       ],
       "Host":"http://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
