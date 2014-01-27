@@ -1176,504 +1176,6 @@ GET /V0/Info/TrafficInfo
 
 
 --
-WMS
---
-
-# General Description
-Get WMS PNG file for several service categories.
-
-# Query Parameters
-Describe region of interest as a bounding box and with further optional parameters.
-
-## box
-`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
-
-## optional parameters
-
-### service names
-- `serviceNames={categories}`: comma-separated list of service categories (currently offered as WMS layers by VMZ), e.g. PublicTransport, Parking
-
-### width
-- `width={w}`: width of map output in pixels (semantics according to WMS GetMap request)
-- the default value is width=250
-  
-### heigth
-- `height={h}`: height of map output in pixels (semantics according to WMS GetMap request)
-- the default value is height=250
- 
-# Response
-PNG file with requested service categories.
-
-Please note: The accept-header of this request must be set to "image/png"
-GET /V0/Resources?system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&right_upper_lng={max_lng}&right_upper_lat={max_lat}&width={w}&heigth={h}&serviceNames={categories}
-> accept: image/png
-< 200
-< Content-Type: image/png
-{   "... this should be a PNG ..."
-}
-
---
-Partners
-Registered IMP Partners
---
-
-Request for new Partner (starts "New Partner" Process).
-POST /V0/Partners
-> Content-Type: application/json
-> Accept: application/json
-{ "companyName":"ContiPark", roles": [ "ServiceProvider" ]}
-< 201
-< Content-Type: application/json
-< Access-Control-Allow-Origin: *
-< Access-Control-Allow-Methods: POST, GET, UPDATE, DELETE, OPTIONS
-< Access-Control-Allow-Headers: content-type, x-http-method-override, x-requested-with
-{ "name":"Partner 1" }
-
-Show details of specified Partner.
-GET /V0/Partners/{PartnerId}
-< 200
-< Content-Type: application/json
-{ "status": "requested", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] }
-
-Request update of Partner details (starts "Update Partner" Process) [UC PM-1].
-PUT /Partners/{PartnerId}
-> Content-Type: application/json
-> Accept: application/json
-{ "companyName":"Partner 1 new" }
-< 200
-< Content-Type: application/json
-{ "status": "requested", "url": "/Partners/1", "companyName":"Partner 1 new", "roles": [ "ServiceProvider" ] }
-
-Request deletion of specified Partner (starts "Delete Partner" Process) [UC PM-1].
-DELETE /Partners/{PartnerId}
-< 204
-
-List all registered Partners (only for Admin).
-GET /V0/Partners
-< 200
-< Content-Type: application/json
-{ "items": [
-    { "status": "registered", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] },
-    { "status": "registered", "url": "/Partners/2", "companyName":"Partner 2", "roles": [ "ServiceProvider" ] },
-    { "status": "registered", "url": "/Partners/3", "companyName":"Partner 3", "roles": [ "MobilityProvider" ] }
-] }
-
-Generate user token (starts "User Token Generation" Process).
-
-Query Parameters
-
-- `action={register}`: Must be "register" to start token generation
-POST /V0/Partners/User/Process
-> Content-Type: application/json
-> Accept: application/json
-< 201
-< Content-Type: application/json
-{
-    "id": {id},
-    "partnerId": {partnerId},
-    "token": "587c8e09-cd63-48d2-b889-b6903221e8b4"
-}
-
-Request user transactions.
-
-Query Parameters (optional - if date range not provided then results are fetched for last one month)
- 
-- `startDate={fromDate}`
-- `endDate={toDate}`
-GET /V0/Partners/User/Transactions
-> Content-Type: application/json
-> Accept: application/json
-> userToken: {userToken}
-< 200
-< Content-Type: application/json
-[
-    {
-        "serviceCategory": "Parking",
-        "serviceType": "consumption",
-        "serviceDescription": "vmzParking : consumption",
-        "unit": "EUR",
-        "value": 0,
-        "startTime": "2014-01-07T12:38:39+0530",
-        "endTime": "2014-01-07T12:38:39+0530"
-    }
-]
-
-To be described
-GET /Partners/verify?{verificationHash}
-< 200
-
-
---
-ServiceOfferings per Partner
---
-
-Request registration of new Service for Partner (starts "New Service" Process) [UC PM-3].
-POST /V0/Partners/{PartnerId}/ServiceOfferings
-> Content-Type: application/json
-> Accept: application/json
-{ "companyName":"Parking / Partner 1", "url": "..." }
-< 201
-< Content-Type: application/json
-< Location: /Partners/1/Service/1
-{ "status": "requested", "url": "/Partners/1/ServiceOfferings/1", "companyName":"Parking / Partner 1" }
-
-Request deletion of specified Service (starts "Delete Service" Process) [UC PM-3].
-DELETE /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
-< 204
-
-Show details of specified Service.
-GET /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
-< 200
-< Content-Type: application/json
-{ "offeringStatus": "requested", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" }
-
-Show availability of specified Service [IMP-222].
-GET /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}/Availability?from={from_time}&to={to_time}
-< 200
-< Content-Type: application/json
-{ "offeringStatus": "available", "url": "/Partners/1/ServiceOfferings/1/Availability" }
-
-Request update of Service details (starts "Update Service" Process)  [UC PM-3].
-PUT /Partners/{PartnerId}/ServiceOfferings/{ServiceId}
-> Content-Type: application/json
-> Accept: application/json
-{ "name":"Parking / Partner 1 new" }
-< 200
-< Content-Type: application/json
-{ "offeringStatus": "requested", "type": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1 new" }
-
---
-ServiceOfferings for all Partners
---
-
-List all offered Services.
-GET /V0/ServiceOfferings
-< 200
-< Content-Type: application/json
-{ "items": [
-    { "offeringStatus": "provided", "type": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" },
-    { "offeringStatus": "provided", "type": "Car Rental", "url": "/Partners/2/ServiceOfferings/1", "name":"Car Rental / Partner 2" }
-] }
-
-List all offered Services of a given type.
-GET /V0/ServiceOfferings?category=Parking
-< 200
-< Content-Type: application/json
-{ "items": [
-        { "offeringStatus": "provided", "category": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" }
-] }
-
-
---
-Service Subscriptions
---
-
-List all Subscriptions for specified Partner (requested by MobilityProvider).
-GET /V0/Partners/{PartnerId}/ServiceSubscriptions
-< 200
-< Content-Type: application/json
-{ "items": [
-        { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
-] }
-
-MobilityProvider subscribes to ServiceOffering
-POST /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
-> Content-Type: application/json
-> Accept: application/json
-{ "partnerId" : "1" }
-< 201
-< Content-Type: application/json
-< Location: /ServiceOfferings/1/ServiceSubscriptions/4711
-{ "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
-
-List all ServiceSubscriptions for a ServiceOffering (requested by ServiceProvider)
-GET /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
-< 200
-< Content-Type: application/json
-{ "items": [
-        { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
-] }
-
-Unsubscribe Service
-DELETE /V0/ServiceOfferings/1/ServiceSubscriptions/4711
-< 204
-
---
-Service Categories
---
-
-List all available Service Categories
-GET /V0/ServiceCategories
-< 200
-< Content-Type: application/json
-{ "items": [
-        { "name": "Parking", "url": "/ServiceCategories/Parking" , "displayText":"Store Parking" ,"resources": "/Resources/Parking" }
-] }
-
-
---
---
-
-Options (for CORS, only for mock).
-OPTIONS /V0/Partners
-< 200
-< Access-Control-Allow-Origin: *
-< Access-Control-Allow-Methods: POST, GET, PUT, UPDATE, DELETE, OPTIONS
-< Access-Control-Allow-Headers: content-type, x-http-method-override, x-requested-with
-
---
-Taxi
---
-
-
-# General Description
-Get available taxis in a specified region.
-
-# Query Parameters
-Describe region of interest as circle or box.
-
-## circle
-`lat={lat}&lng={lng}&radius={r}`
-
-## box
-`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
-
-# Response
-List of available taxis with basic information.
-
-
-GET /V0/Resources/TaxiService/Taxis
-< 200
-< Content-Type: application/json
-[
-    { 
-        "id": 5120, 
-        "location": {"latitude":52.5244,  "longitude":13.2541, "system":"WGS_84" }, 
-        "status":"Available", 
-        "licenceId":"B-TA 4820" 
-    },
-    { 
-        "id": 5393, 
-        "location": {"latitude":52.58421, "longitude":13.36627, "system":"WGS_84" }, 
-        "status":"Available", 
-        "licenceId":"B-GA 4518" 
-    },
-    { 
-        "id": 4911, 
-        "location": {"latitude":52.5206,  "longitude":13.38284, "system":"WGS_84" }, 
-        "status":"Available", 
-        "licenceId":"B-TA 4270" 
-    },
-    { 
-        "id": 5357, 
-        "location": {"latitude":52.55726, "longitude":13.52817, "system":"WGS_84" }, 
-        "status":"Available", 
-        "licenceId":"B-I 6606" 
-    },
-    { 
-        "id": 5006, 
-        "location": {"latitude":52.53803, "longitude":13.31234, "system":"WGS_84" }, 
-        "status":"Available", 
-        "licenceId":"B-T 4100" 
-    },
-    { 
-        "id": 5109, 
-        "location": {"latitude":52.54481, "longitude":13.40668, "system":"WGS_84" }, 
-        "status":"Available", 
-        "licenceId":"B-JW 448" 
-    }
-]
-
-
-# General Description
-Get estimated fare for trips from origin to destination.
-
-# Query Parameters 
-Either of both variants:
-
-## origin and destination
-`origin_lat={lat}&origin_lng={lng}&dest_lat={lat}&dest_lng={lng}`
-
-## origin and distance from origin
-`origin_lat={lat}&origin_lng={lng}&radius={r}`
-
-Further conditions might specify: number of passengers, extra luggage, start time, ...
-
-# Response
-fare information for the specified trip.
-
-GET /V0/Info/TaxiService/Fares
-< 200
-< Content-Type: application/json
-{
-    "fareQuality": 1.0,
-    "startTime": "2013-07-09T08:09:17",
-    "arrivalTime": { "value": 360, "unit": "sec"},
-    "totalTime":   { "value": 660, "unit": "sec"},
-    "totalDistance": { "value": 5000, "unit": "m" },
-    "costs": { 
-        "flagFall": { "value":300, "currency":"EuroCent"},
-        "total":    { "value":960, "currency":"EuroCent"}, 
-        "distance": { "value":660, "currency":"EuroCent"}, 
-        "other":    { },
-        "passengers": [
-           { "value":0,   "currency":"EuroCent" },
-           { "value":0,   "currency":"EuroCent" },
-           { "value":0,   "currency":"EuroCent" },
-           { "value":0,   "currency":"EuroCent" },
-           { "value":150, "currency":"EuroCent" },
-           { "value":300, "currency":"EuroCent" },
-           { "value":450, "currency":"EuroCent" },
-           { "value":600, "currency":"EuroCent" }
-        ]
-    }
-    "services": {
-        "bookingAvailable": true,
-        "paymentAvailable": false,
-        "privateHireVehicleAvailable": true,
-        "taxiSharing": false,
-        "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
-    }      
-}
-
-
-# General Description
-
-Book a Taxi: The taxi ride is specified by providing the starting point (address and/or geo location) and the destination.
-This means that no specific, previously selected taxi, is booked.
-
-# Query Parameters
-
-- `action={Book}`: Must be "Book" to perform a booking
-
-Input in request body: 
-
-- operator: name, userId and password (for authentication)
-- origin of the taxi ride and optional start time
-- destination of the taxi ride
-- further parameters might later detail the request by specifying the number of passengers, availability of child seats, extra luggage etc.
-
-# Failures
-
-- booking is not possible: response body explains the reason why
-
-# Output
-- the estimated costs, the taxi's licence id, and a booking id are returned; the latter can be used to cancel the booking.
-
-Please note: 
-
-- Since data about the traveler is usually requested by the taxi SP, we assume that the end-user (or the mobility provider) himself is responsible to register at the service provider.
-- We currently require one operator in the input body.
-
-POST /V0/Resources/TaxiService/Taxis/Processes?action=Book
-> Accept: application/json
-> Content-Type: application/json
-> userToken: {userToken}
-{
-    "operator": {
-        "name": "BetterTaxi",
-        "userId": "MP1_1",
-        "password": "TopSecret!"
-    },
-    "origin" : {
-        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
-        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
-        "time": "2013-05-01T12:00:00" 
-    },
-    "destination" : {
-        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
-    }
-}
-< 201
-< Location: /V0/Process/4711
-< Content-Type: application/json
-{
-    "processId" : 123,
-    "confirmation" : {
-        "confirmationId" : 456,
-        "featureType": "BOOKING"
-    },
-    "origin" : {
-        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
-        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
-        "time": "2013-05-01 12:00:00" 
-    },
-    "destination" : {
-        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
-    },
-    "operatorId": "BetterTaxi",
-    "licenceId": "B-OB 007",
-    "arrivalTime": "2013-05-01T12:05:00",
-    "services": {
-        "bookingAvailable": true,
-        "paymentAvailable": false,
-        "privateHireVehicleAvailable": true,
-        "taxiSharing": false,
-        "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
-    },
-    "actions": [
-        {
-            "name": "Cancel",
-            "method": "PUT",
-            "uri": "/V0/Processes/123?action=Cancel"
-        }
-    ]
-}
-
-
-# General Descrition 
-Cancel a booking for a taxi that has been booked before with a booking id 4711.
-
-# Query Parameters
-
-- `action={Cancel}`: Must be "Cancel" for performing a booking
-
-Input in request body: 
-
-- userId and password (for authentication)
-
-# Failures
-
-- cancelation is not possible: the response body explains the reason why.
-
-# Output
-information about the originally planned taxi ride and the cancelation fee
-PUT /V0/Process/123?action=Cancel
-> Accept: application/json
-> Content-Type: application/json
-> userToken: {userToken}
-{ 
-    "operator": { 
-        "name": "BetterTaxi", 
-        "userId": "MP1_1",
-        "password": "TopSecret!"
-    }
-}
-< 201
-< Location: /V0/Process/123
-< Content-Type: application/json
-{
-    "userId": "MP1_1",
-    "ride": { 
-        "origin" : {
-            "location": { "latitude":52.51914, "longitude": 13.40693 }, 
-            "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
-            "time": "2013-05-01 12:00:00" 
-        },
-        "destination" : {
-            "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
-        }
-    },
-    "confirmation": {
-        "featureType": "CANCELATION",
-        "confirmationId": "17",
-        "fee": { "value": 0, "currency": "EUR" }
-    },
-    "actions": [ ]
-}
-
-
---
 Multimodal Routing Planner
 --
 
@@ -2409,6 +1911,506 @@ POST /V0/TripProposals
         }
     }
 ]
+
+
+--
+WMS
+--
+
+# General Description
+Get WMS PNG file for several service categories.
+
+# Query Parameters
+Describe region of interest as a bounding box and with further optional parameters.
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameters
+
+### service names
+- `serviceNames={categories}`: comma-separated list of service categories (currently offered as WMS layers by VMZ), e.g. PublicTransport, Parking
+
+### width
+- `width={w}`: width of map output in pixels (semantics according to WMS GetMap request)
+- the default value is width=250
+  
+### heigth
+- `height={h}`: height of map output in pixels (semantics according to WMS GetMap request)
+- the default value is height=250
+ 
+# Response
+PNG file with requested service categories.
+
+Please note: The accept-header of this request must be set to "image/png"
+GET /V0/Resources?system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&right_upper_lng={max_lng}&right_upper_lat={max_lat}&width={w}&heigth={h}&serviceNames={categories}
+> accept: image/png
+< 200
+< Content-Type: image/png
+{   "... this should be a PNG ..."
+}
+
+--
+Partners
+Registered IMP Partners
+--
+
+Request for new Partner (starts "New Partner" Process).
+POST /V0/Partners
+> Content-Type: application/json
+> Accept: application/json
+{ "companyName":"ContiPark", roles": [ "ServiceProvider" ]}
+< 201
+< Content-Type: application/json
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: POST, GET, UPDATE, DELETE, OPTIONS
+< Access-Control-Allow-Headers: content-type, x-http-method-override, x-requested-with
+{ "name":"Partner 1" }
+
+Show details of specified Partner.
+GET /V0/Partners/{PartnerId}
+< 200
+< Content-Type: application/json
+{ "status": "requested", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] }
+
+Request update of Partner details (starts "Update Partner" Process) [UC PM-1].
+PUT /Partners/{PartnerId}
+> Content-Type: application/json
+> Accept: application/json
+{ "companyName":"Partner 1 new" }
+< 200
+< Content-Type: application/json
+{ "status": "requested", "url": "/Partners/1", "companyName":"Partner 1 new", "roles": [ "ServiceProvider" ] }
+
+Request deletion of specified Partner (starts "Delete Partner" Process) [UC PM-1].
+DELETE /Partners/{PartnerId}
+< 204
+
+List all registered Partners (only for Admin).
+GET /V0/Partners
+< 200
+< Content-Type: application/json
+{ "items": [
+    { "status": "registered", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] },
+    { "status": "registered", "url": "/Partners/2", "companyName":"Partner 2", "roles": [ "ServiceProvider" ] },
+    { "status": "registered", "url": "/Partners/3", "companyName":"Partner 3", "roles": [ "MobilityProvider" ] }
+] }
+
+Generate user token (starts "User Token Generation" Process).
+
+Query Parameters
+
+- `action={register}`: Must be "register" to start token generation
+POST /V0/Partners/User/Process
+> Content-Type: application/json
+> Accept: application/json
+< 201
+< Content-Type: application/json
+{
+    "id": {id},
+    "partnerId": {partnerId},
+    "token": "587c8e09-cd63-48d2-b889-b6903221e8b4"
+}
+
+Request user transactions.
+
+Query Parameters (optional - if date range not provided then results are fetched for last one month)
+ 
+- `startDate={fromDate}`
+- `endDate={toDate}`
+GET /V0/Partners/User/Transactions
+> Content-Type: application/json
+> Accept: application/json
+> userToken: {userToken}
+< 200
+< Content-Type: application/json
+[
+    {
+        "serviceCategory": "Parking",
+        "serviceType": "consumption",
+        "serviceDescription": "vmzParking : consumption",
+        "unit": "EUR",
+        "value": 0,
+        "startTime": "2014-01-07T12:38:39+0530",
+        "endTime": "2014-01-07T12:38:39+0530"
+    }
+]
+
+To be described
+GET /Partners/verify?{verificationHash}
+< 200
+
+
+--
+ServiceOfferings per Partner
+--
+
+Request registration of new Service for Partner (starts "New Service" Process) [UC PM-3].
+POST /V0/Partners/{PartnerId}/ServiceOfferings
+> Content-Type: application/json
+> Accept: application/json
+{ "companyName":"Parking / Partner 1", "url": "..." }
+< 201
+< Content-Type: application/json
+< Location: /Partners/1/Service/1
+{ "status": "requested", "url": "/Partners/1/ServiceOfferings/1", "companyName":"Parking / Partner 1" }
+
+Request deletion of specified Service (starts "Delete Service" Process) [UC PM-3].
+DELETE /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+< 204
+
+Show details of specified Service.
+GET /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+< 200
+< Content-Type: application/json
+{ "offeringStatus": "requested", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" }
+
+Show availability of specified Service [IMP-222].
+GET /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}/Availability?from={from_time}&to={to_time}
+< 200
+< Content-Type: application/json
+{ "offeringStatus": "available", "url": "/Partners/1/ServiceOfferings/1/Availability" }
+
+Request update of Service details (starts "Update Service" Process)  [UC PM-3].
+PUT /Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+> Content-Type: application/json
+> Accept: application/json
+{ "name":"Parking / Partner 1 new" }
+< 200
+< Content-Type: application/json
+{ "offeringStatus": "requested", "type": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1 new" }
+
+--
+ServiceOfferings for all Partners
+--
+
+List all offered Services.
+GET /V0/ServiceOfferings
+< 200
+< Content-Type: application/json
+{ "items": [
+    { "offeringStatus": "provided", "type": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" },
+    { "offeringStatus": "provided", "type": "Car Rental", "url": "/Partners/2/ServiceOfferings/1", "name":"Car Rental / Partner 2" }
+] }
+
+List all offered Services of a given type.
+GET /V0/ServiceOfferings?category=Parking
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "offeringStatus": "provided", "category": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" }
+] }
+
+
+--
+Service Subscriptions
+--
+
+List all Subscriptions for specified Partner (requested by MobilityProvider).
+GET /V0/Partners/{PartnerId}/ServiceSubscriptions
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
+] }
+
+MobilityProvider subscribes to ServiceOffering
+POST /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+> Content-Type: application/json
+> Accept: application/json
+{ "partnerId" : "1" }
+< 201
+< Content-Type: application/json
+< Location: /ServiceOfferings/1/ServiceSubscriptions/4711
+{ "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
+
+List all ServiceSubscriptions for a ServiceOffering (requested by ServiceProvider)
+GET /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
+] }
+
+Unsubscribe Service
+DELETE /V0/ServiceOfferings/1/ServiceSubscriptions/4711
+< 204
+
+--
+Service Categories
+--
+
+List all available Service Categories
+GET /V0/ServiceCategories
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "name": "Parking", "url": "/ServiceCategories/Parking" , "displayText":"Store Parking" ,"resources": "/Resources/Parking" }
+] }
+
+
+--
+--
+
+Options (for CORS, only for mock).
+OPTIONS /V0/Partners
+< 200
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: POST, GET, PUT, UPDATE, DELETE, OPTIONS
+< Access-Control-Allow-Headers: content-type, x-http-method-override, x-requested-with
+
+--
+Taxi
+--
+
+
+# General Description
+Get available taxis in a specified region.
+
+# Query Parameters
+Describe region of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+List of available taxis with basic information.
+
+
+GET /V0/Resources/TaxiService/Taxis
+< 200
+< Content-Type: application/json
+[
+    { 
+        "id": 5120, 
+        "location": {"latitude":52.5244,  "longitude":13.2541, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-TA 4820" 
+    },
+    { 
+        "id": 5393, 
+        "location": {"latitude":52.58421, "longitude":13.36627, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-GA 4518" 
+    },
+    { 
+        "id": 4911, 
+        "location": {"latitude":52.5206,  "longitude":13.38284, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-TA 4270" 
+    },
+    { 
+        "id": 5357, 
+        "location": {"latitude":52.55726, "longitude":13.52817, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-I 6606" 
+    },
+    { 
+        "id": 5006, 
+        "location": {"latitude":52.53803, "longitude":13.31234, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-T 4100" 
+    },
+    { 
+        "id": 5109, 
+        "location": {"latitude":52.54481, "longitude":13.40668, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-JW 448" 
+    }
+]
+
+
+# General Description
+Get estimated fare for trips from origin to destination.
+
+# Query Parameters 
+Either of both variants:
+
+## origin and destination
+`origin_lat={lat}&origin_lng={lng}&dest_lat={lat}&dest_lng={lng}`
+
+## origin and distance from origin
+`origin_lat={lat}&origin_lng={lng}&radius={r}`
+
+Further conditions might specify: number of passengers, extra luggage, start time, ...
+
+# Response
+fare information for the specified trip.
+
+GET /V0/Info/TaxiService/Fares
+< 200
+< Content-Type: application/json
+{
+    "fareQuality": 1.0,
+    "startTime": "2013-07-09T08:09:17",
+    "arrivalTime": { "value": 360, "unit": "sec"},
+    "totalTime":   { "value": 660, "unit": "sec"},
+    "totalDistance": { "value": 5000, "unit": "m" },
+    "costs": { 
+        "flagFall": { "value":300, "currency":"EuroCent"},
+        "total":    { "value":960, "currency":"EuroCent"}, 
+        "distance": { "value":660, "currency":"EuroCent"}, 
+        "other":    { },
+        "passengers": [
+           { "value":0,   "currency":"EuroCent" },
+           { "value":0,   "currency":"EuroCent" },
+           { "value":0,   "currency":"EuroCent" },
+           { "value":0,   "currency":"EuroCent" },
+           { "value":150, "currency":"EuroCent" },
+           { "value":300, "currency":"EuroCent" },
+           { "value":450, "currency":"EuroCent" },
+           { "value":600, "currency":"EuroCent" }
+        ]
+    }
+    "services": {
+        "bookingAvailable": true,
+        "paymentAvailable": false,
+        "privateHireVehicleAvailable": true,
+        "taxiSharing": false,
+        "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
+    }      
+}
+
+
+# General Description
+
+Book a Taxi: The taxi ride is specified by providing the starting point (address and/or geo location) and the destination.
+This means that no specific, previously selected taxi, is booked.
+
+# Query Parameters
+
+- `action={Book}`: Must be "Book" to perform a booking
+
+Input in request body: 
+
+- operator: name, userId and password (for authentication)
+- origin of the taxi ride and optional start time
+- destination of the taxi ride
+- further parameters might later detail the request by specifying the number of passengers, availability of child seats, extra luggage etc.
+
+# Failures
+
+- booking is not possible: response body explains the reason why
+
+# Output
+- the estimated costs, the taxi's licence id, and a booking id are returned; the latter can be used to cancel the booking.
+
+Please note: 
+
+- Since data about the traveler is usually requested by the taxi SP, we assume that the end-user (or the mobility provider) himself is responsible to register at the service provider.
+- We currently require one operator in the input body.
+
+POST /V0/Resources/TaxiService/Taxis/Processes?action=Book
+> Accept: application/json
+> Content-Type: application/json
+> userToken: {userToken}
+{
+    "operator": {
+        "name": "BetterTaxi",
+        "userId": "MP1_1",
+        "password": "TopSecret!"
+    },
+    "origin" : {
+        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+        "time": "2013-05-01T12:00:00" 
+    },
+    "destination" : {
+        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+    }
+}
+< 201
+< Location: /V0/Process/4711
+< Content-Type: application/json
+{
+    "processId" : 123,
+    "confirmation" : {
+        "confirmationId" : 456,
+        "featureType": "BOOKING"
+    },
+    "origin" : {
+        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+        "time": "2013-05-01 12:00:00" 
+    },
+    "destination" : {
+        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+    },
+    "operatorId": "BetterTaxi",
+    "licenceId": "B-OB 007",
+    "arrivalTime": "2013-05-01T12:05:00",
+    "services": {
+        "bookingAvailable": true,
+        "paymentAvailable": false,
+        "privateHireVehicleAvailable": true,
+        "taxiSharing": false,
+        "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
+    },
+    "actions": [
+        {
+            "name": "Cancel",
+            "method": "PUT",
+            "uri": "/V0/Processes/123?action=Cancel"
+        }
+    ]
+}
+
+
+# General Descrition 
+Cancel a booking for a taxi that has been booked before with a booking id 4711.
+
+# Query Parameters
+
+- `action={Cancel}`: Must be "Cancel" for performing a booking
+
+Input in request body: 
+
+- userId and password (for authentication)
+
+# Failures
+
+- cancelation is not possible: the response body explains the reason why.
+
+# Output
+information about the originally planned taxi ride and the cancelation fee
+PUT /V0/Process/123?action=Cancel
+> Accept: application/json
+> Content-Type: application/json
+> userToken: {userToken}
+{ 
+    "operator": { 
+        "name": "BetterTaxi", 
+        "userId": "MP1_1",
+        "password": "TopSecret!"
+    }
+}
+< 201
+< Location: /V0/Process/123
+< Content-Type: application/json
+{
+    "userId": "MP1_1",
+    "ride": { 
+        "origin" : {
+            "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+            "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+            "time": "2013-05-01 12:00:00" 
+        },
+        "destination" : {
+            "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+        }
+    },
+    "confirmation": {
+        "featureType": "CANCELATION",
+        "confirmationId": "17",
+        "fee": { "value": 0, "currency": "EUR" }
+    },
+    "actions": [ ]
+}
+
+
 
 -- 
 Incidents / Traffic Info
