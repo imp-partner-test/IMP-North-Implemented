@@ -316,18 +316,6 @@ GET /V0/Resources/Ticketing/Tickets
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 -- 
 Parking Garages
 --
@@ -345,38 +333,69 @@ Describe region of interest as circle or box.
 
 # Response 
 List of parking garages with basic information within the defined region of interest and a URI to request more detailed information.
+The data structure of the response contains the following attributes:
 
-The data structure "ParkingGarage" of the response is described in https://confluence.imp.mobilitaetsdienste.de/display/IMP/Parking;
-some parts of the data structure might be omitted because the information is not available.
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of actions possible on this resource (book, cancel, etc.)
+id | Number | internal garage number
+description | String | 
+type | String | (="ParkingGarage")
+uri | URI | URI to request more detailed information
+location | Object | { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }. The standard WGS 84 is used for polar coordinates.
+provider | String | parking service provider
+operator | String | parking space operator
+totalnumber | Object | { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
+lottype | Enum | {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
+
+Some parts of the data structure might be omitted because the information is not available.
+
+
+
 GET /V0/Resources/Parking/Garages
 > Accept: application/json
 < 200
 < Content-Type: application/json
-[   {   "description":"Mitte, Int. Handelszentrum",
-        "type":"ParkingGarage",
-        "url":"Resources/Parking/Garages/408",
+[  
+    {
+        "actions": [],
+        "id": 8320,
+        "description": "Mitte, Friedrichstadt Passagen",
+        "type": "ParkingGarage",
+        "uri": "Resources/Parking/Garages/8320",
         "location": {
-            "latitude":52.519180000000006,
-            "longitude":13.391060000000001,
-            "system":"WGS_84"
+            "latitude": 52.51381000000001,
+            "longitude": 13.390620000000002,
+            "system": "WGS_84"
         },
-        "provider":"Parkinglot",
-        "operator":"Parkinglot",
-        "totalnumber": { "others":457,"handicappedOnly":2,"womenOnly":39} ,
-        "lottype":"Parkhaus"
+        "provider": "Parkinglot",
+        "operator": "Parkinglot",
+        "totalnumber": {
+            "others": 1150,
+            "handicappedOnly": 12,
+            "womenOnly": 6
+        },
+        "lottype": "Parkhaus"
     },
     {
-        "description":"Mitte, Parkplatz Friedrichstadtpalast",
-        "type":"ParkingGarage",
-        "url":"Resources/Parking/Garages/72",
+        "actions": [],
+        "id": 8367,
+        "description": "Mitte, Hotel Adlon",
+        "type": "ParkingGarage",
+        "uri": "Resources/Parking/Garages/8367",
         "location": {
-            "latitude":52.524330000000006,
-            "longitude":13.390300000000002,
-            "system":"WGS_84"},
-        "provider":"Parkinglot",
-        "operator":"Parkinglot",
-        "totalnumber": {"others":260,"handicappedOnly":0,"womenOnly":0},
-        "lottype":"Parkplatz"
+            "latitude": 52.515130000000006,
+            "longitude": 13.379420000000001,
+            "system": "WGS_84"
+        },
+        "provider": "Parkinglot",
+        "operator": "Parkinglot",
+        "totalnumber": {
+            "others": 173,
+            "handicappedOnly": 2,
+            "womenOnly": 0
+        },
+        "lottype": "Tiefgarage"
     }
 ]
 
@@ -389,69 +408,79 @@ Show detailed information for a specific parking garage.
 
 # Response 
 Details of a specific parking garages, identified by `{id}` as it is obtained by the request `GET /V0/Resources/Parking/Garages`.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+address | Object | {"citycode": String, "city": String, "street": String, "houseno": String }
+pricing | String |  
+payment | Array | {COINPAY, BANKNOTEPAY, BANKCARDPAY, CREDICARDPAY, PREPAIDCARDPAY, PAYCARDPAY, DEBITPAY}
+category | Enum | { "P+R","B+R", "P", ... }
+openingHours | String | 
+bookable | Boolean |  
+heightLimit | Object | { "value": Number, "unit": String } 
+occupancyRate | Number | Percentage 
+allowedStay | Object | { "value": Number, "unit": String } 
+generalInformations | String |
+restrictions | Array |  {"VisitorsOnly","GuestsOnly"}
+services | Array | { "WomenParking", "DisabledParking", "Monitored", "ChargingStation", "ParentChild", "MotorCycle", ... } 
+securityComment | String |  
+entrance | String |
+
 
 GET /V0/Resources/Parking/Garages/{id}
 < 200
 < Content-Type: application/json
 {
-    "partnerUrl": "/Partners/1",
-    "url": "/Resources/Parking/Garages/10",
-    "description": "Mitte, Am Polizeipräsidium",
-    "address": {"citycode": "10178", "city": "Berlin", "street": "Wadzeckstr.", "houseno": "1" },
-    "location" : { "longitude": 13.416, "latitude": 52.52514000000001, "system": "WGS_84" }
-    "category": "P+R",
-    "openingHours:" Mo-Fr 8:00-19:00, Sa-So 10:00-20:00”,
-    "pricing": "EUR 1,00 pro Stunde",
-    "bookable" : true,
-    "heightLimit": { "value": 200, "unit": "cm" },   
-    "payment": [ "CoinPay", “BanknotePay”, "CreditcardPay"  ]
-    "occupancyRate": 50,
-    "allowedStay": { "value": 2, "unit": "hour" }
-    "general information": " ",
-    "restrictions": [ "VisitorsOnly", "CustomersOnly" ] ,
-    "services":  [ "WomanParking”,”ChargingStation" ] ,  
-    "operator":  "BR" ,
-    "securityComment": [ "bewacht" ],
-    "entrance" : "Einfahrt Stralauer Platz" 
-}
-
-# General Description
-Enter/Leave parking garage.
-
-# Query Parameters 
-
-- `action=consume`
-
-# Request Path Parameters
-- `tagId={String}, NFC Tag Id at parking entry/exit`
-
-# Response 
-Using a specific parking garage, identified by `{tagId}` as it is from user.
-POST /V0/Resources/Parking/Garages/{tagId}/Process
-> Accept: application/json
-> Content-Type: application/json
-> userToken: {userToken}
-< 201
-< Content-Type: application/json
-{
     "actions": [],
-    "processId": "{processId}",
-    "confirmation": {
-        "featureType": "CONSUME",
-        "confirmationId": null,
-        "confirmationData": {
-            "entryTagId": "{entryTagId}",
-            "exitTagId": "{exitTagId}",
-            "from": "2014-01-08T14:53:08+0530",
-            "to": "2014-01-08T14:53:31+0530",
-            "parkingCost": {
-                "unit": "EUR",
-                "value": 0.759
-            },
-            "parkingGarageId": "{parkingGarageId}"
-        }
-    }
+    "id": 8367,
+    "description": "Mitte, Hotel Adlon",
+    "type": "ParkingGarage",
+    "uri": "Resources/Parking/Garages/8367/",
+    "location": {
+        "latitude": 52.515130000000006,
+        "longitude": 13.379420000000001,
+        "system": "WGS_84"
+    },
+    "provider": "Parkinglot",
+    "operator": "Parkinglot",
+    "totalnumber": {
+        "others": 173,
+        "handicappedOnly": 2,
+        "womenOnly": 0
+    },
+    "lottype": "Tiefgarage",
+    "address": {
+        "citycode": "10117",
+        "city": "Berlin",
+        "street": "Behrenstr.",
+        "houseno": "1",
+        "district": "Mitte",
+        "region": null,
+        "country": null
+    },
+    "pricing": "EUR 2.00 je angefangene halbe Stunde <br> maximale Tagesgebühr: EUR 32,00",
+    "payment": [
+        "BANKNOTEPAY",
+        "COINPAY"
+    ],
+    "category": [
+        "P"
+    ],
+    "openingHours": null,
+    "bookable": false,
+    "heightLimit": null,
+    "occupancyRate": 0,
+    "allowedStay": null,
+    "generalInformations": null,
+    "restrictions": null,
+    "services": null,
+    "securityComment": "Videoüberwachung<br>Notrufsäulen",
+    "entrance": null
 }
+
+
 
 
 -- 
