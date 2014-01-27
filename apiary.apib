@@ -621,48 +621,115 @@ Describe region of interest as circle or box.
 
 # Response
 A list of bike sharing stations qualified by the query parameters, with basic information and a URI to acquire more detailed information.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | 
+id | Number | 
+description | String | 
+type | String | 
+uri* | URI | URI to request more detailed information.
+location | Object | 
+provider | String | service provider
+operator | String | resource operator
+phoneNo | String | 
+operatorURI | String |
+operatorName | String | 
+address | Object | 
+numberOfBikes | Number | 
+numberOfFreeBikes | Number | 
+services | Array | 
+
 
 GET /V0/Resources/BikeSharing/Stations
 < 200
 < Content-Type: application/json
 [
-   {
-        "description": "U-Bhf. Mohrenstraße",
+    {
+        "actions": [],
+        "id": 8281,
+        "description": "Zeughaus / Deutsches Historisches Museum",
         "type": "BikeSharingStation",
-        "url": "Resources/BikeSharing/Stations/19",
+        "uri": "Resources/BikeSharing/Stations/8281",
         "location": {
-            "latitude": 52.511844635009766,
-            "longitude": 13.384378433227539,
+            "latitude": 52.518394470214844,
+            "longitude": 13.395764350891113,
             "system": "WGS_84"
         },
         "provider": "CallABike",
         "operator": "CallABike",
         "phoneNo": null,
-        "numberOfBikes": 13,
-        "numberOfFreeBikes": 5,
-        "services": null,
         "operatorURI": null,
-        "operatorName": "CallABike"
+        "operatorName": "CallABike",
+        "address": null,
+        "numberOfBikes": 30,
+        "numberOfFreeBikes": 11,
+        "services": null
     },
     {
-        "description": "Friedrichstadtpalast",
+        "actions": [],
+        "id": 8294,
+        "description": "Jägerstraße / Friedrichstraße",
         "type": "BikeSharingStation",
-        "url": "Resources/BikeSharing/Stations/18",
+        "uri": "Resources/BikeSharing/Stations/8294",
         "location": {
-            "latitude": 52.52393341064453,
-            "longitude": 13.387476921081543,
+            "latitude": 52.51383590698242,
+            "longitude": 13.389104843139648,
             "system": "WGS_84"
         },
         "provider": "CallABike",
         "operator": "CallABike",
         "phoneNo": null,
-        "numberOfBikes": 18,
-        "numberOfFreeBikes": 9,
-        "services": null,
         "operatorURI": null,
-        "operatorName": "CallABike"
+        "operatorName": "CallABike",
+        "address": null,
+        "numberOfBikes": 19,
+        "numberOfFreeBikes": 6,
+        "services": null
     }
 ]
+
+# General Description
+Book a bike available at a bike sharing station
+
+# Request Path Parameters
+
+- `stationId={String}, Bike sharing station id where the bike is to be booked`
+
+# Request Body
+The request body will have the following data structure
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional
+
+# Response
+A booking confirmation for the bike. The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+POST /V0/Resources/BikeSharing/Stations/{stationId}/Process?action=book
+> Content-Type: application/json
+> Accept: application/json
+{ 
+    "operator": "nextbike",
+    "from": null,
+    "to": null,
+    "userId": "4711/10" 
+}
+< 201
+< Content-Type: application/json
+{  
+    "confirmationId": "1012020020",
+    "comments": "Comments"
+}
+
 
 -- 
 Car Sharing 
