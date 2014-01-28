@@ -1577,15 +1577,12 @@ There is also a separate segment if the traveler shall use different lines of th
 for instance, first U5 from A to B and then U4 from B to C.
 
 Each segement has an origin and a destination with corresponding timestamps when to arrive and depart.
-
-A segment consists of a sequence of way points and guiding points.
-
-A way point describes an intermediate geo location useful for displaying the trip proposal in a map.
-
-A guiding point gives a traveler hints how to travel, e.g., whenever to change the road at a crossing.
+A segment consists of a sequence of wayPoints and guidingPoints.
+A wayPoint describes an intermediate geo location useful for displaying the trip proposal in a map.
+A guidingPoint gives a traveler hints how to travel, e.g., whenever to change the road at a crossing. GuidingPoints are a subset of wayPoints
 
 # Response
-detailed information about a single trip proposal determined by [proposalId}
+Detailed information about a single trip proposal determined by {proposalId}
 
 Please note:
 
@@ -2944,8 +2941,3 @@ GET /V0/Reporting/servicePerformanceStatistics
         "serviceProvider": "BetterTaxi"
     }
 ]
-
-
-Dummy Chapter
---
-This chapter is needed for regular expression in the generating script to work. Please do not delete it.
