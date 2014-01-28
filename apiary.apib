@@ -750,31 +750,43 @@ Describe region of interest as circle or box.
 ## optional parameter
 - `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter ecars ("ELECTRICITY") or petrol cars ("PETROL")
 
+
 # Response
 A list of available car sharing locations, both free-floating and/or station-based qualified by the query parameters, 
 with basic information and a URI to acquire more detailed information.
 In case of station-based cars, only the URI of the Car Sharing station is returned; 
 in case of free-floating cars, the URI to the car itself.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | 
+id | Number | 
+description | String | 
+type | String | 
+uri* | URI | URI
+location | Object | 
+provider | String | 
+operator | String | 
 
 GET /V0/Resources/CarSharing/All
 < 200
 < Content-Type: application/json
-[
-     {
+[    
+    {
         "actions": [
-            {
-                "name": "book",
-                "method": "POST",
-                "uri": "Resources/CarSharing/Cars/37921/Process?action=book"
-            }
-        ],
-        "id": 37921,
-        "description": "B-GO2739",
+                    {"name": "book",
+                     "method": "POST",
+                     "uri": "Resources/CarSharing/Cars/12196/Process?action=book"
+                    }
+                    ],
+        "id": 12196,
+        "description": "B-GO2104",
         "type": "Cars",
-        "uri": "Resources/CarSharing/Cars/37921",
+        "uri": "Resources/CarSharing/Cars/12196",
         "location": {
-            "latitude": 52.51269,
-            "longitude": 13.38644,
+            "latitude": 52.51342,
+            "longitude": 13.39476,
             "system": "WGS_84"
         },
         "provider": "Car2Go_Berlin",
@@ -785,22 +797,23 @@ GET /V0/Resources/CarSharing/All
             {
                 "name": "book",
                 "method": "POST",
-                "uri": "Resources/CarSharing/Cars/37919/Process?action=book"
+                "uri": "Resources/CarSharing/Stations/8150/Process?action=book"
             }
         ],
-        "id": 37919,
-        "description": "151576",
-        "type": "Cars",
-        "uri": "Resources/CarSharing/Cars/37919",
+        "id": 8150,
+        "description": "Handwerkervereinshaus / Sophienstraße",
+        "type": "Stations",
+        "uri": "Resources/CarSharing/Stations/8150",
         "location": {
-            "latitude": 52.5185667,
-            "longitude": 13.3846733,
+            "latitude": 52.52561167074207,
+            "longitude": 13.401126265525818,
             "system": "WGS_84"
         },
         "provider": "FlinksterDB",
         "operator": "FlinksterDB"
     }
 ]
+
 
 
 # General Description
@@ -878,6 +891,7 @@ GET /V0/Resources/CarSharing/Cars
     }
 ]
 
+
 # General Description
 Get detailed information about a specific free-floating car.
 
@@ -936,7 +950,7 @@ GET /V0/Resources/CarSharing/Cars/{carId}
 
 
 # General Description
-Get list of car sharing stations (NOTE: for station-based car sharing only!).
+Get list of car sharing stations (for station-based car sharing).
 
 # Query Parameters 
 Describe region of interest as circle or box.
@@ -951,10 +965,28 @@ Describe region of interest as circle or box.
 - `operatorId={id}`
 - `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter ecars ("ELECTRICITY") or petrol cars ("PETROL")
 
+
 Examples: category of required car (e.g., FullSize), pickup/return station
 
 # Response 
-All car sharing stations qualified by the query parameters, together with geo location, name, URI (to acquire further details) and some basic information.
+All car sharing stations qualified by the query parameters, together with basic information and URI to acquire more detailed information.
+All car sharing stations qualified by the query parameters, together with basic information and URI to acquire more detailed information.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | 
+id | Number | 
+description | String | 
+type | String | 
+uri | URI | URI to request more detailed information
+location | Object | 
+provider | String | 
+operator | String | 
+operatorURI | String | 
+operatorName | String | 
+address | Object | 
+
 
 GET /V0/Resources/CarSharing/Stations
 < 200
@@ -965,13 +997,13 @@ GET /V0/Resources/CarSharing/Stations
             {
                 "name": "book",
                 "method": "POST",
-                "uri": "Resources/CarSharing/Stations/37940/Process?action=book"
+                "uri": "Resources/CarSharing/Stations/8743/Process?action=book"
             }
         ],
-        "id": 37940,
+        "id": 8743,
         "description": "The Ritz-Carlton",
         "type": null,
-        "uri": "Resources/CarSharing/Stations/37940",
+        "uri": "Resources/CarSharing/Stations/8743",
         "location": {
             "latitude": 52.509990227446885,
             "longitude": 13.375629186630249,
@@ -997,13 +1029,13 @@ GET /V0/Resources/CarSharing/Stations
             {
                 "name": "book",
                 "method": "POST",
-                "uri": "Resources/CarSharing/Stations/37941/Process?action=book"
+                "uri": "Resources/CarSharing/Stations/8455/Process?action=book"
             }
         ],
-        "id": 37941,
+        "id": 8455,
         "description": "Friedrichstr.",
         "type": null,
-        "uri": "Resources/CarSharing/Stations/37941",
+        "uri": "Resources/CarSharing/Stations/8455",
         "location": {
             "latitude": 52.5083274841,
             "longitude": 13.3902387619,
@@ -1035,7 +1067,26 @@ Get details about a specific car sharing station.
 - currently none
 
 # Response
-Details about a car sharing station determined by `{stationId}`.
+Details about a car sharing station determined by `{stationId}`. The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array of objects | [ { "name": String, "method": String, "uri": String } ]
+id | String |
+description | String | 
+type | String |
+uri | String | 
+location | Object |
+provider | String |
+operator | String | 
+phoneNo | String | 
+operatorURI | String | 
+operatorName | String | 
+address | Object | {"cityCode": String, "city": String, "street": String, "houseNo": String, "district": String, "region": String, "country": String}
+notes | String | 
+services | Array | 
+availableCars | Number | 
+
 
 GET /V0/Resources/CarSharing/Stations/{stationId}
 < 200
@@ -1045,16 +1096,16 @@ GET /V0/Resources/CarSharing/Stations/{stationId}
         {
             "name": "book",
             "method": "POST",
-            "uri": "Resources/CarSharing/Stations/37940//Process?action=book"
+            "uri": "Resources/CarSharing/Stations/8852/Process?action=book"
         }
     ],
-    "id": 37940,
-    "description": "The Ritz-Carlton",
+    "id": 8852,
+    "description": "Caroline-Michaelis-Straße",
     "type": null,
-    "uri": "Resources/CarSharing/Stations/37940/",
+    "uri": "Resources/CarSharing/Stations/8852/",
     "location": {
-        "latitude": 52.509990227446885,
-        "longitude": 13.375629186630249,
+        "latitude": 52.533559809882156,
+        "longitude": 13.382519781589508,
         "system": "WGS_84"
     },
     "provider": "FlinksterDB",
@@ -1063,27 +1114,26 @@ GET /V0/Resources/CarSharing/Stations/{stationId}
     "operatorURI": null,
     "operatorName": "FlinksterDB",
     "address": {
-        "citycode": "10785",
+        "citycode": "10115",
         "city": "Berlin",
-        "street": "Potsdamer Platz",
-        "houseno": "2",
+        "street": "Caroline-Michaelis-Straße",
+        "houseno": "5-11",
         "district": "Mitte",
         "region": null,
         "country": null
     },
     "notes": [
-        "Unsere Ladesäule steht genau gegenüber Haupteingang Hotel Ritz-Carlton.",
-        "<u>An dieser Station befinden sich Elektrofahrzeuge</u>. Führen Sie das Ladekabel bitte immer im Auto mit. Detaillierte Informationen zum An- und Abschließen befinden sich auch im Bordbuch.<br><br>Bitte das Fahrzeug innerhalb der gelben Markierung abstellen und <b> IMMER</b> an die Ladesäule anschließen, sonst wird das Fahrzeug abgeschleppt. Vor dem Losfahren das Ladekabel ERST am Fahrzeug abziehen und DANACH an der Ladestation. Bei Fahrtende das Ladekabel einfach in die Steckdose an der Ladesäule stecken, der Ladevorgang startet automatisch und endet mit dem entfernen des Ladekabels. <br><br> Ihr Flinkster-Team",
-        "S-Bahn: S1, S2 <br>\nU-Bahn: U2 <br>\nBus: 123, 148, 200<br>"
+        "Beschilderte Parkplätze befinden sich rechts neben dem Gebäude der Deutschen Bahn AG in der Caroline-Michaelis-Str. 5-11, vom Nordbahnhof kommend am Ende des Gebäudekomplexes.",
+        "Die Zufahrt zu den Parkplätzen erfolgt durch die Schranke links vom Hauptgebäude, neben der Einfahrt zur Tiefgarage. Bitte klingeln, Pförtner meldet sich (24h besetzt) und öffnet. Stellen Sie das Fahrzeug bitte auf einen der Stellplätze von Nr. 7 bis 12 bzw. von Nr. 26 bis 45.<br><b> \n<u>An dieser Station befinden sich auch Elektrofahrzeuge</u>. Bitte halten Sie die Stellflächen an den Ladesäulen für die E-Fahrzeuge frei! Führen Sie das Ladekabel bitte immer im Auto mit und schließen Sie das Fahrzeug bei Rückgabe bitte wieder an die Ladesäule an. Die hierzu erforderliche DB Energie- bzw. Vattenfall-Ladekarte finden Sie in der Mittelkonsole des Fahrzeuges. Achten Sie darauf, daß Sie die richtige Ladekarte für die jeweilige Ladesäule nutzen. Eventuell bekommen Sie an der DB Energie-Ladesäule beim erstmaligen Vorhalten der Ladekarte eine Fehlermeldung, dann bitte nach einer kurzen Pause ein zweitesmal probieren. <br><br>Ihr Flinkster-Team\n",
+        "S-Bahn S1, S2, S25 bis Nordbahnhof<br>\nU-Bahn U6 bis Zinnowitzer straße<br>\nMetroTram M6, M8 <br>\nTram 12 S-Bahnhof Nordbahnhof<br>\nBus 245 <br>"
     ],
     "services": null,
-    "availableCars": 0
+    "availableCars": 4
 }
 
 
-
 # General Description
-Get list of available cars at a specific car sharing station.
+*Get list of available cars at a specific car sharing station.
 
 # Query Parameters
 Optional time interval in the future:
@@ -1093,13 +1143,34 @@ Optional time interval in the future:
 
 # Response
 A list of available cars at a specific car sharing station determined by `{stationId}`.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array of objects | [ { "name": String, "method": String, "uri": String } ]
+id | String |
+description | String | 
+type | String | 
+url | String | 
+address | Object | {"cityCode": String, "city": String, "street": String, "houseNo": String}
+location | String | 
+licenceId | String | 
+category | String |
+provider | String |
 
 GET /V0/Resources/CarSharing/Stations/{stationId}/Cars
 < 200
 < Content-Type: application/json
 [
     {  
-        "id": "WME4513341K581403",   
+         "actions": [
+        {
+            "name": "book",
+            "method": "POST",
+            "uri": "Resources/CarSharing/Stations/8852/Cars/8829/Process?action=book"
+        }
+        ],
+        "id": "8829",   
         "description": "B-GO2999", 
         "type": "Car", 
         "url": "/Resources/CarSharing/Cars/B-GO2999", 
@@ -1114,6 +1185,131 @@ GET /V0/Resources/CarSharing/Stations/{stationId}/Cars
         "provider": "Car2Go"
     }    
 ]
+
+
+# General Description
+*Book a car offered as a free-floating car 
+
+# Request Path Parameters
+
+- `carId={String}, Resource Id of the car being booked`
+
+# Request Body
+The request body will have the following data structure
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional 
+
+# Response
+A booking confirmation for the car. The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+POST /V0/Resources/CarSharing/Cars/{carId}/Process?action=book
+> Accept: application/json
+> Content-Type: application/json
+{ 
+    "operator": "flinkster",
+    "from": "",
+    "to": "",
+    "userId": "4711/10" 
+}
+< 201
+< Location: /V0/Process/4711
+< Content-Type: application/json
+{  
+    "confirmationId": "1012020020",
+    "comments": "Comments"
+}    
+
+# General Description
+*Book a car available at a car sharing station
+
+# Request Path Parameters
+
+- `stationId={String}, Car sharing station id where the car is located`
+- `carId={String}, Resource Id of the car being booked`
+
+# Request Body
+The request body will have the following data structure
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional 
+
+# Response
+A booking confirmation for the car. The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+POST /V0/Resources/CarSharing/Stations/{stationId}/Cars/{carId}/Process?action=book
+> Content-Type: application/json
+> Accept: application/json
+{ 
+    "operator": "car2go_berlin",
+    "from": null,
+    "to": null,
+    "userId": "4711/10" 
+}
+< 201
+< Content-Type: application/json
+{  
+    "confirmationId": "1012020020",
+    "comments": "Comments"
+}  
+  
+
+# General Description
+*Book any car available at a car sharing station by specifying the car type
+
+# Request Path Parameters
+
+- `stationId={String}, Car sharing station id where the car is located`
+
+# Request Body
+The request body will have the following data structure
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional
+type | Enum value | Allowed values: TBD
+
+# Response
+A booking confirmation for the car. The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+POST /V0/Resources/CarSharing/Stations/{stationId}/Process?action=book
+> Content-Type: application/json
+> Accept: application/json
+{ 
+    "operator": "car2go_berlin",
+    "from": null,
+    "to": null,
+    "userId": "4711/10" 
+}
+< 201
+< Content-Type: application/json
+{  
+    "confirmationId": "1012020020",
+    "comments": "Comments"
+}
 
 
 
