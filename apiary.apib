@@ -1368,35 +1368,29 @@ Describe region of interest as circle or box.
 List of all electric vehicle (EV) charging stations qualified by query parameters (and body), 
 together with geo location, name, and a URI to acquire more detailed information.
 
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of actions possible on this resource
+id | Number | ressource id
+description | String | 
+type | String | ="EVChargingStation" 
+uri | URI | URI to request more detailed information
+location | Object | 
+provider |  String| 
+operator | String | 
+address | Object | 
+ 
+
 GET /V0/Resources/EVCharging/Stations
 < 200
 < Content-Type: application/json
 [
     {
-        "description": "vor Mini",
-        "type": "EVChargingStation",
-        "url": "Resources/EVCharging/Stations/227",
-        "location": {
-            "latitude": 52.5108049,
-            "longitude": 13.3897369,
-            "system": "WGS_84"
-        },
-        "provider": "Vattenfall",
-        "operator": "Vattenfall",
-        "address": {
-            "citycode": "10117",
-            "city": "Berlin",
-            "street": "Friedrichstraße",
-            "houseno": "191",
-            "district": null,
-            "region": null,
-            "country": null
-        }
-    },
-    {
+        "actions": [],
+        "id": 81635,
         "description": "Conti",
         "type": "EVChargingStation",
-        "url": "Resources/EVCharging/Stations/228",
+        "uri": "Resources/EVCharging/Stations/81635",
         "location": {
             "latitude": 52.51474,
             "longitude": 13.38639,
@@ -1409,6 +1403,29 @@ GET /V0/Resources/EVCharging/Stations
             "city": "Berlin",
             "street": "Glinkastr.",
             "houseno": "38",
+            "district": null,
+            "region": null,
+            "country": null
+        }
+    },
+    {
+        "actions": [],
+        "id": 85970,
+        "description": "vor Mini",
+        "type": "EVChargingStation",
+        "uri": "Resources/EVCharging/Stations/85970",
+        "location": {
+            "latitude": 52.5108049,
+            "longitude": 13.3897369,
+            "system": "WGS_84"
+        },
+        "provider": "Vattenfall",
+        "operator": "Vattenfall",
+        "address": {
+            "citycode": "10117",
+            "city": "Berlin",
+            "street": "Friedrichstraße",
+            "houseno": "191",
             "district": null,
             "region": null,
             "country": null
@@ -1426,6 +1443,20 @@ Get detail information for a specific EV Charging Station.
 
 # Response
 Details for the EV charging station specified by `{id}`.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+chargingStationType | String |  
+managedChargeable | Boolean |  
+owner | String |  
+plugTypes | Enum value | Type of the plug. Allowed values: 
+power | Number |  
+voltage | Number |  
+chargingPoints |  |  
+properties |  |  
+
 
 GET /V0/Resources/EVCharging/Stations/{id}
 < 200
