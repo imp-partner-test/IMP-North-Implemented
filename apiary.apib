@@ -594,12 +594,13 @@ Arrival and/or departure times for a station specified by `{stationId}`.
 
 attribute | json data type | comments
 --- | --- | ---
+id | Number | internal station number
 ... | ... | ...
 arrivals | String | arrivals info containing direction, line and arrival times
 departures | String | departures info containing direction, line and arrival times
 
 
-Please note: estimated times are not always available.
+Please note: expectedTime is not always available.
 GET /V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
 < 200
 < Content-Type: application/json
@@ -609,7 +610,7 @@ GET /V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
         "id": 80330,
         "description": "U Prinzenstr. (Berlin)",
         "type": "PublicTransportStation",
-        "uri": "Resources/PublicTransport/Stations/80330/TimeTables/80330",
+        "uri": "Resources/PublicTransport/Stations/80330/TimeTables",
         "location": {
             "latitude": 52.498274,
             "longitude": 13.406531,
@@ -631,7 +632,6 @@ GET /V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
                 "aimedTime": "2014-01-29T12:09:00+0100",
                 "expectedTime": null
             }
-    }
   ]
 
 
