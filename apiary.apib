@@ -29,7 +29,7 @@ For access to production system please contact: `henrik.koberg@siemens.com`
 Handy Ticket
 --
 # General Description
-List of available product for specified origin and destination.
+List of available product for specified origin and destination. Origin and destination are public transport stations and are identified by {pointId}. PointId can be retrieved using GET /V0/Resources/PublicTransport/Stations 
 
 # Query Parameters 
 `action=book`
@@ -110,7 +110,7 @@ Buy ticket request with resource Id.
 `action=buy`
 
 # Request Path Parameters
-- `resourceId={String}, Resource id`
+- `resourceId={String}, resource id`
 
 # Input in request body: 
 
@@ -118,7 +118,12 @@ Buy ticket request with resource Id.
 - userId: User id for buying ticket
 - password: Password for buying ticket
 
+# Input in headers:
+
+- userToken={userToken} in basic auth. Token generated for the user.
+
 # Response 
+
 Details of a bought ticket, identified by {ticketIds} and {ticketContent}.
 The data structure of the response contains the following attributes:
 
@@ -129,7 +134,7 @@ processId | Number | BPMN process id
 confirmation | Object | Buy ticket response data
 
 
-confirmation contains following fileds,
+confirmation contains following fileds:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -200,7 +205,7 @@ processId | Number | BPMN process id
 confirmation | Object | Confirm ticket response data
 
 
-confirmation contains following fileds,
+confirmation contains following fileds:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -208,7 +213,7 @@ featureType | String | Feature type
 confirmationId | String | 
 confirmationData | Object | Response of confirm ticket request
 
-confirmationData contains following fileds,
+confirmationData contains following fileds:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -255,7 +260,7 @@ Get Unconfirmed Tickets for a user.
 - currently none
 
 
-# Input in request body: 
+# Input in request body
 - currently none
 
 # Response 
@@ -269,7 +274,7 @@ processId | Number | BPMN process id
 confirmation | Object | Buy ticket response data
 
 
-confirmation contains following fileds,
+confirmation contains following fileds:
 
 attribute | json data type | comments
 --- | --- | ---
