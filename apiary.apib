@@ -1494,10 +1494,12 @@ GET /V0/Resources/EVCharging/Stations/{id}
     "properties": null
 }
 
+
+
+
 --
 Traffic Info Level-of-Service. WMS
 --
-
 
 # General Description
 Get WMS PNG file for road traffic (Level of Service).
@@ -1509,6 +1511,7 @@ Describe region of interest as box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 ## optional parameters
+- currently none
 
 ### width
 - `width={w}`: width of map output in pixels (semantics according to WMS GetMap request).
@@ -1558,72 +1561,106 @@ specified in the request body as described in the sample request
 
 # Response
 List of trip proposals with basic information such as distance, duration and an URI for detailled information.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+url | URI | URI to request more detailed information
+origin | Object | start point of the proposed trip
+destination | Object | endpoint of the proposed trip
+trafficTypes | Array | list of traffic types used in the proposed trip  
+description | String | list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
+costs | Array | list of costs for the proposed trip
 
 POST /V0/TripProposals
 > Content-Type: application/json
 > Accept: application/json
 { 
     "origin": { 
-        "location": { "longitude": 13.386759757995605, "latitude": 52.4781608581543, "system": "WGS84" }, 
-        "time": "2013-07-24T15:10:00UTC+2"
+        "location": { "longitude": 13.377683, "latitude": 52.509166, "system": "WGS84" }, 
+        "time": "2014-01-29T15:10:00+0200"
         },
     "destination": { 
-        "location": { "longitude": 13.3606595993042, "latitude": 52.49085998535156, "system": "WGS84" },
+        "location": { "longitude": 13.384160041809082, "latitude": 52.5100212097168, "system": "WGS84" },
         "time": null
         },
-    "viaPoints": [ { "longitude": 13.388156, "latitude": 52.493578, "system": "WGS84" } ],
-    "costFunctions": [ { "costType": "Distance", "percentage": 100.0 } ],
-    "trafficTypes": [ "Car", "Metro" ],
-    "routingConstraints": [ {   "routingConstraintType": "Distance",
-                                "trafficType": "Walk", 
-                                "min": { "value": 0,   "unit": "Meter" }, 
-                                "max": { "value": 600, "unit": "Meter" }
-                              } ],
+    "viaPoints": [],
+    "costFunctions": [],
+    "trafficTypes": [ "Car", "Walk", "RegioTrain", "Tram" ],
+    "routingConstraints": [],
     "userId": "4711/10" 
 }
 < 200
 < Content-Type: application/json
 [
     {
-        "url": "TripProposals/2",
+        "url": "TripProposals/86496",
         "origin": {
             "location": {
                 "latitude": 52.50917053222656,
                 "longitude": 13.377630233764648,
                 "system": "WGS_84"
             },
-            "time": "2013-06-25T15:10:35MESZ"
+            "address": null,
+            "time": "2014-01-29T14:10:32+0100"
         },
         "destination": {
             "location": {
-                "latitude": 52.5100212097168,
-                "longitude": 13.384160041809082,
+                "latitude": 52.5100021,
+                "longitude": 13.3841612,
                 "system": "WGS_84"
             },
-            "time": "2013-06-25T15:11:35MESZ"
+            "address": null,
+            "time": "2014-01-29T15:29:02+0100"
         },
         "trafficTypes": [
-            "Car"
+            "Car",
+            "Walk"
         ],
         "description": null,
         "costs": {
-            "distanceFromOrigin": {
-                "unit": "Meter",
-                "value": 503
-            },
+            "distance": null,
             "duration": {
                 "unit": "Second",
-                "value": 96
+                "value": 4442
             },
-            "price": {
-                "unit": "EuroCent",
-                "value": 150,
-                "operatorId": "VBB",
-                "ticketId": "00201",
-                "tariffLevel": "B0",
-                "departureZone": "5555",
-                "arrivalZone": "5555"
+            "price": null,
+            "emission": null
+        }
+    },
+    {
+        "url": "TripProposals/86497",
+        "origin": {
+            "location": {
+                "latitude": 52.50917053222656,
+                "longitude": 13.377630233764648,
+                "system": "WGS_84"
             },
+            "address": null,
+            "time": "2014-01-29T14:10:32+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.510019,
+                "longitude": 13.384156,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-01-29T15:13:00+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk",
+            "RegioTrain"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 2302
+            },
+            "price": null,
             "emission": null
         }
     }
@@ -1631,7 +1668,7 @@ POST /V0/TripProposals
 
 
 # General Description
-Get details about a trip proposal.
+Get details about a trip proposal. 
 
 # Query Parameters: 
 
@@ -1647,7 +1684,15 @@ A wayPoint describes an intermediate geo location useful for displaying the trip
 A guidingPoint gives a traveler hints how to travel, e.g., whenever to change the road at a crossing. GuidingPoints are a subset of wayPoints
 
 # Response
-Detailed information about a single trip proposal determined by {proposalId}
+Detailed information about a single trip proposal determined by {proposalId}.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes of a segment object:
+
+attribute | json data type | comments
+--- | --- | ---
+segmentId | URI | URI to request more detailed information
+origin | Object | start point of the proposed trip
+destination | Object | endpoint of the proposed trip
+
 
 Please note:
 
