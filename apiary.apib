@@ -507,6 +507,16 @@ Describe region of interest as circle or box.
 # Response 
 List of public transport stations with basic information and a URI to get more detailed information.
 
+attribute | json data type | comments
+--- | --- | ---
+description | String | description
+type | String | (="PublicTransportStation")
+uri | URI | URI to request more detailed information
+location | Object | { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }. The standard WGS 84 is used for polar coordinates.
+provider | String | service provider
+operator | String | service operator
+
+
 GET /V0/Resources/PublicTransport/Stations
 > Accept: application/json
 < 200
@@ -580,31 +590,50 @@ Get arrival and departure times at a given station.
 
 # Response 
 
-arrival and/or departure times for a station specified by `{stationId}`.
+Arrival and/or departure times for a station specified by `{stationId}`.
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+arrivals | String | arrivals info containing direction, line and arrival times
+departures | String | departures info containing direction, line and arrival times
+
 
 Please note: estimated times are not always available.
 GET /V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
 < 200
 < Content-Type: application/json
-{ [
+[
     {
-    "description": "Berlin, Marschallbrücke",
-    "type": "PublicTransportStation",
-    "url": "Resources/PublicTransport/Stations/36/TimeTables/",
-    "location": {
-        "latitude": 52.520551,
-        "longitude": 13.380001,
-        "system": "WGS_84"
-    },
-    "provider": "VBBStation",
-    "operator": "VBBStation",
-    "arrivals": [ {"direction": "S+U Alexanderplatz", "line": "Bus TXL", "aimedTime": "2013-05-30T17:40:00.Z", "estimatedTime": "2013-05-30T17:45:00.Z"},
-                                            {"direction": "S+U Alexanderplatz", "line": "Bus TXL", "aimedTime": "2013-05-30T17:50:00.Z"}],
-    "departures": [ {"direction": "S+U Alexanderplatz", "line": "Bus TXL", "aimedTime": "2013-05-30T17:41:00.Z", "estimatedTime": "2013-05-30T17:46:00.Z"},
-                                              {"direction": "S+U Alexanderplatz", "line": "Bus TXL", "aimedTime": "2013-05-30T17:51:00.Z"}],
+        "actions": [],
+        "id": 80330,
+        "description": "U Prinzenstr. (Berlin)",
+        "type": "PublicTransportStation",
+        "uri": "Resources/PublicTransport/Stations/80330/TimeTables/80330",
+        "location": {
+            "latitude": 52.498274,
+            "longitude": 13.406531,
+            "system": "WGS_84"
+        },
+        "provider": "VBBStation",
+        "operator": "VBBStation",
+        "arrivals": [],
+        "departures": [
+            {
+                "direction": "S+U Warschauer Str. (Berlin)",
+                "line": "U1",
+                "aimedTime": "2014-01-29T12:08:00+0100",
+                "expectedTime": null
+            },
+            {
+                "direction": "U Uhlandstr. (Berlin)",
+                "line": "U1",
+                "aimedTime": "2014-01-29T12:09:00+0100",
+                "expectedTime": null
+            }
     }
   ]
-} 
+
 
 
 
