@@ -1,4 +1,4 @@
-HOST: https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint/api
+HOST: https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint
 
 --- IMP North: Implemented ---
 
@@ -29,7 +29,7 @@ For access to production system please contact: `henrik.koberg@siemens.com`
 Handy Ticket
 --
 # General Description
-List of available product for specified origin and destination. Origin and destination are public transport stations and are identified by {pointId}. PointId can be retrieved using GET /V0/Resources/PublicTransport/Stations 
+List of available product for specified origin and destination. Origin and destination are public transport stations and are identified by {pointId}. PointId can be retrieved using GET /api/V0/Resources/PublicTransport/Stations 
 
 # Query Parameters 
 `action=book`
@@ -62,7 +62,7 @@ price | double | Price of ticket
 currency | String | Currency
 
 
-POST /V0/Resources/Ticketing/Tickets
+POST /api/V0/Resources/Ticketing/Tickets
 > Accept: application/json
 > Content-Type: application/json
 {   "origin": { 
@@ -144,7 +144,7 @@ ticketContent | Base64Binary | Content of Ticket
 
 
 
-POST /V0/Resources/Ticketing/Tickets/{resourceId}/Process
+POST /api/V0/Resources/Ticketing/Tickets/{resourceId}/Process
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -220,7 +220,7 @@ attribute | json data type | comments
 confirmed | Boolean | Value indicating success/failure
 
 
-PUT /V0/Processes/{processId}
+PUT /api/V0/Processes/{processId}
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -283,7 +283,7 @@ ticketIds | Array | Array of ticket ids
 ticketContent | Base64Binary | Content of Ticket
 
 
-GET /V0/Resources/Ticketing/Tickets
+GET /api/V0/Resources/Ticketing/Tickets
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -357,7 +357,7 @@ Some parts of the data structure might be omitted because the information is not
 
 
 
-GET /V0/Resources/Parking/Garages
+GET /api/V0/Resources/Parking/Garages
 > Accept: application/json
 < 200
 < Content-Type: application/json
@@ -412,7 +412,7 @@ Show detailed information for a specific parking garage.
 - currently none
 
 # Response 
-Details of a specific parking garages, identified by `{id}` as it is obtained by the request `GET /V0/Resources/Parking/Garages`.
+Details of a specific parking garages, identified by `{id}` as it is obtained by the request `GET /api/V0/Resources/Parking/Garages`.
 The data structure of the response contains the attributes with the basic information and additionally the following attributes:
 
 attribute | json data type | comments
@@ -434,7 +434,7 @@ securityComment | String |
 entrance | String |
 
 
-GET /V0/Resources/Parking/Garages/{id}
+GET /api/V0/Resources/Parking/Garages/{id}
 < 200
 < Content-Type: application/json
 {
@@ -517,7 +517,7 @@ provider | String | service provider
 operator | String | service operator
 
 
-GET /V0/Resources/PublicTransport/Stations
+GET /api/V0/Resources/PublicTransport/Stations
 > Accept: application/json
 < 200
 < Content-Type: application/json
@@ -573,7 +573,7 @@ A PNG content which displays the current public transport stations.
 
 Please note: The accept-header of this request must be set to `image/png`.
 
-GET /V0/Resources/PublicTransport
+GET /api/V0/Resources/PublicTransport
 > accept: image/png
 < 200
 < Content-Type: image/png
@@ -601,7 +601,7 @@ departures | String | departures info containing direction, line and arrival tim
 
 
 Please note: expectedTime is not always available.
-GET /V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
+GET /api/V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
 < 200
 < Content-Type: application/json
 [
@@ -676,7 +676,7 @@ numberOfFreeBikes | Number |
 services | Array | 
 
 
-GET /V0/Resources/BikeSharing/Stations
+GET /api/V0/Resources/BikeSharing/Stations
 < 200
 < Content-Type: application/json
 [
@@ -748,7 +748,7 @@ attribute | json data type | comments
 confirmationId | String | 
 comments | String | 
 
-POST /V0/Resources/BikeSharing/Stations/{stationId}/Process?action=book
+POST /api/V0/Resources/BikeSharing/Stations/{stationId}/Process?action=book
 > Content-Type: application/json
 > Accept: application/json
 { 
@@ -803,7 +803,7 @@ location | Object |
 provider | String | 
 operator | String | 
 
-GET /V0/Resources/CarSharing/All
+GET /api/V0/Resources/CarSharing/All
 < 200
 < Content-Type: application/json
 [    
@@ -869,7 +869,7 @@ Describe region of interest as circle or box.
 A list of available free-floating cars qualified by the query parameters, 
 with basic information and a URI to acquire more detailed information.
 
-GET /V0/Resources/CarSharing/Cars
+GET /api/V0/Resources/CarSharing/Cars
 < 200
 < Content-Type: application/json
 [
@@ -935,7 +935,7 @@ currently none
 # Response
 Detailed information about a specific free-floating car determined by `{carId}`.
 
-GET /V0/Resources/CarSharing/Cars/{carId}
+GET /api/V0/Resources/CarSharing/Cars/{carId}
 < 200
 < Content-Type: application/json
 {
@@ -1022,7 +1022,7 @@ operatorName | String |
 address | Object | 
 
 
-GET /V0/Resources/CarSharing/Stations
+GET /api/V0/Resources/CarSharing/Stations
 < 200
 < Content-Type: application/json
 [
@@ -1122,7 +1122,7 @@ services | Array |
 availableCars | Number | 
 
 
-GET /V0/Resources/CarSharing/Stations/{stationId}
+GET /api/V0/Resources/CarSharing/Stations/{stationId}
 < 200
 < Content-Type: application/json
 {
@@ -1192,7 +1192,7 @@ licenceId | String |
 category | String |
 provider | String |
 
-GET /V0/Resources/CarSharing/Stations/{stationId}/Cars
+GET /api/V0/Resources/CarSharing/Stations/{stationId}/Cars
 < 200
 < Content-Type: application/json
 [
@@ -1245,7 +1245,7 @@ attribute | json data type | comments
 confirmationId | String | 
 comments | String | 
 
-POST /V0/Resources/CarSharing/Cars/{carId}/Process?action=book
+POST /api/V0/Resources/CarSharing/Cars/{carId}/Process?action=book
 > Accept: application/json
 > Content-Type: application/json
 { 
@@ -1255,7 +1255,7 @@ POST /V0/Resources/CarSharing/Cars/{carId}/Process?action=book
     "userId": "4711/10" 
 }
 < 201
-< Location: /V0/Process/4711
+< Location: /api/V0/Process/4711
 < Content-Type: application/json
 {  
     "confirmationId": "1012020020",
@@ -1287,7 +1287,7 @@ attribute | json data type | comments
 confirmationId | String | 
 comments | String | 
 
-POST /V0/Resources/CarSharing/Stations/{stationId}/Cars/{carId}/Process?action=book
+POST /api/V0/Resources/CarSharing/Stations/{stationId}/Cars/{carId}/Process?action=book
 > Content-Type: application/json
 > Accept: application/json
 { 
@@ -1329,7 +1329,7 @@ attribute | json data type | comments
 confirmationId | String | 
 comments | String | 
 
-POST /V0/Resources/CarSharing/Stations/{stationId}/Process?action=book
+POST /api/V0/Resources/CarSharing/Stations/{stationId}/Process?action=book
 > Content-Type: application/json
 > Accept: application/json
 { 
@@ -1381,7 +1381,7 @@ operator | String |
 address | Object | 
  
 
-GET /V0/Resources/EVCharging/Stations
+GET /api/V0/Resources/EVCharging/Stations
 < 200
 < Content-Type: application/json
 [
@@ -1458,7 +1458,7 @@ chargingPoints |  |
 properties |  |  
 
 
-GET /V0/Resources/EVCharging/Stations/{id}
+GET /api/V0/Resources/EVCharging/Stations/{id}
 < 200
 < Content-Type: application/json
 {
@@ -1527,7 +1527,7 @@ Behavior: additional parameters have to be passed to WMS server such as format=i
 A PNG content which dispays the current traffic situation.
 
 Please note: The accept-header of this request must be set to "image/png".
-GET /V0/Info/TrafficInfo
+GET /api/V0/Info/TrafficInfo
 > accept: image/png
 < 200
 < Content-Type: image/png
@@ -1572,7 +1572,7 @@ trafficTypes | Array | list of traffic types used in the proposed trip
 description | String | list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
 costs | Array | list of costs for the proposed trip
 
-POST /V0/TripProposals
+POST /api/V0/TripProposals
 > Content-Type: application/json
 > Accept: application/json
 { 
@@ -1696,10 +1696,10 @@ destination | Object | endpoint of the proposed trip
 
 Please note:
 
-The trip proposals as returned by "GET /V0/TripProposals" are internally stored only for a certain time; afterward they expire and details are no longer available. 
+The trip proposals as returned by "GET /api/V0/TripProposals" are internally stored only for a certain time; afterward they expire and details are no longer available. 
 The current expiration time is 10 minutes.
 
-GET /V0/TripProposals/{proposalId}
+GET /api/V0/TripProposals/{proposalId}
 < 200
 < Content-Type: application/json
 {
@@ -1883,7 +1883,7 @@ Specified in the request body as described in the sample request
 # Response
 List of trip proposals with basic information such as distance, duration and an URI for detailed information.
 
-POST /V0/TripProposals
+POST /api/V0/TripProposals
 > Content-Type: application/json
 > Accept: application/json
 {
@@ -2135,7 +2135,7 @@ Specified in the request body as described in the sample request
 # Response
 List of trip proposals with basic information such as distance, duration and an URI for detailed information.
 
-POST /V0/TripProposals
+POST /api/V0/TripProposals
 > Content-Type: application/json
 > Accept: application/json
 {
@@ -2342,7 +2342,7 @@ Describe region of interest as a bounding box and with further optional paramete
 PNG file with requested service categories.
 
 Please note: The accept-header of this request must be set to "image/png"
-GET /V0/Resources?system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&right_upper_lng={max_lng}&right_upper_lat={max_lat}&width={w}&heigth={h}&serviceNames={categories}
+GET /api/V0/Resources?system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&right_upper_lng={max_lng}&right_upper_lat={max_lat}&width={w}&heigth={h}&serviceNames={categories}
 > accept: image/png
 < 200
 < Content-Type: image/png
@@ -2355,7 +2355,7 @@ Registered IMP Partners
 --
 
 Request for new Partner (starts "New Partner" Process).
-POST /V0/Partners
+POST /api/V0/Partners
 > Content-Type: application/json
 > Accept: application/json
 { "companyName":"ContiPark", roles": [ "ServiceProvider" ]}
@@ -2367,7 +2367,7 @@ POST /V0/Partners
 { "name":"Partner 1" }
 
 Show details of specified Partner.
-GET /V0/Partners/{PartnerId}
+GET /api/V0/Partners/{PartnerId}
 < 200
 < Content-Type: application/json
 { "status": "requested", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] }
@@ -2386,7 +2386,7 @@ DELETE /Partners/{PartnerId}
 < 204
 
 List all registered Partners (only for Admin).
-GET /V0/Partners
+GET /api/V0/Partners
 < 200
 < Content-Type: application/json
 { "items": [
@@ -2400,7 +2400,7 @@ Generate user token (starts "User Token Generation" Process).
 Query Parameters
 
 - `action={register}`: Must be "register" to start token generation
-POST /V0/Partners/User/Process
+POST /api/V0/Partners/User/Process
 > Content-Type: application/json
 > Accept: application/json
 < 201
@@ -2417,7 +2417,7 @@ Query Parameters (optional - if date range not provided then results are fetched
  
 - `startDate={fromDate}`
 - `endDate={toDate}`
-GET /V0/Partners/User/Transactions
+GET /api/V0/Partners/User/Transactions
 > Content-Type: application/json
 > Accept: application/json
 > userToken: {userToken}
@@ -2445,7 +2445,7 @@ ServiceOfferings per Partner
 --
 
 Request registration of new Service for Partner (starts "New Service" Process) [UC PM-3].
-POST /V0/Partners/{PartnerId}/ServiceOfferings
+POST /api/V0/Partners/{PartnerId}/ServiceOfferings
 > Content-Type: application/json
 > Accept: application/json
 { "companyName":"Parking / Partner 1", "url": "..." }
@@ -2484,7 +2484,7 @@ ServiceOfferings for all Partners
 --
 
 List all offered Services.
-GET /V0/ServiceOfferings
+GET /api/V0/ServiceOfferings
 < 200
 < Content-Type: application/json
 { "items": [
@@ -2493,7 +2493,7 @@ GET /V0/ServiceOfferings
 ] }
 
 List all offered Services of a given type.
-GET /V0/ServiceOfferings?category=Parking
+GET /api/V0/ServiceOfferings?category=Parking
 < 200
 < Content-Type: application/json
 { "items": [
@@ -2506,7 +2506,7 @@ Service Subscriptions
 --
 
 List all Subscriptions for specified Partner (requested by MobilityProvider).
-GET /V0/Partners/{PartnerId}/ServiceSubscriptions
+GET /api/V0/Partners/{PartnerId}/ServiceSubscriptions
 < 200
 < Content-Type: application/json
 { "items": [
@@ -2514,7 +2514,7 @@ GET /V0/Partners/{PartnerId}/ServiceSubscriptions
 ] }
 
 MobilityProvider subscribes to ServiceOffering
-POST /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+POST /api/V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
 > Content-Type: application/json
 > Accept: application/json
 { "partnerId" : "1" }
@@ -2524,7 +2524,7 @@ POST /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
 { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
 
 List all ServiceSubscriptions for a ServiceOffering (requested by ServiceProvider)
-GET /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+GET /api/V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
 < 200
 < Content-Type: application/json
 { "items": [
@@ -2532,7 +2532,7 @@ GET /V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
 ] }
 
 Unsubscribe Service
-DELETE /V0/ServiceOfferings/1/ServiceSubscriptions/4711
+DELETE /api/V0/ServiceOfferings/1/ServiceSubscriptions/4711
 < 204
 
 --
@@ -2540,7 +2540,7 @@ Service Categories
 --
 
 List all available Service Categories
-GET /V0/ServiceCategories
+GET /api/V0/ServiceCategories
 < 200
 < Content-Type: application/json
 { "items": [
@@ -2552,7 +2552,7 @@ GET /V0/ServiceCategories
 --
 
 Options (for CORS, only for mock).
-OPTIONS /V0/Partners
+OPTIONS /api/V0/Partners
 < 200
 < Access-Control-Allow-Origin: *
 < Access-Control-Allow-Methods: POST, GET, PUT, UPDATE, DELETE, OPTIONS
@@ -2579,7 +2579,7 @@ Describe region of interest as circle or box.
 List of available taxis with basic information.
 
 
-GET /V0/Resources/TaxiService/Taxis
+GET /api/V0/Resources/TaxiService/Taxis
 < 200
 < Content-Type: application/json
 [
@@ -2639,7 +2639,7 @@ Further conditions might specify: number of passengers, extra luggage, start tim
 # Response
 fare information for the specified trip.
 
-GET /V0/Info/TaxiService/Fares
+GET /api/V0/Info/TaxiService/Fares
 < 200
 < Content-Type: application/json
 {
@@ -2702,7 +2702,7 @@ Please note:
 - Since data about the traveler is usually requested by the taxi SP, we assume that the end-user (or the mobility provider) himself is responsible to register at the service provider.
 - We currently require one operator in the input body.
 
-POST /V0/Resources/TaxiService/Taxis/Processes?action=Book
+POST /api/V0/Resources/TaxiService/Taxis/Processes?action=Book
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -2722,7 +2722,7 @@ POST /V0/Resources/TaxiService/Taxis/Processes?action=Book
     }
 }
 < 201
-< Location: /V0/Process/4711
+< Location: /api/V0/Process/4711
 < Content-Type: application/json
 {
     "processId" : 123,
@@ -2752,7 +2752,7 @@ POST /V0/Resources/TaxiService/Taxis/Processes?action=Book
         {
             "name": "Cancel",
             "method": "PUT",
-            "uri": "/V0/Processes/123?action=Cancel"
+            "uri": "/api/V0/Processes/123?action=Cancel"
         }
     ]
 }
@@ -2775,7 +2775,7 @@ Input in request body:
 
 # Output
 information about the originally planned taxi ride and the cancelation fee
-PUT /V0/Process/123?action=Cancel
+PUT /api/V0/Process/123?action=Cancel
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -2787,7 +2787,7 @@ PUT /V0/Process/123?action=Cancel
     }
 }
 < 201
-< Location: /V0/Process/123
+< Location: /api/V0/Process/123
 < Content-Type: application/json
 {
     "userId": "MP1_1",
@@ -2829,7 +2829,7 @@ Describe region of interest as circle or box.
 
 # Response
 List of traffic information in the specified geo location qualified by query parameters.
-GET /V0/Info/Incidents
+GET /api/V0/Info/Incidents
 < 200
 < Content-Type: application/json
 [   {
@@ -2908,7 +2908,7 @@ Describe region of interest as circle or box.
 # Response 
 List of traffic information in the specified geo location qualified by query parameters.
 
-GET /V0/Info/Incidents/IndividualTransport
+GET /api/V0/Info/Incidents/IndividualTransport
 < 200
 < Content-Type: application/json
 [    {
@@ -2957,7 +2957,7 @@ Describe region of interest as circle or box.
 # Response 
 List of traffic data in the specified geo location qualified by query parameters.
 
-GET /V0/Info/Incidents/PublicTransport
+GET /api/V0/Info/Incidents/PublicTransport
 < 200
 < Content-Type: application/json
 [   {
@@ -3011,7 +3011,7 @@ Get service usage statistics for specified date range.
  
 # Response
 List of service with usage statistics.
-GET /V0/Reporting/serviceUsageStatistics
+GET /api/V0/Reporting/serviceUsageStatistics
 < 200
 < Content-Type: application/json
 [   
@@ -3038,7 +3038,7 @@ Get service performance statistics for specified date range.
  
 # Response
 List of service with performance statistics.
-GET /V0/Reporting/servicePerformanceStatistics
+GET /api/V0/Reporting/servicePerformanceStatistics
 < 200
 < Content-Type: application/json
 [   
