@@ -15,13 +15,12 @@ Please keep the groovy generating script in synch with this documentation. Read 
 --
 Introduction
 
-Attention: this is a generated documentation. Please do only modify in project IMP-North-Implemented.
+This is a description of a public REST interface offered by Siemens AG and its subsidiary VMZ Berlin Betreibergesellschaft GmbH 
+in the project Open Mobility Berlin. A mockup of this interface can be tried using the URLs listed on the right. For access to the production
+system please write an email to `henrik.koberg@siemens.com`
 
-The following is a description of the public REST interface offered by IMP to mobility provider, as it is currently implemented as part of the user stories.
-The described functionality can be tested as well using APIary mock server as the production server (URLs are listed on the right). 
-The currently integrated service provider list is available on https://as.production.imp.mobilitaetsdienste.de/imp-ui/#AllServiceOfferings:
-All functionality can be tested using APIary Mock Server.
-For access to production system please contact: `henrik.koberg@siemens.com`
+(c) Siemens AG 2014 All rights reserved
+
 --
 
 
@@ -29,7 +28,7 @@ For access to production system please contact: `henrik.koberg@siemens.com`
 Handy Ticket
 --
 # General Description
-List of available product for specified origin and destination. Origin and destination are public transport stations and are identified by {pointId}. PointId can be retrieved using GET /api/V0/Resources/PublicTransport/Stations 
+List of available products for specified origin and destination. Both are public transport stations and are identified by {pointId}. PointId can be retrieved using GET /api/V0/Resources/PublicTransport/Stations 
 
 # Query Parameters 
 `action=book`
