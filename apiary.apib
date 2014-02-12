@@ -28,7 +28,8 @@ system please write an email to `henrik.koberg@siemens.com`
 Handy Ticket
 --
 # General Description
-List of available products for specified origin and destination. Both are public transport stations and are identified by {pointId}. PointId can be retrieved using GET /api/V0/Resources/PublicTransport/Stations 
+List of available products for specified origin and destination. Both are public transport stations and are identified by `{pointId}`. 
+PointId can be retrieved using `GET /api/V0/Resources/PublicTransport/Stations` 
 
 # Query Parameters 
 `action=book`
@@ -342,15 +343,15 @@ The data structure of the response contains the following attributes:
 attribute | json data type | comments
 --- | --- | ---
 actions | Array | List of available actions on this resource (book, cancel, etc.)
-id | Number | internal garage number
+id | Number | Internal parking garage identification number
 description | String | 
 type | String | (="ParkingGarage")
 uri | URI | URI to request more details
-location | Object | { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }. The standard WGS 84 is used for polar coordinates.
-provider | String | parking service provider
-operator | String | parking space operator
-totalnumber | Object | { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
-lottype | Enum | {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
+provider | String | Parking service provider (usually equals operator)
+operator | String | Parking space operator (usually equals provider)
+totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
+lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
 
 Parts of the data structure might be omitted if the information is not available.
 
@@ -411,25 +412,25 @@ Show detailed information for a specific parking garage.
 - currently none
 
 # Response 
-Details of a specific parking garages, identified by `{id}` as it is obtained by the request `GET /api/V0/Resources/Parking/Garages`.
+Details of a specific parking garages, identified by `{id}` as retrieved through `GET /api/V0/Resources/Parking/Garages`.
 The data structure of the response contains the attributes with the basic information and additionally the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
 ... | ... | ...
-address | Object | {"citycode": String, "city": String, "street": String, "houseno": String }
-pricing | String |  
-payment | Array | {COINPAY, BANKNOTEPAY, BANKCARDPAY, CREDICARDPAY, PREPAIDCARDPAY, PAYCARDPAY, DEBITPAY}
-category | Enum | { "P+R","B+R", "P", ... } P - parking, P+R park and ride, etc.
-openingHours | String | 
+address | Object | Address {"citycode": String, "city": String, "street": String, "houseno": String }
+pricing | String | Price structure 
+payment | Array | Payment options {COINPAY, BANKNOTEPAY, BANKCARDPAY, CREDICARDPAY, PREPAIDCARDPAY, PAYCARDPAY, DEBITPAY}
+category | Enum | P - parking, P+R park and ride, etc. { "P+R","B+R", "P", ... } 
+openingHours | String | Opening hours
 bookable | Boolean |  
-heightLimit | Object | { "value": Number, "unit": String } 
-occupancyRate | Number | Percentage 
-allowedStay | Object | { "value": Number, "unit": String } 
+heightLimit | Object | Height limit { "value": Number, "unit": String } 
+occupancyRate | Number | Occupany rate in percent (real time data) 
+allowedStay | Object | Allowed stay { "value": Number, "unit": String } 
 generalInformations | String |
-restrictions | Array |  {"VisitorsOnly","GuestsOnly"}
-services | Array | { "WomenParking", "DisabledParking", "Monitored", "ChargingStation", "ParentChild", "MotorCycle", ... } 
-securityComment | String |  
+restrictions | Array | Usage restrictions {"VisitorsOnly","GuestsOnly"}
+services | Array | Special services { "WomenParking", "DisabledParking", "Monitored", "ChargingStation", "ParentChild", "MotorCycle", ... } 
+securityComment | String |  Securtiy features
 entrance | String |
 
 
@@ -492,7 +493,7 @@ Public Transportation
 --
 
 # General Description
-List stations (U-Bahn/S-Bahn/train/bus/tram) in a specific area: return list of stations with basic information.
+List stations (U-Bahn/S-Bahn/train/bus/tram) in a specific area with basic information.
 
 # Query Parameters
 Define area of interest as circle or box.
@@ -508,12 +509,12 @@ List of public transport stations with basic information and a URI to get more d
 
 attribute | json data type | comments
 --- | --- | ---
-description | String | description
+description | String | Description
 type | String | (="PublicTransportStation")
 uri | URI | URI to request more details
-location | Object | { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }. The standard WGS 84 is used for polar coordinates.
-provider | String | service provider
-operator | String | service operator
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
 
 
 GET /api/V0/Resources/PublicTransport/Stations
@@ -549,7 +550,7 @@ GET /api/V0/Resources/PublicTransport/Stations
 
 
 # General Description
-Get WMS PNG file for public transport stations.
+Get WMS in PNG format with public transport stations.
 
 # Query Parameters
 Define area of interest as a box.
@@ -561,16 +562,16 @@ Define area of interest as a box.
 
 ### width
 - `width={w}`: width of map output in pixels (semantics according to WMS GetMap request)
-- the default value is width=250
+- the default value is 250
 
 ### height 
 - `height={h}`: height of map output in pixels (semantics according to WMS GetMap request)
-- the default value is height=250
+- the default value is 250
 
 # Response
-A PNG content which displays the current public transport stations.
+A PNG image which shows public transport stations.
 
-Please note: The accept-header of this request must be set to `image/png`.
+Note: The accept-header of this request must be set to `image/png`.
 
 GET /api/V0/Resources/PublicTransport
 > accept: image/png
