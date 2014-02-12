@@ -53,7 +53,7 @@ id | Number | Resource id
 description | String | 
 type | String | 
 uri | URI | URI to request more details
-location | Object | 
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | 
 operator | String | Name of Ticket Operator
 tariffText | String | Contains Zone and Validity inforation
@@ -344,7 +344,7 @@ attribute | json data type | comments
 --- | --- | ---
 actions | Array | List of available actions on this resource (book, cancel, etc.)
 id | Number | Internal parking garage identification number
-description | String | 
+description | String | Approximate location
 type | String | (="ParkingGarage")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
@@ -405,7 +405,7 @@ GET /api/V0/Resources/Parking/Garages
 ]
 
 # General Description
-Show detailed information for a specific parking garage.
+Show details for a specific parking garage.
 
 # Query Parameters 
 
@@ -509,7 +509,7 @@ List of public transport stations with basic information and a URI to get more d
 
 attribute | json data type | comments
 --- | --- | ---
-description | String | Description
+description | String | Approximate location
 type | String | (="PublicTransportStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
@@ -582,7 +582,7 @@ GET /api/V0/Resources/PublicTransport
 
 
 # General Description
-Get arrival and departure times at a given station.
+Get arrival and departure times at specified specified station.
 
 # Query Parameters
 
@@ -594,13 +594,14 @@ Arrival and/or departure times for a station specified by `{stationId}`.
 
 attribute | json data type | comments
 --- | --- | ---
-id | Number | internal station number
+id | Number | Internal public transport station identification number
 ... | ... | ...
-arrivals | String | arrivals info containing direction, line and arrival times
-departures | String | departures info containing direction, line and arrival times
+arrivals | String | Arrivals info containing direction, line and arrival times
+departures | String | Departures info containing direction, line and departure times
 
 
 Please note: expectedTime is not always available.
+
 GET /api/V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
 < 200
 < Content-Type: application/json
@@ -654,17 +655,17 @@ Define area of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 # Response
-A list of bike sharing stations qualified by the query parameters, with basic information and a URI to acquire more details.
+List of bike sharing stations with basic information within the defined area of interest and a URI to request more details.
 The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-actions | Array | 
-id | Number | 
-description | String | 
-type | String | 
+actions | Array | Available actions
+id | Number | Internal bike sharing station identification number
+description | String | Approximate location
+type | String | Type of bike sharing station
 uri* | URI | URI to request more details.
-location | Object | 
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | service provider
 operator | String | resource operator
 phoneNo | String | 
@@ -770,7 +771,7 @@ Car Sharing
 --
 
 # General Description
-Get list of available cars (offered as free-floating and/or station-based) in a specific area.
+Get list of available cars (free-floating and station-based) in a specific area.
 
 # Query Parameters
 Define area of interest as circle or box.
@@ -782,11 +783,11 @@ Define area of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 ## optional parameter
-- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter ecars ("ELECTRICITY") or petrol cars ("PETROL")
+- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter electric vehicles ("ELECTRICITY") or petrol cars ("PETROL")
 
 
 # Response
-A list of available car sharing locations, both free-floating and/or station-based qualified by the query parameters, 
+A list of available car sharing locations, both free-floating and/or station-based specified by the query parameters, 
 with basic information and a URI to acquire more details.
 In case of station-based cars, only the URI of the Car Sharing station is returned; 
 in case of free-floating cars, the URI to the car itself.
@@ -796,10 +797,10 @@ attribute | json data type | comments
 --- | --- | ---
 actions | Array | 
 id | Number | 
-description | String | 
+description | String | License ID or approximate location
 type | String | 
 uri* | URI | URI
-location | Object | 
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | 
 operator | String | 
 
@@ -863,11 +864,27 @@ Define area of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 ## optional parameter
-- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter ecars ("ELECTRICITY") or petrol cars ("PETROL")
+- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter electric vehicles ("ELECTRICITY") or petrol cars ("PETROL")
 
 # Response
-A list of available free-floating cars qualified by the query parameters, 
+A list of available free-floating cars specified by the query parameters, 
 with basic information and a URI to acquire more details.
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | Available actions (e.g. book)
+id | Number | Internal free-floating car identification number
+description | String | 
+type | String | (=Cars)
+uri* | URI | URI
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | Car sharing provider (usually equals operator)
+operator | String | Car sharing operator (usually equals provider)
+address | String | 
+licenseId | String | License ID
+category | String | 
+fuelType | String | electric vehicle ("ELECTRICITY") or petrol car ("PETROL")
+imageLink | Link | 
 
 GET /api/V0/Resources/CarSharing/Cars
 < 200
@@ -927,13 +944,39 @@ GET /api/V0/Resources/CarSharing/Cars
 
 
 # General Description
-Get detailed information about a specific free-floating car.
+Get details about a specific free-floating car.
 
 # Query Parameters
 currently none  
 
 # Response
-Detailed information about a specific free-floating car determined by `{carId}`.
+Details about a specific free-floating car determined by `{carId}`.
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | Available actions (e.g. book)
+id | Number | Internal free-floating car identification number
+description | String | 
+type | String | (=CarSharingStationCarDetails)
+uri* | URI | URI
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | Car sharing provider (usually equals operator)
+operator | String | Car sharing operator (usually equals provider)
+address | String | 
+licenseId | String | License ID
+category | String | 
+fuelType | String | electric vehicle ("ELECTRICITY") or petrol car ("PETROL")
+imageLink | Link | 
+model | String | 
+name | String | 
+power | String | 
+seatCount | number | 
+doorCount | number | 
+colour | string  | 
+properties | string | 
+locationNote | string | 
+operatorURI | URI | URI 
+fee | string |
 
 GET /api/V0/Resources/CarSharing/Cars/{carId}
 < 200
@@ -1003,18 +1046,18 @@ Define area of interest as circle or box.
 Examples: category of required car (e.g., FullSize), pickup/return station
 
 # Response 
-All car sharing stations qualified by the query parameters, together with basic information and URI to acquire more details.
-All car sharing stations qualified by the query parameters, together with basic information and URI to acquire more details.
+All car sharing stations specified by the query parameters, together with basic information and URI to acquire more details.
+All car sharing stations specified by the query parameters, together with basic information and URI to acquire more details.
 The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
 actions | Array | 
 id | Number | 
-description | String | 
+description | String | Approximate location
 type | String | 
 uri | URI | URI to request more details
-location | Object | 
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | 
 operator | String | 
 operatorURI | String | 
@@ -1107,10 +1150,10 @@ attribute | json data type | comments
 --- | --- | ---
 actions | Array of objects | [ { "name": String, "method": String, "uri": String } ]
 id | String |
-description | String | 
+description | String | Approximate location
 type | String |
 uri | String | 
-location | Object |
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String |
 operator | String | 
 phoneNo | String | 
@@ -1187,7 +1230,7 @@ description | String |
 type | String | 
 url | String | 
 address | Object | {"cityCode": String, "city": String, "street": String, "houseNo": String}
-location | String | 
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 licenceId | String | 
 category | String |
 provider | String |
@@ -1365,19 +1408,19 @@ Define area of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 # Response
-List of all electric vehicle (EV) charging stations qualified by query parameters (and body), 
+List of all electric vehicle (EV) charging stations specified by query parameters (and body), 
 together with geo location, name, and a URI to acquire more details.
 
 attribute | json data type | comments
 --- | --- | ---
 actions | Array | List of available actions on this resource
-id | Number | ressource id
-description | String | 
+id | Number | Internal charging station identification numberg
+description | String | Approximate location or parking garage operator
 type | String | ="EVChargingStation" 
 uri | URI | URI to request more details
-location | Object | 
-provider |  String| 
-operator | String | 
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider |  String| Charging station operator (usually equals provider)
+operator | String | Charging station provider (usually equals operator)
 address | Object | 
  
 
@@ -1684,7 +1727,7 @@ A wayPoint describes an intermediate geo location useful for displaying the trip
 A guidingPoint gives a traveler hints how to travel, e.g., whenever to change the road at a crossing. GuidingPoints are a subset of wayPoints
 
 # Response
-Detailed information about a single trip proposal determined by {proposalId}.
+Details about a single trip proposal determined by {proposalId}.
 The data structure of the response contains the attributes with the basic information and additionally the following attributes of a segment object:
 
 attribute | json data type | comments
@@ -1881,7 +1924,7 @@ Specified in the request body as described in the sample request
 - userId: user that requests a trip
 
 # Response
-List of trip proposals with basic information such as distance, duration and an URI for detailed information.
+List of trip proposals with basic information such as distance, duration and an URI for details.
 
 POST /api/V0/TripProposals
 > Content-Type: application/json
@@ -2133,7 +2176,7 @@ Specified in the request body as described in the sample request
 - userId: user that requests a trip
 
 # Response
-List of trip proposals with basic information such as distance, duration and an URI for detailed information.
+List of trip proposals with basic information such as distance, duration and an URI for details.
 
 POST /api/V0/TripProposals
 > Content-Type: application/json
@@ -2492,7 +2535,7 @@ GET /api/V0/ServiceOfferings
     { "offeringStatus": "provided", "type": "Car Rental", "url": "/Partners/2/ServiceOfferings/1", "name":"Car Rental / Partner 2" }
 ] }
 
-List all offered Services of a given type.
+List all offered Services of a specified type.
 GET /api/V0/ServiceOfferings?category=Parking
 < 200
 < Content-Type: application/json
@@ -2828,7 +2871,7 @@ Define area of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 # Response
-List of traffic information in the specified geo location qualified by query parameters.
+List of traffic information in the specified geo location specified by query parameters.
 GET /api/V0/Info/Incidents
 < 200
 < Content-Type: application/json
@@ -2906,7 +2949,7 @@ Define area of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 # Response 
-List of traffic information in the specified geo location qualified by query parameters.
+List of traffic information in the specified geo location specified by query parameters.
 
 GET /api/V0/Info/Incidents/IndividualTransport
 < 200
@@ -2955,7 +2998,7 @@ Define area of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 # Response 
-List of traffic data in the specified geo location qualified by query parameters.
+List of traffic data in the specified geo location specified by query parameters.
 
 GET /api/V0/Info/Incidents/PublicTransport
 < 200
