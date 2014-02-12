@@ -35,11 +35,11 @@ List of available products for specified origin and destination. Both are public
 
 # Input in request body: 
 
-- origin: point id and address string
-- destination: point id and address string
-- viaPoints: list of geo locations that the route should use
-- numberOfTickets: number of tickets
-- ticketingCategory: specifies zone with possible values - B0, B1, B2, B3
+- origin: Point id and address string
+- destination: Point id and address string
+- viaPoints: List of geo locations the route should pass
+- numberOfTickets: Number of tickets
+- ticketingCategory: Specified zone. Possible values: B0, B1, B2, B3
 
 # Response 
 List of available product for buying.
@@ -47,11 +47,11 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-actions | Array | List of actions possible on this resource (buy/confirm)
+actions | Array | List of available actions on this resource (buy/confirm)
 id | Number | Resource id
 description | String | 
 type | String | 
-uri | URI | URI to request more detailed information
+uri | URI | URI to request more details
 location | Object | 
 provider | String | 
 operator | String | Name of Ticket Operator
@@ -103,7 +103,7 @@ POST /api/V0/Resources/Ticketing/Tickets
 
 
 # General Description
-Buy ticket request with resource Id.
+Buy ticket with resource Id.
 
 # Query Parameters 
 `action=buy`
@@ -128,7 +128,7 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-actions | Array | List of actions possible on this resource (confirm)
+actions | Array | List of available actions on this resource (confirm)
 processId | Number | BPMN process id
 confirmation | Object | Buy ticket response data
 
@@ -180,7 +180,7 @@ POST /api/V0/Resources/Ticketing/Tickets/{resourceId}/Process
 
 
 # General Description
-Confirm ticket delivered.
+Confirm ticket delivery.
 
 # Query Parameters 
 `action=confirm`
@@ -199,7 +199,7 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-actions | Array | List of actions possible on this resource (confirm)
+actions | Array | List of available actions on this resource (confirm)
 processId | Number | BPMN process id
 confirmation | Object | Confirm ticket response data
 
@@ -268,7 +268,7 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-actions | Array | List of actions possible on this resource (confirm)
+actions | Array | List of available actions on this resource (confirm)
 processId | Number | BPMN process id
 confirmation | Object | Buy ticket response data
 
@@ -324,10 +324,10 @@ GET /api/V0/Resources/Ticketing/Tickets
 Parking Garages
 --
 # General Description
-List parking garages in a specific region: return list of parking garages with basic information.
+List parking garages in a specific area with basic information.
 
 # Query Parameters 
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
  
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -336,23 +336,23 @@ Describe region of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 # Response 
-List of parking garages with basic information within the defined region of interest and a URI to request more detailed information.
+List of parking garages with basic information within the defined area of interest and a URI to request more details.
 The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-actions | Array | List of actions possible on this resource (book, cancel, etc.)
+actions | Array | List of available actions on this resource (book, cancel, etc.)
 id | Number | internal garage number
 description | String | 
 type | String | (="ParkingGarage")
-uri | URI | URI to request more detailed information
+uri | URI | URI to request more details
 location | Object | { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }. The standard WGS 84 is used for polar coordinates.
 provider | String | parking service provider
 operator | String | parking space operator
 totalnumber | Object | { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
 lottype | Enum | {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
 
-Some parts of the data structure might be omitted because the information is not available.
+Parts of the data structure might be omitted if the information is not available.
 
 
 
@@ -492,10 +492,10 @@ Public Transportation
 --
 
 # General Description
-List stations (U/S/train/bus/tram) in a specific region: return list of stations with basic information.
+List stations (U-Bahn/S-Bahn/train/bus/tram) in a specific area: return list of stations with basic information.
 
 # Query Parameters
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
 
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -504,13 +504,13 @@ Describe region of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 # Response 
-List of public transport stations with basic information and a URI to get more detailed information.
+List of public transport stations with basic information and a URI to get more details.
 
 attribute | json data type | comments
 --- | --- | ---
 description | String | description
 type | String | (="PublicTransportStation")
-uri | URI | URI to request more detailed information
+uri | URI | URI to request more details
 location | Object | { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }. The standard WGS 84 is used for polar coordinates.
 provider | String | service provider
 operator | String | service operator
@@ -552,7 +552,7 @@ GET /api/V0/Resources/PublicTransport/Stations
 Get WMS PNG file for public transport stations.
 
 # Query Parameters
-Describe region of interest as a box.
+Define area of interest as a box.
 
 ## box
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
@@ -644,7 +644,7 @@ Bike Sharing
 Get list of bike sharing stations (for station-based bike sharing).
 
 # Query Parameters
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
 
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -653,7 +653,7 @@ Describe region of interest as circle or box.
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
 
 # Response
-A list of bike sharing stations qualified by the query parameters, with basic information and a URI to acquire more detailed information.
+A list of bike sharing stations qualified by the query parameters, with basic information and a URI to acquire more details.
 The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
@@ -662,7 +662,7 @@ actions | Array |
 id | Number | 
 description | String | 
 type | String | 
-uri* | URI | URI to request more detailed information.
+uri* | URI | URI to request more details.
 location | Object | 
 provider | String | service provider
 operator | String | resource operator
@@ -731,7 +731,7 @@ Book a bike available at a bike sharing station
 - `stationId={String}, Bike sharing station id where the bike is to be booked`
 
 # Request Body
-The request body will have the following data structure
+The data structure of the request contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -769,10 +769,10 @@ Car Sharing
 --
 
 # General Description
-Get list of available cars (offered as free-floating and/or station-based) in a specific region.
+Get list of available cars (offered as free-floating and/or station-based) in a specific area.
 
 # Query Parameters
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
 
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -786,7 +786,7 @@ Describe region of interest as circle or box.
 
 # Response
 A list of available car sharing locations, both free-floating and/or station-based qualified by the query parameters, 
-with basic information and a URI to acquire more detailed information.
+with basic information and a URI to acquire more details.
 In case of station-based cars, only the URI of the Car Sharing station is returned; 
 in case of free-floating cars, the URI to the car itself.
 The data structure of the response contains the following attributes:
@@ -850,10 +850,10 @@ GET /api/V0/Resources/CarSharing/All
 
 
 # General Description
-Get list of available free-floating cars in a specific region (NOTE: for free-floating car sharing only!).
+Get list of available free-floating cars in a specific area (NOTE: for free-floating car sharing only!).
 
 # Query Parameters
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
 
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -866,7 +866,7 @@ Describe region of interest as circle or box.
 
 # Response
 A list of available free-floating cars qualified by the query parameters, 
-with basic information and a URI to acquire more detailed information.
+with basic information and a URI to acquire more details.
 
 GET /api/V0/Resources/CarSharing/Cars
 < 200
@@ -986,7 +986,7 @@ GET /api/V0/Resources/CarSharing/Cars/{carId}
 Get list of car sharing stations (for station-based car sharing).
 
 # Query Parameters 
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
 
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -1002,8 +1002,8 @@ Describe region of interest as circle or box.
 Examples: category of required car (e.g., FullSize), pickup/return station
 
 # Response 
-All car sharing stations qualified by the query parameters, together with basic information and URI to acquire more detailed information.
-All car sharing stations qualified by the query parameters, together with basic information and URI to acquire more detailed information.
+All car sharing stations qualified by the query parameters, together with basic information and URI to acquire more details.
+All car sharing stations qualified by the query parameters, together with basic information and URI to acquire more details.
 The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
@@ -1012,7 +1012,7 @@ actions | Array |
 id | Number | 
 description | String | 
 type | String | 
-uri | URI | URI to request more detailed information
+uri | URI | URI to request more details
 location | Object | 
 provider | String | 
 operator | String | 
@@ -1228,7 +1228,7 @@ GET /api/V0/Resources/CarSharing/Stations/{stationId}/Cars
 - `carId={String}, Resource Id of the car being booked`
 
 # Request Body
-The request body will have the following data structure
+The data structure of the request contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -1270,7 +1270,7 @@ POST /api/V0/Resources/CarSharing/Cars/{carId}/Process?action=book
 - `carId={String}, Resource Id of the car being booked`
 
 # Request Body
-The request body will have the following data structure
+The data structure of the request contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -1311,7 +1311,7 @@ POST /api/V0/Resources/CarSharing/Stations/{stationId}/Cars/{carId}/Process?acti
 - `stationId={String}, Car sharing station id where the car is located`
 
 # Request Body
-The request body will have the following data structure
+The data structure of the request contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -1355,7 +1355,7 @@ EV Charging Station
 Get list of EV Charging Stations.
 
 # Query Parameters 
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
 
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -1365,15 +1365,15 @@ Describe region of interest as circle or box.
 
 # Response
 List of all electric vehicle (EV) charging stations qualified by query parameters (and body), 
-together with geo location, name, and a URI to acquire more detailed information.
+together with geo location, name, and a URI to acquire more details.
 
 attribute | json data type | comments
 --- | --- | ---
-actions | Array | List of actions possible on this resource
+actions | Array | List of available actions on this resource
 id | Number | ressource id
 description | String | 
 type | String | ="EVChargingStation" 
-uri | URI | URI to request more detailed information
+uri | URI | URI to request more details
 location | Object | 
 provider |  String| 
 operator | String | 
@@ -1504,7 +1504,7 @@ Traffic Info Level-of-Service. WMS
 Get WMS PNG file for road traffic (Level of Service).
 
 # Query Parameters
-Describe region of interest as box.
+Define area of interest as box.
 
 ## box
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
@@ -1564,7 +1564,7 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-url | URI | URI to request more detailed information
+url | URI | URI to request more details
 origin | Object | start point of the proposed trip
 destination | Object | endpoint of the proposed trip
 trafficTypes | Array | list of traffic types used in the proposed trip  
@@ -1688,7 +1688,7 @@ The data structure of the response contains the attributes with the basic inform
 
 attribute | json data type | comments
 --- | --- | ---
-segmentId | URI | URI to request more detailed information
+segmentId | URI | URI to request more details
 origin | Object | start point of the proposed trip
 destination | Object | endpoint of the proposed trip
 
@@ -2319,7 +2319,7 @@ WMS
 Get WMS PNG file for several service categories.
 
 # Query Parameters
-Describe region of interest as a bounding box and with further optional parameters.
+Define area of interest as a bounding box and with further optional parameters.
 
 ## box
 `left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
@@ -2563,10 +2563,10 @@ Taxi
 
 
 # General Description
-Get available taxis in a specified region.
+Get available taxis in a specified area.
 
 # Query Parameters
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
 
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -2815,10 +2815,10 @@ Incidents / Traffic Info
 --
 
 # General Description
-Get recent general incidents / traffic info in a specific region.
+Get recent general incidents / traffic info in a specific area.
 
 # Query Parameters
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
  
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -2893,10 +2893,10 @@ GET /api/V0/Info/Incidents
 ]
 
 # General Description
-Get recent individual transportation incidents / traffic info in a specific region.
+Get recent individual transportation incidents / traffic info in a specific area.
 
 # Query Parameters
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
  
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -2942,10 +2942,10 @@ GET /api/V0/Info/Incidents/IndividualTransport
 
 
 # General Description
-Get recent public transportation incidents / traffic info in a specific region.
+Get recent public transportation incidents / traffic info in a specific area.
 
 # Query Parameters
-Describe region of interest as circle or box.
+Define area of interest as circle or box.
  
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
