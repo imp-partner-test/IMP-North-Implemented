@@ -1074,16 +1074,16 @@ GET /api/V0/Resources/CarSharing/Stations
             {
                 "name": "book",
                 "method": "POST",
-                "uri": "Resources/CarSharing/Stations/8743/Process?action=book"
+                "uri": "Resources/CarSharing/Stations/1627/Process?action=book"
             }
         ],
-        "id": 8743,
-        "description": "The Ritz-Carlton",
+        "id": 1627,
+        "description": "Christinenstraße",
         "type": null,
-        "uri": "Resources/CarSharing/Stations/8743",
+        "uri": "Resources/CarSharing/Stations/1627",
         "location": {
-            "latitude": 52.509990227446885,
-            "longitude": 13.375629186630249,
+            "latitude": 52.531388124911125,
+            "longitude": 13.409093767404556,
             "system": "WGS_84"
         },
         "provider": "FlinksterDB",
@@ -1092,11 +1092,11 @@ GET /api/V0/Resources/CarSharing/Stations
         "operatorURI": null,
         "operatorName": "FlinksterDB",
         "address": {
-            "citycode": "10785",
+            "citycode": "10119",
             "city": "Berlin",
-            "street": "Potsdamer Platz",
-            "houseno": "2",
-            "district": "Mitte",
+            "street": "Christinenstraße",
+            "houseno": "13",
+            "district": "Prenzlauer Berg",
             "region": null,
             "country": null
         }
@@ -1106,13 +1106,13 @@ GET /api/V0/Resources/CarSharing/Stations
             {
                 "name": "book",
                 "method": "POST",
-                "uri": "Resources/CarSharing/Stations/8455/Process?action=book"
+                "uri": "Resources/CarSharing/Stations/1634/Process?action=book"
             }
         ],
-        "id": 8455,
+        "id": 1634,
         "description": "Friedrichstr.",
         "type": null,
-        "uri": "Resources/CarSharing/Stations/8455",
+        "uri": "Resources/CarSharing/Stations/1634",
         "location": {
             "latitude": 52.5083274841,
             "longitude": 13.3902387619,
@@ -1173,16 +1173,16 @@ GET /api/V0/Resources/CarSharing/Stations/{stationId}
         {
             "name": "book",
             "method": "POST",
-            "uri": "Resources/CarSharing/Stations/8852/Process?action=book"
+            "uri": "Resources/CarSharing/Stations/1634//Process?action=book"
         }
     ],
-    "id": 8852,
-    "description": "Caroline-Michaelis-Straße",
+    "id": 1634,
+    "description": "Friedrichstr.",
     "type": null,
-    "uri": "Resources/CarSharing/Stations/8852/",
+    "uri": "Resources/CarSharing/Stations/1634/",
     "location": {
-        "latitude": 52.533559809882156,
-        "longitude": 13.382519781589508,
+        "latitude": 52.5083274841,
+        "longitude": 13.3902387619,
         "system": "WGS_84"
     },
     "provider": "FlinksterDB",
@@ -1191,21 +1191,19 @@ GET /api/V0/Resources/CarSharing/Stations/{stationId}
     "operatorURI": null,
     "operatorName": "FlinksterDB",
     "address": {
-        "citycode": "10115",
+        "citycode": "10117",
         "city": "Berlin",
-        "street": "Caroline-Michaelis-Straße",
-        "houseno": "5-11",
-        "district": "Mitte",
+        "street": "Friedrichstr.",
+        "houseno": "50-55",
+        "district": null,
         "region": null,
         "country": null
     },
     "notes": [
-        "Beschilderte Parkplätze befinden sich rechts neben dem Gebäude der Deutschen Bahn AG in der Caroline-Michaelis-Str. 5-11, vom Nordbahnhof kommend am Ende des Gebäudekomplexes.",
-        "Die Zufahrt zu den Parkplätzen erfolgt durch die Schranke links vom Hauptgebäude, neben der Einfahrt zur Tiefgarage. Bitte klingeln, Pförtner meldet sich (24h besetzt) und öffnet. Stellen Sie das Fahrzeug bitte auf einen der Stellplätze von Nr. 7 bis 12 bzw. von Nr. 26 bis 45.<br><b> \n<u>An dieser Station befinden sich auch Elektrofahrzeuge</u>. Bitte halten Sie die Stellflächen an den Ladesäulen für die E-Fahrzeuge frei! Führen Sie das Ladekabel bitte immer im Auto mit und schließen Sie das Fahrzeug bei Rückgabe bitte wieder an die Ladesäule an. Die hierzu erforderliche DB Energie- bzw. Vattenfall-Ladekarte finden Sie in der Mittelkonsole des Fahrzeuges. Achten Sie darauf, daß Sie die richtige Ladekarte für die jeweilige Ladesäule nutzen. Eventuell bekommen Sie an der DB Energie-Ladesäule beim erstmaligen Vorhalten der Ladekarte eine Fehlermeldung, dann bitte nach einer kurzen Pause ein zweitesmal probieren. <br><br>Ihr Flinkster-Team\n",
-        "S-Bahn S1, S2, S25 bis Nordbahnhof<br>\nU-Bahn U6 bis Zinnowitzer straße<br>\nMetroTram M6, M8 <br>\nTram 12 S-Bahnhof Nordbahnhof<br>\nBus 245 <br>"
+        "Öffnungszeiten:\nMo-Fr: 7.00 - 19.00\nSa: 9.00 - 14.00\nSo: 9.00 - 13.00 "
     ],
     "services": null,
-    "availableCars": 4
+    "availableCars": 7
 }
 
 
@@ -1239,27 +1237,59 @@ GET /api/V0/Resources/CarSharing/Stations/{stationId}/Cars
 < 200
 < Content-Type: application/json
 [
-    {  
-         "actions": [
-        {
-            "name": "book",
-            "method": "POST",
-            "uri": "Resources/CarSharing/Stations/8852/Cars/8829/Process?action=book"
-        }
-        ],
-        "id": "8829",   
-        "description": "B-GO2999", 
-        "type": "Car", 
-        "url": "/Resources/CarSharing/Cars/B-GO2999", 
-        "address": { "cityCode": "13357", "city": "Berlin", "street": "Ellerbeker Straße", "houseNo": "7 - 8" }, 
-        "location" : {  
-                "latitude" : 52.55157,
-                "longitude": 13.39552,
-                "system": "WGS_84"
-            },
-        "licenceId": "B-GO2999",  
-        "category": "Compact",
-        "provider": "Car2Go"
+    {
+        "actions": [],
+        "id": 1700,
+        "description": "Friedrichstr.",
+        "type": "CarSharingStationCar",
+        "uri": "Resources/CarSharing/Stations/1634/Cars/1700",
+        "location": {
+            "latitude": 52.5083274841,
+            "longitude": 13.3902387619,
+            "system": "WGS_84"
+        },
+        "provider": "FlinksterDB",
+        "operator": "FlinksterDB",
+        "address": {
+            "citycode": "10117",
+            "city": "Berlin",
+            "street": "Friedrichstr.",
+            "houseno": "50-55",
+            "district": null,
+            "region": null,
+            "country": null
+        },
+        "licenseId": null,
+        "category": null,
+        "fuelType": "UNKNOWN",
+        "imageLink": null
+    },
+    {
+        "actions": [],
+        "id": 1701,
+        "description": "Friedrichstr.",
+        "type": "CarSharingStationCar",
+        "uri": "Resources/CarSharing/Stations/1634/Cars/1701",
+        "location": {
+            "latitude": 52.5083274841,
+            "longitude": 13.3902387619,
+            "system": "WGS_84"
+        },
+        "provider": "FlinksterDB",
+        "operator": "FlinksterDB",
+        "address": {
+            "citycode": "10117",
+            "city": "Berlin",
+            "street": "Friedrichstr.",
+            "houseno": "50-55",
+            "district": null,
+            "region": null,
+            "country": null
+        },
+        "licenseId": null,
+        "category": null,
+        "fuelType": "UNKNOWN",
+        "imageLink": null
     }    
 ]
 
