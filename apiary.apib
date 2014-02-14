@@ -868,7 +868,7 @@ Define area of interest as circle or box.
 
 # Response
 A list of available free-floating cars specified by the query parameters, 
-with basic information and a URI to acquire more details.
+with basic information and an URI to acquire more details.
 
 attribute | json data type | comments
 --- | --- | ---
@@ -876,15 +876,15 @@ actions | Array | Available actions (e.g. book)
 id | Number | Internal free-floating car identification number
 description | String | 
 type | String | (=Cars)
-uri* | URI | URI
+uri* | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | Car sharing provider (usually equals operator)
 operator | String | Car sharing operator (usually equals provider)
 address | String | 
 licenseId | String | License ID
-category | String | 
+category | String | ENUM{"Fullsize", "Compact", "Smallsize", ... }
 fuelType | String | electric vehicle ("ELECTRICITY") or petrol car ("PETROL")
-imageLink | Link | 
+imageLink | Link | link to the car image
 
 GET /api/V0/Resources/CarSharing/Cars
 < 200
@@ -895,50 +895,66 @@ GET /api/V0/Resources/CarSharing/Cars
             {
                 "name": "book",
                 "method": "POST",
-                "uri": "Resources/CarSharing/Cars/37917/Process?action=book"
+                "uri": "Resources/CarSharing/Cars/39117/Process?action=book"
             }
         ],
-        "id": 37917,
-        "description": "151669",
-        "type": "Cars",
-        "uri": "Resources/CarSharing/Cars/37917",
+        "id": 39117,
+        "description": "B-GO2424",
+        "type": "CarSharingCar",
+        "uri": "Resources/CarSharing/Cars/39117",
         "location": {
-            "latitude": 52.515995,
-            "longitude": 13.3923817,
+            "latitude": 52.51061,
+            "longitude": 13.37339,
             "system": "WGS_84"
         },
-        "provider": "FlinksterDB",
-        "operator": "FlinksterDB",
-        "address": null,
-        "licenseId": "B-MC 2680",
+        "provider": "Car2Go_Berlin",
+        "operator": "Car2Go_Berlin",
+        "address": {
+            "citycode": null,
+            "city": null,
+            "street": "Bellevuestraße 3, 10785 Berlin",
+            "houseno": null,
+            "district": null,
+            "region": null,
+            "country": null
+        },
+        "licenseId": "B-GO2424",
         "category": null,
-        "fuelType": "ELECTRICITY",
-        "imageLink": "www.flinkster.de/common/gethashdata.php?uniquebid=e839f1f54648d3cfd501cebf0173453e"
+        "fuelType": "PETROL",
+        "imageLink": null
     },
     {
         "actions": [
             {
                 "name": "book",
                 "method": "POST",
-                "uri": "Resources/CarSharing/Cars/37916/Process?action=book"
+                "uri": "Resources/CarSharing/Cars/39230/Process?action=book"
             }
         ],
-        "id": 37916,
-        "description": "151642",
-        "type": "Cars",
-        "uri": "Resources/CarSharing/Cars/37916",
+        "id": 39230,
+        "description": "B-GO4013",
+        "type": "CarSharingCar",
+        "uri": "Resources/CarSharing/Cars/39230",
         "location": {
-            "latitude": 52.5190233,
-            "longitude": 13.380195,
+            "latitude": 52.5074,
+            "longitude": 13.37516,
             "system": "WGS_84"
         },
-        "provider": "FlinksterDB",
-        "operator": "FlinksterDB",
-        "address": null,
-        "licenseId": "B-MC 2639",
+        "provider": "Car2Go_Berlin",
+        "operator": "Car2Go_Berlin",
+        "address": {
+            "citycode": null,
+            "city": null,
+            "street": "Linkstraße 4, 10785 Berlin",
+            "houseno": null,
+            "district": null,
+            "region": null,
+            "country": null
+        },
+        "licenseId": "B-GO4013",
         "category": null,
         "fuelType": "ELECTRICITY",
-        "imageLink": "www.flinkster.de/common/gethashdata.php?uniquebid=b239978f55826a660c3f405467aeafc4"
+        "imageLink": null
     }
 ]
 
@@ -950,33 +966,22 @@ Get details about a specific free-floating car.
 currently none  
 
 # Response
-Details about a specific free-floating car determined by `{carId}`.
+Details about a specific free-floating car determined by `{carId}` as retrieved through GET /api/V0/Resources/CarSharing/Cars.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-actions | Array | Available actions (e.g. book)
-id | Number | Internal free-floating car identification number
-description | String | 
-type | String | (=CarSharingStationCarDetails)
-uri* | URI | URI
-location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | Car sharing provider (usually equals operator)
-operator | String | Car sharing operator (usually equals provider)
-address | String | 
-licenseId | String | License ID
-category | String | 
-fuelType | String | electric vehicle ("ELECTRICITY") or petrol car ("PETROL")
-imageLink | Link | 
+... | ... | ...
 model | String | 
 name | String | 
 power | String | 
-seatCount | number | 
-doorCount | number | 
-colour | string  | 
-properties | string | 
-locationNote | string | 
-operatorURI | URI | URI 
-fee | string |
+seatCount | Number | number of sits
+doorCount | Number | number of doors
+colour | String  | car colour
+properties | Array | List of properties
+locationNote | String | 
+operatorURI | URI | operator URI
+fee | String | car costs per time unit
 
 GET /api/V0/Resources/CarSharing/Cars/{carId}
 < 200
@@ -986,43 +991,43 @@ GET /api/V0/Resources/CarSharing/Cars/{carId}
         {
             "name": "book",
             "method": "POST",
-            "uri": "Resources/CarSharing/Cars/37917/37943/Process?action=book"
+            "uri": "Resources/CarSharing/Cars/39117/Process?action=book"
         }
     ],
-    "id": 37943,
-    "description": "151669",
+    "id": 39117,
+    "description": "B-GO2424",
     "type": "CarSharingStationCarDetails",
-    "uri": "Resources/CarSharing/Cars/37917/37943",
+    "uri": "Resources/CarSharing/Cars/39117/",
     "location": {
-        "latitude": 52.515995,
-        "longitude": 13.3923817,
+        "latitude": 52.51061,
+        "longitude": 13.37339,
         "system": "WGS_84"
     },
-    "provider": "FlinksterDB",
-    "operator": "FlinksterDB",
-    "address": null,
-    "licenseId": "B-MC 2680",
+    "provider": "Car2Go_Berlin",
+    "operator": "Car2Go_Berlin",
+    "address": {
+        "citycode": null,
+        "city": null,
+        "street": "Bellevuestraße 3, 10785 Berlin",
+        "houseno": null,
+        "district": null,
+        "region": null,
+        "country": null
+    },
+    "licenseId": "B-GO2424",
     "category": null,
-    "fuelType": "ELECTRICITY",
-    "imageLink": "www.flinkster.de/common/gethashdata.php?uniquebid=089fc849059c9ff1f97454ecbf72d237",
-    "model": "Citroën C-Zero ",
-    "name": "Citroën C-Zero ",
+    "fuelType": "PETROL",
+    "imageLink": null,
+    "model": null,
+    "name": null,
     "power": null,
-    "seatCount": 4,
-    "doorCount": 4,
+    "seatCount": null,
+    "doorCount": null,
     "colour": null,
-    "properties": [
-        "ABS"
-    ],
+    "properties": [],
     "locationNote": null,
     "operatorURI": null,
-    "fee": {
-        "money": 11.4,
-        "duration": {
-            "unit": "Hour",
-            "value": 1
-        }
-    }
+    "fee": null
 }
 
 
