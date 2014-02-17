@@ -880,7 +880,7 @@ uri* | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | Car sharing provider (usually equals operator)
 operator | String | Car sharing operator (usually equals provider)
-address | String | 
+address | String | Street, city, etc.
 licenseId | String | License ID
 category | String | ENUM{"Fullsize", "Compact", "Smallsize", ... }
 fuelType | String | electric vehicle ("ELECTRICITY") or petrol car ("PETROL")
@@ -1067,7 +1067,7 @@ provider | String |
 operator | String | 
 operatorURI | String | 
 operatorName | String | 
-address | Object | 
+address | Object | Street, city, etc.
 
 
 GET /api/V0/Resources/CarSharing/Stations
@@ -1300,7 +1300,7 @@ GET /api/V0/Resources/CarSharing/Stations/{stationId}/Cars
 
 
 # General Description
-*Book a car offered as a free-floating car !!!!!!!!!! check it
+Book a car offered as a free-floating car.
 
 # Request Path Parameters
 
@@ -1341,7 +1341,7 @@ POST /api/V0/Resources/CarSharing/Cars/{carId}/Process?action=book
 }    
 
 # General Description
-*Book a car available at a car sharing station.
+Book a specific car available at a car sharing station by specifying the car id.
 
 # Request Path Parameters
 
@@ -1383,7 +1383,7 @@ POST /api/V0/Resources/CarSharing/Stations/{stationId}/Cars/{carId}/Process?acti
   
 
 # General Description
-*Book any car available at a car sharing station by specifying the car type.
+Book any car available at a car sharing station by specifying the car type.
 
 # Request Path Parameters
 
