@@ -664,7 +664,7 @@ actions | Array | Available actions
 id | Number | Internal bike sharing station identification number
 description | String | Approximate location
 type | String | Type of bike sharing station
-uri* | URI | URI to request more details.
+uri | URI | URI to request more details.
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | service provider
 operator | String | resource operator
@@ -799,7 +799,7 @@ actions | Array |
 id | Number | 
 description | String | License ID or approximate location
 type | String | 
-uri* | URI | URI
+uri | URI | URI
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | 
 operator | String | 
@@ -876,7 +876,7 @@ actions | Array | Available actions (e.g. book)
 id | Number | Internal free-floating car identification number
 description | String | 
 type | String | (=Cars)
-uri* | URI | URI to request more details
+uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | Car sharing provider (usually equals operator)
 operator | String | Car sharing operator (usually equals provider)
@@ -1178,7 +1178,7 @@ GET /api/V0/Resources/CarSharing/Stations/{stationId}
         {
             "name": "book",
             "method": "POST",
-            "uri": "Resources/CarSharing/Stations/1634//Process?action=book"
+            "uri": "Resources/CarSharing/Stations/1634/Process?action=book"
         }
     ],
     "id": 1634,
@@ -1213,7 +1213,7 @@ GET /api/V0/Resources/CarSharing/Stations/{stationId}
 
 
 # General Description
-*Get list of available cars at a specific car sharing station.
+Get list of available cars at a specific car sharing station.
 
 # Query Parameters
 Optional time interval in the future:
