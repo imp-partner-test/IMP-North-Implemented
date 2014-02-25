@@ -108,6 +108,17 @@
 	"Reporting"
       ],
       "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    },
+    {
+      "Project": "OMB-hacon",
+      "Title": "OMB: HaCon
+      "Chapters": [
+        "Introduction",	
+	"Bike Sharing",
+	"Car Sharing",
+        "Multimodal Routing Planner"
+      ],
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     }
   ]
 }
