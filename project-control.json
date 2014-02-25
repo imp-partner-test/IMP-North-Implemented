@@ -15,7 +15,11 @@
       "Title": "OMB: BOSCH",
       "Chapters": [
         "Introduction",
-        "Parking Garages"
+	"Public Transportation",
+	"Incidents / Traffic Info",
+	"Traffic Info Level-of-Service. WMS",
+	"Bike Sharing",
+	"Car Sharing",
       ],
       "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
