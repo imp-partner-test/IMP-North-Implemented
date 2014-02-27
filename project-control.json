@@ -116,7 +116,20 @@
         "Introduction",	
 	"Bike Sharing",
 	"Car Sharing",
+	"Parking Garages",
         "Multimodal Routing Planner"
+      ],
+      "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
+    },
+    {
+      "Project": "OMB-streetlife",
+      "Title": "OMB: Streetlife",
+      "Chapters": [
+        "Introduction",	
+	"Bike Sharing",
+	"Car Sharing",
+	"Parking Garages",
+        "EV Charging Station"
       ],
       "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     }
