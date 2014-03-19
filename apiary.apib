@@ -510,41 +510,186 @@ List of public transport stations with basic information and a URI to get more d
 attribute | json data type | comments
 --- | --- | ---
 description | String | Approximate location
-type | String | (="PublicTransportStation")
+type | String | (="Stations")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
 operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
 
 
-GET /api/V0/Resources/PublicTransport/Stations
+GET /api/V0/Resources/PublicTransport/All
 > Accept: application/json
 < 200
 < Content-Type: application/json
 [
     {
-        "description": "Berlin, Georgenstr./Am Kupfergraben",
-        "type": "PublicTransportStation",
-        "url": "Resources/PublicTransport/Stations/36",
+        "actions": [],
+        "id": 958,
+        "description": "Berlin, Jüdisches Museum",
+        "type": "Stations",
+        "uri": "Resources/PublicTransport/Stations/958",
         "location": {
-            "latitude": 52.520484,
-            "longitude": 13.394158,
+            "latitude": 52.503543,
+            "longitude": 13.395639,
             "system": "WGS_84"
         },
         "provider": "VBBStation",
         "operator": "VBBStation"
     },
     {
-        "description": "U Mohrenstr./Glinkastr. (Berlin)",
-        "type": "PublicTransportStation",
-        "url": "Resources/PublicTransport/Stations/37",
+        "actions": [],
+        "id": 960,
+        "description": "S Hackescher Markt",
+        "type": "Stations",
+        "uri": "Resources/PublicTransport/Stations/960",
         "location": {
-            "latitude": 52.511936,
-            "longitude": 13.38661,
+            "latitude": 52.523070000000004,
+            "longitude": 13.402730000000002,
+            "system": "WGS_84"
+        },
+        "provider": "VBBStationS",
+        "operator": "VBBStationS"
+    }
+] 
+
+
+# General Description
+List Bus/Tram stations in a specific area with basic information.
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of public transport Bus/Tram stations with basic information and a URI to get more details.
+
+attribute | json data type | comments
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportBusStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | (="VBBStation")
+operator | String | (="VBBStation")
+
+
+GET /api/V0/Resources/PublicTransport/BusStations
+> Accept: application/json
+< 200
+< Content-Type: application/json
+[
+    {
+        "actions": [],
+        "id": 958,
+        "description": "Berlin, Jüdisches Museum",
+        "type": "PublicTransportBusStation",
+        "uri": "Resources/PublicTransport/BusStations/958",
+        "location": {
+            "latitude": 52.503543,
+            "longitude": 13.395639,
             "system": "WGS_84"
         },
         "provider": "VBBStation",
         "operator": "VBBStation"
+    }
+] 
+
+
+# General Description
+List Metro stations in a specific area with basic information.
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of public transport Metro stations with basic information and a URI to get more details.
+
+attribute | json data type | comments
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportMetroStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | (="VBBStationU")
+operator | String | (="VBBStationU")
+
+
+GET /api/V0/Resources/PublicTransport/MetroStations
+> Accept: application/json
+< 200
+< Content-Type: application/json
+[
+    {
+        "actions": [],
+        "id": 954,
+        "description": "U Prinzenstr.",
+        "type": "PublicTransportMetroStation",
+        "uri": "Resources/PublicTransport/MetroStations/954",
+        "location": {
+            "latitude": 52.498270000000005,
+            "longitude": 13.406530000000002,
+            "system": "WGS_84"
+        },
+        "provider": "VBBStationU",
+        "operator": "VBBStationU"
+    }
+] 
+
+
+# General Description
+List City-Train/Regio stations in a specific area with basic information.
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of public transport City-Train/Regio stations with basic information and a URI to get more details.
+
+attribute | json data type | comments
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportCityTrainStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | (="VBBStationS")
+operator | String | (="VBBStationS")
+
+
+GET /api/V0/Resources/PublicTransport/CityTrainStations
+> Accept: application/json
+< 200
+< Content-Type: application/json
+[
+    {
+        "actions": [],
+        "id": 960,
+        "description": "S Hackescher Markt",
+        "type": "PublicTransportCityTrainStation",
+        "uri": "Resources/PublicTransport/CityTrainStations/960",
+        "location": {
+            "latitude": 52.523070000000004,
+            "longitude": 13.402730000000002,
+            "system": "WGS_84"
+        },
+        "provider": "VBBStationS",
+        "operator": "VBBStationS"
     }
 ] 
 
