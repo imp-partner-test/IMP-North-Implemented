@@ -510,14 +510,14 @@ List of public transport stations with basic information and a URI to get more d
 attribute | json data type | comments
 --- | --- | ---
 description | String | Approximate location
-type | String | (="Stations")
+type | String | (="PublicTransportStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
 operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
 
 
-GET /api/V0/Resources/PublicTransport/All
+GET /api/V0/Resources/PublicTransport/Stations
 > Accept: application/json
 < 200
 < Content-Type: application/json
@@ -526,7 +526,7 @@ GET /api/V0/Resources/PublicTransport/All
         "actions": [],
         "id": 958,
         "description": "Berlin, Jüdisches Museum",
-        "type": "Stations",
+        "type": "PublicTransportStation",
         "uri": "Resources/PublicTransport/Stations/958",
         "location": {
             "latitude": 52.503543,
@@ -540,7 +540,7 @@ GET /api/V0/Resources/PublicTransport/All
         "actions": [],
         "id": 960,
         "description": "S Hackescher Markt",
-        "type": "Stations",
+        "type": "PublicTransportStation",
         "uri": "Resources/PublicTransport/Stations/960",
         "location": {
             "latitude": 52.523070000000004,
