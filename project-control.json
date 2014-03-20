@@ -129,7 +129,10 @@
 	"Bike Sharing",
 	"Car Sharing",
 	"Parking Garages",
-        "EV Charging Station"
+        "EV Charging Station",
+	"Public Transportation",
+	"Incidents / Traffic Info",
+	"Traffic Info Level-of-Service. WMS"
       ],
       "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     }
