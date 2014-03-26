@@ -1759,11 +1759,11 @@ GET /api/V0/Info/TrafficInfo
 
 
 --
-Multimodal Routing Planner
+Intermodal Routing Planner
 --
 
 # General Description
-Get multimodal trip proposals with basic information for specified trip criteria.
+Get intermodal trip proposals with basic information for specified trip criteria.
 
 # Query Parameters 
 
@@ -2087,260 +2087,9 @@ GET /api/V0/TripProposals/{proposalId}
 }
 
 
-# General Description
-Get trip information for specified traffic types.
-
-# Selection criteria 
-Specified in the request body as described in the sample request 
-
-- origin: start point specified by a geo location 
-  (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
-- destination: start point specified by a geo location
-- either orgin or destination might specify a time
-- viaPoints: list of geo locations that the route should use
-- costFunction: list of cost factors (such as Distance, Duration, Price, Economy), each with a percentual weight 
-- trafficTypes: list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
-- routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
-- userId: user that requests a trip
-
-# Response
-List of trip proposals with basic information such as distance, duration and an URI for details.
-
-POST /api/V0/TripProposals
-> Content-Type: application/json
-> Accept: application/json
-{
-  "origin": {
-    "location": {
-      "longitude": 13.41100700000004,
-      "latitude": 52.521642,
-      "system": "WGS84"
-    },
-    "time": "2014-01-08T12:04:02UTC+05:30"
-  },
-  "destination": {
-    "location": {
-      "longitude": 13.319420000000036,
-      "latitude": 52.56347100000001,
-      "system": "WGS84"
-    },
-    "time": null
-  },
-  "viaPoints": [],
-  "costFunctions": [
-    {
-      "costType": "Price",
-      "percentage": 100
-    }
-  ],
-  "userId": "4711/10",
-  "trafficTypes": [
-    "Walk",
-    "Bike",
-    "Car",
-    "Metro",
-    "CityTrain",
-    "Bus"
-  ],
-  "routingConstraints": []
-}
-< 200
-< Content-Type: application/json
-[
-    {
-        "url": "TripProposals/2252",
-        "origin": {
-            "location": {
-                "latitude": 52.5218455,
-                "longitude": 13.4113422,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T13:04:02+0100"
-        },
-        "destination": {
-            "location": {
-                "latitude": 52.56353,
-                "longitude": 13.3194454,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T14:49:41+0100"
-        },
-        "trafficTypes": [
-            "Walk"
-        ],
-        "description": null,
-        "costs": {
-            "distance": {
-                "unit": "Meter",
-                "value": 8478
-            },
-            "duration": {
-                "unit": "Second",
-                "value": 6339
-            },
-            "price": null,
-            "emission": null
-        }
-    },
-    {
-        "url": "TripProposals/2253",
-        "origin": {
-            "location": {
-                "latitude": 52.522107,
-                "longitude": 13.41098,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T13:04:02+0100"
-        },
-        "destination": {
-            "location": {
-                "latitude": 52.563589,
-                "longitude": 13.319065,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T13:36:39+0100"
-        },
-        "trafficTypes": [
-            "Bike"
-        ],
-        "description": "Route for Request null",
-        "costs": {
-            "distance": {
-                "unit": "Meter",
-                "value": 9382.59817008142
-            },
-            "duration": {
-                "unit": "Second",
-                "value": 1957.896757515492
-            },
-            "price": null,
-            "emission": null
-        }
-    },
-    {
-        "url": "TripProposals/2254",
-        "origin": {
-            "location": {
-                "latitude": 52.52180862426758,
-                "longitude": 13.411370277404785,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T10:59:19+0100"
-        },
-        "destination": {
-            "location": {
-                "latitude": 52.56351852416992,
-                "longitude": 13.319450378417969,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T11:23:19+0100"
-        },
-        "trafficTypes": [
-            "Car"
-        ],
-        "description": "@52.52164077758788,13.411006927490234:@52.56347274780273,13.319419860839844",
-        "costs": {
-            "distance": {
-                "unit": "Meter",
-                "value": 9837
-            },
-            "duration": {
-                "unit": "Second",
-                "value": 1446
-            },
-            "price": null,
-            "emission": null
-        }
-    },
-    {
-        "url": "TripProposals/2255",
-        "origin": {
-            "location": {
-                "latitude": 52.521634,
-                "longitude": 13.411006,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T13:04:00+0100"
-        },
-        "destination": {
-            "location": {
-                "latitude": 52.563469,
-                "longitude": 13.319415,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T13:43:00+0100"
-        },
-        "trafficTypes": [
-            "Walk",
-            "Metro",
-            "Bus"
-        ],
-        "description": "C1-0",
-        "costs": {
-            "distance": null,
-            "duration": {
-                "unit": "Second",
-                "value": 2340
-            },
-            "price": {
-                "unit": "EuroCent",
-                "value": 260
-            },
-            "emission": null
-        }
-    },
-    {
-        "url": "TripProposals/2256",
-        "origin": {
-            "location": {
-                "latitude": 52.521634,
-                "longitude": 13.411006,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T13:06:00+0100"
-        },
-        "destination": {
-            "location": {
-                "latitude": 52.563469,
-                "longitude": 13.319415,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-01-08T13:42:00+0100"
-        },
-        "trafficTypes": [
-            "Walk",
-            "CityTrain",
-            "Metro"
-        ],
-        "description": "C1-1",
-        "costs": {
-            "distance": null,
-            "duration": {
-                "unit": "Second",
-                "value": 2160
-            },
-            "price": {
-                "unit": "EuroCent",
-                "value": 260
-            },
-            "emission": null
-        }
-    }
-]
-
 
 # General Description
-Get trip information with Car/Walk routing constraints.
+Get trip information with Car/Walk routing constraints (min/max values).
 
 # Selection criteria 
 Specified in the request body as described in the sample request 
@@ -2368,7 +2117,7 @@ POST /api/V0/TripProposals
       "latitude": 52.3941887,
       "system": "WGS84"
     },
-    "time": "2014-01-08T12:04:02UTC+05:30"
+    "time": "2014-03-27T12:04:02UTC+05:30"
   },
   "destination": {
     "location": {
@@ -2417,15 +2166,61 @@ POST /api/V0/TripProposals
 < Content-Type: application/json
 [
     {
-        "url": "TripProposals/2193",
+        "url": "TripProposals/405360",
         "origin": {
             "location": {
-                "latitude": 52.395081,
-                "longitude": 13.071293,
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-08T13:04:02+0100"
+            "time": "2014-03-27T13:04:39+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563469,
+                "longitude": 13.319415,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:35:00+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk",
+            "CityTrain",
+            "Metro"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 5138
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": {
+                "unit": "EuroCent",
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5750",
+                "arrivalZone": "5656"
+            }
+        }
+    },
+    {
+        "url": "TripProposals/405361",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
         },
         "destination": {
             "location": {
@@ -2434,35 +2229,34 @@ POST /api/V0/TripProposals
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-08T14:42:40+0100"
+            "time": "2014-03-27T14:28:19+0100"
         },
         "trafficTypes": [
+            "Car",
             "Bike"
         ],
-        "description": "Route for Request null",
+        "description": null,
         "costs": {
-            "distance": {
-                "unit": "Meter",
-                "value": 30294.9150920476
-            },
+            "distance": null,
             "duration": {
                 "unit": "Second",
-                "value": 5918.08471656858
+                "value": 4757.341979581132
             },
             "price": null,
-            "emission": null
+            "emission": null,
+            "ticketPrice": null
         }
     },
     {
-        "url": "TripProposals/2194",
+        "url": "TripProposals/405362",
         "origin": {
             "location": {
-                "latitude": 52.394184,
-                "longitude": 13.072688,
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-08T13:06:00+0100"
+            "time": "2014-03-27T13:04:39+0100"
         },
         "destination": {
             "location": {
@@ -2471,37 +2265,44 @@ POST /api/V0/TripProposals
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-08T14:04:00+0100"
+            "time": "2014-03-27T14:22:00+0100"
         },
         "trafficTypes": [
             "Car",
+            "Walk",
             "CityTrain",
-            "Metro"
+            "Bus"
         ],
-        "description": "C1-0",
+        "description": null,
         "costs": {
             "distance": null,
             "duration": {
                 "unit": "Second",
-                "value": 3480
+                "value": 4358
             },
-            "price": {
+            "price": null,
+            "emission": null,
+            "ticketPrice": {
                 "unit": "EuroCent",
-                "value": 320
-            },
-            "emission": null
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5750",
+                "arrivalZone": "5656"
+            }
         }
     },
     {
-        "url": "TripProposals/2195",
+        "url": "TripProposals/405363",
         "origin": {
             "location": {
-                "latitude": 52.394184,
-                "longitude": 13.072688,
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-08T13:06:00+0100"
+            "time": "2014-03-27T13:04:39+0100"
         },
         "destination": {
             "location": {
@@ -2510,26 +2311,78 @@ POST /api/V0/TripProposals
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-08T14:12:00+0100"
+            "time": "2014-03-27T14:22:00+0100"
         },
         "trafficTypes": [
             "Car",
+            "Walk",
             "CityTrain",
-            "Bus",
-            "Walk"
+            "Bus"
         ],
-        "description": "C1-1",
+        "description": null,
         "costs": {
             "distance": null,
             "duration": {
                 "unit": "Second",
-                "value": 3960
+                "value": 4342
             },
-            "price": {
+            "price": null,
+            "emission": null,
+            "ticketPrice": {
                 "unit": "EuroCent",
-                "value": 320
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5750",
+                "arrivalZone": "5656"
+            }
+        }
+    },
+    {
+        "url": "TripProposals/405364",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
             },
-            "emission": null
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563469,
+                "longitude": 13.319415,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:22:00+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk",
+            "CityTrain",
+            "Bus"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 4174
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": {
+                "unit": "EuroCent",
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5750",
+                "arrivalZone": "5656"
+            }
         }
     }
 ]
