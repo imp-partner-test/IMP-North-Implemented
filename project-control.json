@@ -41,7 +41,7 @@
       "Title": "OMB: Daimler",
       "Chapters": [
         "Introduction",
-        "Multimodal Routing Planner"
+        "Intermodal Routing Planner"
       ],
       "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
@@ -103,7 +103,7 @@
 	"Service Subscriptions",
 	"Service Categories",
 	"Taxi",
-	"Multimodal Routing Planner",
+	"Intermodal Routing Planner",
 	"Incidents / Traffic Info",
 	"Reporting"
       ],
@@ -117,7 +117,7 @@
 	"Bike Sharing",
 	"Car Sharing",
 	"Parking Garages",
-        "Multimodal Routing Planner"
+        "Intermodal Routing Planner"
       ],
       "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
