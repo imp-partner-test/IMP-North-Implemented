@@ -1759,11 +1759,11 @@ GET /api/V0/Info/TrafficInfo
 
 
 --
-Intermodal Routing Planner
+Journey Planner
 --
 
 # General Description
-Get intermodal trip proposals with basic information for specified trip criteria.
+Get trip proposals with basic information for specified trip criteria. Note: the trip proposals can be multimodal or intermodal, depending on to which routing service the user is subscribed to.
 
 # Query Parameters 
 
@@ -1798,43 +1798,160 @@ costs | Array | list of costs for the proposed trip
 POST /api/V0/TripProposals
 > Content-Type: application/json
 > Accept: application/json
-{ 
-    "origin": { 
-        "location": { "longitude": 13.377683, "latitude": 52.509166, "system": "WGS84" }, 
-        "time": "2014-01-29T15:10:00+0200"
-        },
-    "destination": { 
-        "location": { "longitude": 13.384160041809082, "latitude": 52.5100212097168, "system": "WGS84" },
-        "time": null
-        },
-    "viaPoints": [],
-    "costFunctions": [],
-    "trafficTypes": [ "Car", "Walk", "RegioTrain", "Tram" ],
-    "routingConstraints": [],
-    "userId": "4711/10" 
+{
+  "origin": {
+    "location": {
+      "system": "WGS84",
+      "longitude": 13.074760101735592,
+      "latitude": 52.3933000574258
+    },
+    "time": "2014-03-27T14:53:06+0530"
+  },
+  "destination": {
+    "location": {
+      "system": "WGS84",
+      "longitude": 13.369544930756092,
+      "latitude": 52.52559208824942
+    },
+    "time": null
+  },
+  "viaPoints": [],
+  "costFunctions": [
+    {
+      "percentage": 100,
+      "costType": "Duration"
+    }
+  ],
+  "userId": "4711/10",
+  "trafficTypes": [
+    "Walk",
+    "Bike",
+    "Car",
+    "Metro",
+    "CityTrain",
+    "Bus"
+  ],
+  "routingConstraints": []
 }
 < 200
 < Content-Type: application/json
 [
     {
-        "url": "TripProposals/86496",
+        "url": "TripProposals/80812",
         "origin": {
             "location": {
-                "latitude": 52.50917053222656,
-                "longitude": 13.377630233764648,
+                "latitude": 52.39339065551758,
+                "longitude": 13.07505989074707,
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-29T14:10:32+0100"
+            "time": "2014-03-27T10:23:12+0100"
         },
         "destination": {
             "location": {
-                "latitude": 52.5100021,
-                "longitude": 13.3841612,
+                "latitude": 52.52581024169922,
+                "longitude": 13.369529724121094,
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-29T15:29:02+0100"
+            "time": "2014-03-27T11:04:12+0100"
+        },
+        "trafficTypes": [
+            "Car"
+        ],
+        "description": null,
+        "costs": {
+            "distance": {
+                "unit": "Meter",
+                "value": 35433
+            },
+            "duration": {
+                "unit": "Minute",
+                "value": 41
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 17.7165
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 5314.95
+            },
+            "ticketPrice": null
+        }
+    },
+    {
+        "url": "TripProposals/80813",
+        "origin": {
+            "location": {
+                "latitude": 52.393295,
+                "longitude": 13.074756,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T10:30:00+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.525589,
+                "longitude": 13.369539,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T11:21:00+0100"
+        },
+        "trafficTypes": [
+            "Walk",
+            "CityTrain"
+        ],
+        "description": null,
+        "costs": {
+            "distance": {
+                "unit": "Meter",
+                "value": 28266.81343723691
+            },
+            "duration": {
+                "unit": "Minute",
+                "value": 51
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 3.2
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 621.225709056449
+            },
+            "ticketPrice": {
+                "unit": "EuroCent",
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5750",
+                "arrivalZone": "5555"
+            }
+        }
+    },
+    {
+        "url": "TripProposals/80814",
+        "origin": {
+            "location": {
+                "latitude": 52.39339065551758,
+                "longitude": 13.07505989074707,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T10:23:10+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.5258041,
+                "longitude": 13.3695317,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T11:21:16+0100"
         },
         "trafficTypes": [
             "Car",
@@ -1842,49 +1959,113 @@ POST /api/V0/TripProposals
         ],
         "description": null,
         "costs": {
-            "distance": null,
-            "duration": {
-                "unit": "Second",
-                "value": 4442
+            "distance": {
+                "unit": "Meter",
+                "value": 37277
             },
-            "price": null,
-            "emission": null
+            "duration": {
+                "unit": "Minute",
+                "value": 58.083333333333336
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 17.983
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 5394.900000000001
+            },
+            "ticketPrice": null
         }
     },
     {
-        "url": "TripProposals/86497",
+        "url": "TripProposals/80815",
         "origin": {
             "location": {
-                "latitude": 52.50917053222656,
-                "longitude": 13.377630233764648,
+                "latitude": 52.39339065551758,
+                "longitude": 13.07505989074707,
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-29T14:10:32+0100"
+            "time": "2014-03-27T10:23:10+0100"
         },
         "destination": {
             "location": {
-                "latitude": 52.510019,
-                "longitude": 13.384156,
+                "latitude": 52.5258041,
+                "longitude": 13.3695317,
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-01-29T15:13:00+0100"
+            "time": "2014-03-27T11:22:39+0100"
         },
         "trafficTypes": [
             "Car",
-            "Walk",
-            "RegioTrain"
+            "Walk"
         ],
         "description": null,
         "costs": {
-            "distance": null,
-            "duration": {
-                "unit": "Second",
-                "value": 2302
+            "distance": {
+                "unit": "Meter",
+                "value": 37278
             },
-            "price": null,
-            "emission": null
+            "duration": {
+                "unit": "Minute",
+                "value": 59.46666666666667
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 17.939
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 5381.7
+            },
+            "ticketPrice": null
+        }
+    },
+    {
+        "url": "TripProposals/80816",
+        "origin": {
+            "location": {
+                "latitude": 52.39339065551758,
+                "longitude": 13.07505989074707,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T10:23:11+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.5258041,
+                "longitude": 13.3695317,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T11:24:07+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk"
+        ],
+        "description": null,
+        "costs": {
+            "distance": {
+                "unit": "Meter",
+                "value": 37361
+            },
+            "duration": {
+                "unit": "Minute",
+                "value": 60.916666666666664
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 17.962
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 5388.6
+            },
+            "ticketPrice": null
         }
     }
 ]
@@ -1926,100 +2107,200 @@ GET /api/V0/TripProposals/{proposalId}
 < 200
 < Content-Type: application/json
 {
-    "url": "TripProposals/1/",
+    "url": "TripProposals/80813/",
     "segments": [
         {
             "segmentId": "1",
             "description": null,
             "origin": {
                 "location": {
-                    "latitude": 52.50917053222656,
-                    "longitude": 13.377630233764648,
+                    "latitude": 52.3934874,
+                    "longitude": 13.0744217,
                     "system": "WGS_84"
                 },
-                "time": "2013-06-25T15:10:35MESZ"
+                "address": null,
+                "time": "2014-03-27T10:30:00+0100"
             },
             "destination": {
                 "location": {
-                    "latitude": 52.5100212097168,
-                    "longitude": 13.384160041809082,
+                    "latitude": 52.3903545,
+                    "longitude": 13.0669629,
                     "system": "WGS_84"
                 },
-                "time": "2013-06-25T15:11:35MESZ"
+                "address": null,
+                "time": "2014-03-27T10:45:12+0100"
             },
-            "trafficType": "Car",
+            "trafficType": "Walk",
             "cost": {
-                "distanceFromOrigin": {
+                "distance": {
                     "unit": "Meter",
-                    "value": 503
+                    "value": 1216
                 },
                 "duration": {
-                    "unit": "Second",
-                    "value": 96
+                    "unit": "Minute",
+                    "value": 15.2
                 },
-                "price": null,
-                "emission": null
+                "price": {
+                    "unit": "Euro",
+                    "value": 0
+                },
+                "emission": {
+                    "unit": "Gram",
+                    "value": 0
+                },
+                "ticketPrice": null
             },
             "wayPoints": [
                 {
-                    "latitude": 52.50917053222656,
-                    "longitude": 13.377630233764648,
+                    "latitude": 52.39349,
+                    "longitude": 13.07442,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.509239196777344,
-                    "longitude": 13.3774995803833,
+                    "latitude": 52.39296,
+                    "longitude": 13.07358,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.50926971435547,
-                    "longitude": 13.377470016479492,
+                    "latitude": 52.39279,
+                    "longitude": 13.07332,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.509498596191406,
-                    "longitude": 13.377449989318848,
+                    "latitude": 52.39267,
+                    "longitude": 13.07314,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.509521484375,
-                    "longitude": 13.377750396728516,
+                    "latitude": 52.39268,
+                    "longitude": 13.07309,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.50959014892578,
-                    "longitude": 13.377889633178711,
+                    "latitude": 52.39269,
+                    "longitude": 13.07305,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.509700775146484,
-                    "longitude": 13.379480361938477,
+                    "latitude": 52.39268,
+                    "longitude": 13.07301,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.509891510009766,
-                    "longitude": 13.381830215454102,
+                    "latitude": 52.39266,
+                    "longitude": 13.07293,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.5100212097168,
-                    "longitude": 13.384160041809082,
+                    "latitude": 52.39259,
+                    "longitude": 13.07286,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39255,
+                    "longitude": 13.07287,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39253,
+                    "longitude": 13.07287,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39253,
+                    "longitude": 13.07257,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39265,
+                    "longitude": 13.06952,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39276,
+                    "longitude": 13.06683,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39286,
+                    "longitude": 13.06429,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39277,
+                    "longitude": 13.06385,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39252,
+                    "longitude": 13.0633,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39221,
+                    "longitude": 13.06359,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39199,
+                    "longitude": 13.06367,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39148,
+                    "longitude": 13.06378,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39131,
+                    "longitude": 13.06384,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39118,
+                    "longitude": 13.06394,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39088,
+                    "longitude": 13.0643,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39059,
+                    "longitude": 13.06463,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39058,
+                    "longitude": 13.06481,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39048,
+                    "longitude": 13.06593,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.39035,
+                    "longitude": 13.06696,
                     "system": "WGS_84"
                 }
             ],
             "guidingPoints": [
                 {
-                    "description": "Losfahren in  Leipziger Platz, Mitte (Berlin)",
+                    "description": "Head <b>southwest</b> on <b>Humboldtring</b>",
                     "location": {
                         "location": {
-                            "latitude": 52.50917053222656,
-                            "longitude": 13.377630233764648,
+                            "latitude": 52.3934874,
+                            "longitude": 13.0744217,
                             "system": "WGS_84"
                         },
+                        "address": null,
                         "time": null
                     },
                     "cost": {
-                        "distanceFromOrigin": {
+                        "distance": {
                             "unit": "Meter",
                             "value": 0
                         },
@@ -2028,58 +2309,677 @@ GET /api/V0/TripProposals/{proposalId}
                             "value": 0
                         },
                         "price": null,
-                        "emission": null
+                        "emission": null,
+                        "ticketPrice": null
                     },
                     "operator": null,
-                    "locationId": "009013103#86"
+                    "pointId": null,
+                    "comment": []
                 },
                 {
-                    "description": "Biegen Sie rechts ab auf B1 Leipziger Platz",
+                    "description": "At the roundabout, take the <b>1st</b> exit onto <b>Babelsberger Straße</b>",
                     "location": {
                         "location": {
-                            "latitude": 52.509498596191406,
-                            "longitude": 13.377449989318848,
+                            "latitude": 52.3926736,
+                            "longitude": 13.0731367,
                             "system": "WGS_84"
                         },
+                        "address": null,
                         "time": null
                     },
                     "cost": {
-                        "distanceFromOrigin": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 126
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 91
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>left</b> onto <b>Lange Brücke/B2</b><div style=\"font-size:0.9em\">Continue to follow B2</div>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.3925224,
+                            "longitude": 13.0632988,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 818
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 618
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>left</b> onto <b>Friedrich-Engels-Straße</b><div style=\"font-size:0.9em\">Destination will be on the left</div>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.3905932,
+                            "longitude": 13.064633,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 1056
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 792
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Friedrich-Engels-Straße 72, 14473 Potsdam, Germany",
+                    "location": {
+                        "location": {
+                            "latitude": 52.3903545,
+                            "longitude": 13.0669629,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T10:45:12+0100"
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 1216
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 912
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                }
+            ]
+        },
+        {
+            "segmentId": "2",
+            "description": "CityTrain/S1 Direction: S Oranienburg Bhf",
+            "origin": {
+                "location": {
+                    "latitude": 52.39093,
+                    "longitude": 13.06716,
+                    "system": "WGS_84"
+                },
+                "address": null,
+                "time": "2014-03-27T10:40:00+0100"
+            },
+            "destination": {
+                "location": {
+                    "latitude": 52.421458,
+                    "longitude": 13.179103,
+                    "system": "WGS_84"
+                },
+                "address": null,
+                "time": "2014-03-27T10:51:00+0100"
+            },
+            "trafficType": "CityTrain",
+            "cost": {
+                "distance": {
+                    "unit": "Meter",
+                    "value": 8783.240546630148
+                },
+                "duration": {
+                    "unit": "Minute",
+                    "value": 11
+                },
+                "price": {
+                    "unit": "Euro",
+                    "value": 0
+                },
+                "emission": {
+                    "unit": "Gram",
+                    "value": 202.0145325724934
+                },
+                "ticketPrice": null
+            },
+            "wayPoints": [],
+            "guidingPoints": [
+                {
+                    "description": "S Potsdam Hbf",
+                    "location": {
+                        "location": {
+                            "latitude": 52.39093,
+                            "longitude": 13.06716,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T10:40:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80817",
+                    "comment": []
+                },
+                {
+                    "description": "S Babelsberg",
+                    "location": {
+                        "location": {
+                            "latitude": 52.391371,
+                            "longitude": 13.094622,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T10:43:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80818",
+                    "comment": []
+                },
+                {
+                    "description": "S Griebnitzsee Bhf",
+                    "location": {
+                        "location": {
+                            "latitude": 52.393987,
+                            "longitude": 13.128916,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T10:46:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80819",
+                    "comment": []
+                },
+                {
+                    "description": "S Wannsee Bhf (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.421458,
+                            "longitude": 13.179103,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T10:52:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80820",
+                    "comment": []
+                }
+            ]
+        },
+        {
+            "segmentId": "3",
+            "description": "CityTrain/S7 Direction: S Ahrensfelde Bhf (Berlin)",
+            "origin": {
+                "location": {
+                    "latitude": 52.421458,
+                    "longitude": 13.179103,
+                    "system": "WGS_84"
+                },
+                "address": null,
+                "time": "2014-03-27T10:53:00+0100"
+            },
+            "destination": {
+                "location": {
+                    "latitude": 52.525849,
+                    "longitude": 13.368928,
+                    "system": "WGS_84"
+                },
+                "address": null,
+                "time": "2014-03-27T11:18:00+0100"
+            },
+            "trafficType": "CityTrain",
+            "cost": {
+                "distance": {
+                    "unit": "Meter",
+                    "value": 18226.572890606763
+                },
+                "duration": {
+                    "unit": "Minute",
+                    "value": 25
+                },
+                "price": {
+                    "unit": "Euro",
+                    "value": 0
+                },
+                "emission": {
+                    "unit": "Gram",
+                    "value": 419.21117648395557
+                },
+                "ticketPrice": null
+            },
+            "wayPoints": [],
+            "guidingPoints": [
+                {
+                    "description": "S Wannsee Bhf (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.421458,
+                            "longitude": 13.179103,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T10:53:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80820",
+                    "comment": []
+                },
+                {
+                    "description": "S Nikolassee (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.431211,
+                            "longitude": 13.193297,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T10:55:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80821",
+                    "comment": []
+                },
+                {
+                    "description": "S Grunewald (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.488679,
+                            "longitude": 13.261947,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T11:02:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80822",
+                    "comment": []
+                },
+                {
+                    "description": "S Westkreuz (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.501147,
+                            "longitude": 13.283036,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T11:05:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80823",
+                    "comment": []
+                },
+                {
+                    "description": "S Charlottenburg Bhf (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.505048,
+                            "longitude": 13.305212,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T11:07:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80824",
+                    "comment": []
+                },
+                {
+                    "description": "S Savignyplatz (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.505219,
+                            "longitude": 13.319002,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T11:09:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80825",
+                    "comment": []
+                },
+                {
+                    "description": "S+U Zoologischer Garten Bhf (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.506882,
+                            "longitude": 13.332926,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T11:12:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80826",
+                    "comment": []
+                },
+                {
+                    "description": "S Tiergarten (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.513966,
+                            "longitude": 13.336234,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T11:14:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80827",
+                    "comment": []
+                },
+                {
+                    "description": "S Bellevue (Berlin)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.519953,
+                            "longitude": 13.347102,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T11:16:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80828",
+                    "comment": []
+                },
+                {
+                    "description": "S+U Berlin Hauptbahnhof",
+                    "location": {
+                        "location": {
+                            "latitude": 52.525849,
+                            "longitude": 13.368928,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T11:18:00+0100"
+                    },
+                    "cost": {
+                        "distance": null,
+                        "duration": null,
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": "80829",
+                    "comment": []
+                }
+            ]
+        },
+        {
+            "segmentId": "4",
+            "description": null,
+            "origin": {
+                "location": {
+                    "latitude": 52.525818,
+                    "longitude": 13.3689252,
+                    "system": "WGS_84"
+                },
+                "address": null,
+                "time": "2014-03-27T11:18:00+0100"
+            },
+            "destination": {
+                "location": {
+                    "latitude": 52.525804,
+                    "longitude": 13.3695257,
+                    "system": "WGS_84"
+                },
+                "address": null,
+                "time": "2014-03-27T11:18:29+0100"
+            },
+            "trafficType": "Walk",
+            "cost": {
+                "distance": {
+                    "unit": "Meter",
+                    "value": 41
+                },
+                "duration": {
+                    "unit": "Minute",
+                    "value": 0.48333333333333334
+                },
+                "price": {
+                    "unit": "Euro",
+                    "value": 0
+                },
+                "emission": {
+                    "unit": "Gram",
+                    "value": 0
+                },
+                "ticketPrice": null
+            },
+            "wayPoints": [
+                {
+                    "latitude": 52.52582,
+                    "longitude": 13.36893,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52582,
+                    "longitude": 13.36908,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5258,
+                    "longitude": 13.36911,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5258,
+                    "longitude": 13.36925,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5258,
+                    "longitude": 13.36953,
+                    "system": "WGS_84"
+                }
+            ],
+            "guidingPoints": [
+                {
+                    "description": "Head <b>east</b> on <b>Ella-Trebe-Straße/Europaplatz</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.525818,
+                            "longitude": 13.3689252,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 0
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 0
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Slight <b>right</b> to stay on <b>Ella-Trebe-Straße/Europaplatz</b><div style=\"font-size:0.9em\">Destination will be on the right</div>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5258183,
+                            "longitude": 13.3690774,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 10
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 7
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Europaplatz 1, 10557 Berlin, Germany",
+                    "location": {
+                        "location": {
+                            "latitude": 52.525804,
+                            "longitude": 13.3695257,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-03-27T11:18:29+0100"
+                    },
+                    "cost": {
+                        "distance": {
                             "unit": "Meter",
                             "value": 41
                         },
                         "duration": {
                             "unit": "Second",
-                            "value": 12
+                            "value": 29
                         },
                         "price": null,
-                        "emission": null
+                        "emission": null,
+                        "ticketPrice": null
                     },
-                    "operator": null
-                },
-                {
-                    "description": "Ankunft in  B1 Leipziger Straße - Wilhelmstraße, Mitte (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.5100212097168,
-                            "longitude": 13.384160041809082,
-                            "system": "WGS_84"
-                        },
-                        "time": null
-                    },
-                    "cost": {
-                        "distanceFromOrigin": {
-                            "unit": "Meter",
-                            "value": 503
-                        },
-                        "duration": {
-                            "unit": "Second",
-                            "value": 84
-                        },
-                        "price": null,
-                        "emission": null
-                    },
-                    "operator": null
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
                 }
             ]
         }
@@ -2166,7 +3066,7 @@ POST /api/V0/TripProposals
 < Content-Type: application/json
 [
     {
-        "url": "TripProposals/405360",
+        "url": "TripProposals/80843",
         "origin": {
             "location": {
                 "latitude": 52.39419937133789,
@@ -2174,7 +3074,7 @@ POST /api/V0/TripProposals
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-03-27T13:04:39+0100"
+            "time": "2014-03-27T13:04:40+0100"
         },
         "destination": {
             "location": {
@@ -2183,20 +3083,20 @@ POST /api/V0/TripProposals
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-03-27T14:35:00+0100"
+            "time": "2014-03-27T14:53:00+0100"
         },
         "trafficTypes": [
             "Car",
             "Walk",
             "CityTrain",
-            "Metro"
+            "Bus"
         ],
         "description": null,
         "costs": {
             "distance": null,
             "duration": {
                 "unit": "Second",
-                "value": 5138
+                "value": 6202
             },
             "price": null,
             "emission": null,
@@ -2206,13 +3106,13 @@ POST /api/V0/TripProposals
                 "operatorId": "VBB",
                 "ticketId": "00101",
                 "tariffLevel": "B3",
-                "departureZone": "5750",
+                "departureZone": "5851",
                 "arrivalZone": "5656"
             }
         }
     },
     {
-        "url": "TripProposals/405361",
+        "url": "TripProposals/80844",
         "origin": {
             "location": {
                 "latitude": 52.39419937133789,
@@ -2229,7 +3129,7 @@ POST /api/V0/TripProposals
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-03-27T14:28:19+0100"
+            "time": "2014-03-27T14:48:09+0100"
         },
         "trafficTypes": [
             "Car",
@@ -2240,7 +3140,7 @@ POST /api/V0/TripProposals
             "distance": null,
             "duration": {
                 "unit": "Second",
-                "value": 4757.341979581132
+                "value": 5947.563361271776
             },
             "price": null,
             "emission": null,
@@ -2248,7 +3148,7 @@ POST /api/V0/TripProposals
         }
     },
     {
-        "url": "TripProposals/405362",
+        "url": "TripProposals/80845",
         "origin": {
             "location": {
                 "latitude": 52.39419937133789,
@@ -2256,53 +3156,7 @@ POST /api/V0/TripProposals
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-03-27T13:04:39+0100"
-        },
-        "destination": {
-            "location": {
-                "latitude": 52.563469,
-                "longitude": 13.319415,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-03-27T14:22:00+0100"
-        },
-        "trafficTypes": [
-            "Car",
-            "Walk",
-            "CityTrain",
-            "Bus"
-        ],
-        "description": null,
-        "costs": {
-            "distance": null,
-            "duration": {
-                "unit": "Second",
-                "value": 4358
-            },
-            "price": null,
-            "emission": null,
-            "ticketPrice": {
-                "unit": "EuroCent",
-                "value": 320,
-                "operatorId": "VBB",
-                "ticketId": "00101",
-                "tariffLevel": "B3",
-                "departureZone": "5750",
-                "arrivalZone": "5656"
-            }
-        }
-    },
-    {
-        "url": "TripProposals/405363",
-        "origin": {
-            "location": {
-                "latitude": 52.39419937133789,
-                "longitude": 13.07367992401123,
-                "system": "WGS_84"
-            },
-            "address": null,
-            "time": "2014-03-27T13:04:39+0100"
+            "time": "2014-03-27T13:04:40+0100"
         },
         "destination": {
             "location": {
@@ -2334,13 +3188,13 @@ POST /api/V0/TripProposals
                 "operatorId": "VBB",
                 "ticketId": "00101",
                 "tariffLevel": "B3",
-                "departureZone": "5750",
+                "departureZone": "5851",
                 "arrivalZone": "5656"
             }
         }
     },
     {
-        "url": "TripProposals/405364",
+        "url": "TripProposals/80846",
         "origin": {
             "location": {
                 "latitude": 52.39419937133789,
@@ -2357,20 +3211,20 @@ POST /api/V0/TripProposals
                 "system": "WGS_84"
             },
             "address": null,
-            "time": "2014-03-27T14:22:00+0100"
+            "time": "2014-03-27T14:16:00+0100"
         },
         "trafficTypes": [
             "Car",
             "Walk",
             "CityTrain",
-            "Bus"
+            "Metro"
         ],
         "description": null,
         "costs": {
             "distance": null,
             "duration": {
                 "unit": "Second",
-                "value": 4174
+                "value": 3982
             },
             "price": null,
             "emission": null,
@@ -2380,7 +3234,53 @@ POST /api/V0/TripProposals
                 "operatorId": "VBB",
                 "ticketId": "00101",
                 "tariffLevel": "B3",
-                "departureZone": "5750",
+                "departureZone": "5851",
+                "arrivalZone": "5656"
+            }
+        }
+    },
+    {
+        "url": "TripProposals/80847",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563469,
+                "longitude": 13.319415,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:35:00+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk",
+            "CityTrain",
+            "Metro"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 5122
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": {
+                "unit": "EuroCent",
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5851",
                 "arrivalZone": "5656"
             }
         }
