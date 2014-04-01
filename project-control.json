@@ -122,8 +122,8 @@
       "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
     {
-      "Project": "OMB-streetlife",
-      "Title": "OMB: Streetlife",
+      "Project": "OMB-cityintel",
+      "Title": "OMB: City Intelligence Platform",
       "Chapters": [
         "Introduction",	
 	"Bike Sharing",

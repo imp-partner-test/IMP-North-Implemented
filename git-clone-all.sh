@@ -11,6 +11,6 @@ git clone https://github.com/imp-partner-test/OMB-daimler.git
 git clone https://github.com/imp-partner-test/OMB-volkswagen.git
 git clone https://github.com/imp-partner-test/OMB-comove.git
 git clone https://github.com/imp-partner-test/OMB-hacon.git
-git clone https://github.com/imp-partner-test/OMB-streetlife.git
+git clone https://github.com/imp-partner-test/OMB-cityintel.git
 
 cd IMP-North-Implemented
