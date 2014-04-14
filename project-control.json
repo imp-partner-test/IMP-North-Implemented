@@ -20,6 +20,7 @@
 	"Traffic Info Level-of-Service. WMS",
 	"Bike Sharing",
 	"Car Sharing",
+	"Parking Garages"
       ],
       "Host":"https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint"
     },
