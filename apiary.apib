@@ -1762,7 +1762,7 @@ Business Area Info
 --
 
 # General Description
-Get business area of a free-floating service (cars, bikes)
+Get business area of a free-floating service (cars, bikes) by operator id
 
 # Query Parameters
 - currently none
@@ -1778,9 +1778,9 @@ The data structure of the response contains the following attributes
 
 attribute | json data type | comments
 --- | --- | ---
-operatorId | String |  (DriveNow, Car2Go_Berlin, NextBike, CallABike)
+operatorId or operator? | String |  (DriveNow, Car2Go_Berlin, NextBike, CallABike)
 description | String |  
-businessBoundary | businessBoundary | conjunction of disjunct polygons
+businessBoundary ? | businessBoundary | conjunction of disjunct polygons?
 
 
 Please note: The accept-header of this request must be set to "image/png".
