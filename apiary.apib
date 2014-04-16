@@ -1757,6 +1757,45 @@ GET /api/V0/Info/TrafficInfo
 { "... this should be a PNG ..."
 }
 
+--
+Business Area Info
+--
+
+# General Description
+Get business area of a free-floating service (cars, bikes)
+
+# Query Parameters
+- currently none
+
+# Selection criteria 
+specified in the request body as described in the sample request 
+- operatorId: id of the service operator (DriveNow, Car2Go_Berlin, etc.)
+
+# Response
+The business area of a service specified by `{operatorId}` as cunjunction of several polygons. 
+Details for the EV charging station specified by `{id}`.
+The data structure of the response contains the following attributes
+
+attribute | json data type | comments
+--- | --- | ---
+operatorId | String |  (DriveNow, Car2Go_Berlin, NextBike, CallABike)
+description | String |  
+businessBoundary | businessBoundary | conjunction of disjunct polygons
+
+
+Please note: The accept-header of this request must be set to "image/png".
+GET /api/V0/Info/BusinessArea
+> Content-Type: application/json
+> Accept: application/json
+{ 
+    "operator": "nextbike",
+    "userId": "4711/10" 
+}
+< 200
+< Content-Type: application/json
+{  
+    "businessBoundary": "some structure!",
+}
 
 --
 Journey Planner
