@@ -29,7 +29,7 @@ Handy Ticket
 --
 # General Description
 List of available products for specified origin and destination. Both are public transport stations and are identified by `{pointId}`. 
-PointId can be retrieved using `GET /api/V0/Resources/PublicTransport/Stations` 
+PointId can be retrieved using `GET /api/V1/Resources/PublicTransport/Stations` 
 
 # Query Parameters 
 `action=book`
@@ -62,7 +62,7 @@ price | double | Price of ticket
 currency | String | Currency
 
 
-POST /api/V0/Resources/Ticketing/Tickets
+POST /api/V1/Resources/Ticketing/Tickets
 > Accept: application/json
 > Content-Type: application/json
 {   "origin": { 
@@ -144,7 +144,7 @@ ticketContent | Base64Binary | Content of Ticket
 
 
 
-POST /api/V0/Resources/Ticketing/Tickets/{resourceId}/Process
+POST /api/V1/Resources/Ticketing/Tickets/{resourceId}/Process
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -174,7 +174,7 @@ POST /api/V0/Resources/Ticketing/Tickets/{resourceId}/Process
             "ticketIds": [
                 "274946704480125"
             ],
-            "ticketContent": "UEQ5NGJXd2dkbVZ5YzJsdmJqMGlNUzR3SWlCbGJtTnZaR2x1WnowaVZWUkdMVGdpUHo0TkNqeDBhV05yWlhSRmNuZGxjbUp6VUhKdmVtVnpjMUpsYzNCdmJuTmxQZzBLSUNBOGNISmxhWE0rTWl3eU1Ed3ZjSEpsYVhNK0RRb2dJRHgzWVdWb2NuVnVaejVGVlZJOEwzZGhaV2h5ZFc1blBnMEtJQ0E4WVdkVVpYaDBQakY0SUVSV1FpQldWazh0UldsdWVtVnNabUZvY25RZ2JtOXliV0ZzSUZCeVpXbHpjM1IxWm1VZ01TQm13N3h5SUZwdmJtVWdSSEpsYzJSbGJpQm53N3hzZEdsbklERXpMakV4TGpFeklEQTFPalV6SUZWb2NpQmlhWE1nTURZNk5UTWdWV2h5TGp3dllXZFVaWGgwUGcwS0lDQThiV1Z6YzJGblpTQjBlWEJsUFNKM1lYSnVhVzVuSWo0OEwyMWxjM05oWjJVK0RRb2dJRHh1ZFhSNlpYSWdMejROQ2lBZ1BHSmxjbVZqYUhScFozVnVaMlZ1UGcwS0lDQWdJRHhpWlhKbFkyaDBhV2QxYm1jK0RRb2dJQ0FnSUNBOGMzUmhkSFZ6UGpBOEwzTjBZWFIxY3o0TkNpQWdJQ0FnSUR4MGVYQStNVHd2ZEhsd1BnMEtJQ0FnSUNBZ1BIQjJQall3TmpBOEwzQjJQZzBLSUNBZ0lDQWdQSEJ5YVcxaFpYSkxkbkErTmpBeE16d3ZjSEpwYldGbGNrdDJjRDROQ2lBZ0lDQWdJRHh6Wld0MWJtUmhaWEpMZG5BK05qQXhNend2YzJWcmRXNWtZV1Z5UzNad1BnMEtJQ0FnSUNBZ1BIQnliMlIxYTNSRGIyUmxQakU4TDNCeWIyUjFhM1JEYjJSbFBnMEtJQ0FnSUNBZ1BHZGxZbWxsZEhOSGRXVnNkR2xuYTJWcGRENHdQQzluWldKcFpYUnpSM1ZsYkhScFoydGxhWFErRFFvZ0lDQWdJQ0E4ZW1WcGRFZDFaV3gwYVdkclpXbDBQakE4TDNwbGFYUkhkV1ZzZEdsbmEyVnBkRDROQ2lBZ0lDQWdJRHh1ZFhSNlpYSlVlWEErTUR3dmJuVjBlbVZ5Vkhsd1BnMEtJQ0FnSUNBZ1BITjBZWEowV205dVpUNHhNRHd2YzNSaGNuUmFiMjVsUGcwS0lDQWdJQ0FnUEd0dmJXWnZjblErTVR3dmEyOXRabTl5ZEQ0TkNpQWdJQ0FnSUR4eGRXRnNhWFJoWlhRK01Ud3ZjWFZoYkdsMFlXVjBQZzBLSUNBZ0lDQWdQR0psYzJOb2NtVnBZblZ1Wno1RVZrSWdWbFpQTFVWcGJucGxiR1poYUhKMElHNXZjbTFoYkNCUWNtVnBjM04wZFdabElERWdac084Y2lCYWIyNWxJRVJ5WlhOa1pXNGdaOE84YkhScFp5QXhNeTR4TVM0eE15QXdOVG8xTXlCVmFISWdZbWx6SURBMk9qVXpJRlZvY2k0OEwySmxjMk5vY21WcFluVnVaejROQ2lBZ0lDQWdJRHgwWVhKcFptbHVabTgrUjJsc2RDQnBiaUJrWlhJZ1lXNW5aV2RsWW1WdVpXNGdWR0Z5YVdaNmIyNWxPeUJ0WVhndUlERWdVM1JrTGp3dmRHRnlhV1pwYm1adlBnMEtJQ0FnSUNBZ1BITnBZMmhsY21obGFYUnpUV1Z5YTIxaGJENUZUakV0TVRBdE1UTXhNVEExTlRNS1VDb3FNekV5TXpFeU16aDJDazF2ZEdsMklEUXhPVFV6TlRNM05qY0tMUzFVUlZOVUxTMVVTVU5MUlZRdExRbzhMM05wWTJobGNtaGxhWFJ6VFdWeWEyMWhiRDROQ2lBZ0lDQWdJRHhpWVhKamIyUmxQbWxXUWs5U2R6QkxSMmR2UVVGQlFVNVRWV2hGVldkQlFVRkpORUZCUVVOUFEwRk5RVUZCUkZGSk9FRTJRVUZCUVVKc1FrMVdSVmd2THk4NFFVRkJRbFozZEU0clFVRkJSVFZGYkVWUlZsSTBNblV5WXpJeU4ycE5RWGhGYkdZdkx6WlhNVkppUXpKU05UbEVjR3NyWTJoQ1ZHSlpTa3haT0hScGFHVm9jVTl6TVRsbVppdDJjamRtYmpJNVpuUTFaSEk1WkRNdk1TdDJZaXQyYmpWNlpsZ3laR051SzNodU4wVmtkSEpKU25nclkyOVdNRzV1ZDA1MlRVODBMMjR2WlVsMEwwRmtaSHA0UlU5TVoyNUJSREozWlhWcVVFZEhZMFV4Y1ZBeU1pdHZNM1EwS3pkbWRUUmxXRVJQVGpBdkwzazBUbnB0ZEhveFlWQnphMVpaVFRoR2VrbGlUbkJzZFZCaVMwMUdkMlZ1VERkMGRYTkxZM2hVYTNReWJGWkljbTFQZHpaT0szVktaMnhQV0U5VWJFZFhjbnB1UWxOeFVXVnpSbnBuV0daSVowMU5PVVJMWlRaeGRUWTRkWFYxY1VRM2MySTNORXg0T1M5UGNTc3ZkVVpHWjI1SVJqTnhaR3RQY21rMk4zUjFkMDlsU1RsV2IyNTNSRkUwWm1GR1YxTkNXVzByV2t0Vk1FWlZiME0yVUVJM0wwOUtaM3BOV2pKbGVua3JjMDkyTkdGWEt6RnJWM2xZZW5OT1JHaHRabmd2YldWVWRtNVJkRXBVU2tsSk5tSkViMDU2YkdsNE0yZFpRMHRHU1djMGNsSlRjVlJ5UWs4eWFrWlBSVXA0TlhOMWVsVmhVbTR6VFVaRlpGSllNRWxTTlVGSmFFMVFiWGd4VUdjM016STJOa1pOVFVsdFJuZGxhMHBsUm5sUFZubEVlRnB1V0hsM1prczRVMFY0ZFhkTlJHaEZha1pEY1RsV04yZGFSbEJzT0UxdVJtUkNiMk50Tmt0bGRVNVBVVkpKZHpSM1kxTnRXRVpNWlV0RWFXTkJSbEZFY0VaVGFUQjZRbXN2YmpBMU9VOUxlREZQWjNoalJEYzRhbk5RY0RSWk1sTkxVM0E0VDBsRmQzQjZaVlo2ZEhWWldWaERTVzVxV25FeGMzUXJUV3MxTWtOV1RsRkZjbUk0WTFScGRHUkdPRk16YWtKRk9XdFRjVXB0TlVjeFIwRmFTR2RsYm14cFVtTjNiRmhwYmpST2NGUXlhM0JuUVhsQ1MxRnZUM1EwWlZsdmNYcEZTRVJsU25sRFNIZFRUREJ6VTBsT1ZFb3lhRXRKWlc1NmVWbFlNakZKTTBwWE4wTmxSMFJvT1c5bVpWVnhObHBWU0ZSNlJGcEljVUY1VVZBeFQzY3ZRMWxZUzFKcGJERjVRMGd5YVhKaWJsZFJlbGR0ZUZkR2R6VnJVMEpEY0djclMxWTBVVGxqYkhWaVQwRkRNbmR0UW5kNVduQmtTMWR1TkVaUGVtbEtjM1JzVG1scmQyRkZWMVZETDJKb1FuZFRTM05XWTNkclFsQTVkRVpETkVWNlEwSnVXbTR2VW5scVkzRXlWWEJDY3k5U1EwVm9ZMDFwY0dOWlNrWTBTbmhsYjAxWVRVeG9UMU55ZVVFME0wWjZNSFJJVW1oVk5EWkxTVFphTmtvNFpWTkNiMlJHUTI0d05VODNia2xXVEN0V1VUbDNWMkZJTkRWRFRUWklNek5HSzNnNWVqZHNUVFUzVnpKcFpXTkhiMEpHTmtabFJrcDRaUzl1ZFhvemJWWTBabE5zWW5jMWMwUk9jMU56UTBScVZWaHdOVVp1WWpNMWN6QlVkakJvWmpaWGNsQlJTbWM0VDJ4NlRqTnhWMmRRUVdwU2FHc3dTVWxUSzJ0M1QwSTBWMDlVYm5kcFpreHJNVWRXTjNjeVVrZDNTbTFUY1RSdGRXMHdjMkp0ZUZseGFWVjBlVWRuWmtoRFQyVTNZWEJ4YjJKck9HZHhSR2RYTUZWTldVaEhkRFJ0VTNsTGIyOHlZazlOYkhCWFZIRmhRMWxsYTB3MVlrVnpOamwzVFhOdVJHaExjSGhaSzBGM1EyUkJXRXMxYldkdFZGbG1kMk5GWVhCalJYaGpUSEo0YzI5NVlXRmFXa3BEYlRKRlJFMXJRbE53UTBsblkwNTViVXhWYlhOd1lrVnBWVlJ1YlRoVVVGcFhNWEJqUzJkb05YUkpjbTkzV2xsM1IyVkhNRVpRWmxKU1JUSkJRVFJZT0hrMU4xaFdiM0Y2YlZJMFRqSnphSEkyVEdkMVJXcExUbTlMVWl0SGIyMWxlV1pwY1d4M2NFUk5Oa2d6TTJ4dVpuaGhXSFZ3TWxGek5WbDBNRGM1VnpocVFURnNkM0pJVWtkTmEyVkhTR0ZyYjJkRFNUaFhPWE5hUVVob01YVnNURWhhTWtOYVJWaFJWVGQyV1hKdlYwSlpaRVphWWpaU1ltdHZVV1ZQZGtKMFIxY3hRbHByZDA5SFUzbHlaMmxpYUZJMVZEQnFWMHg2YkhOMVIwRlFTRlZ6Y0ZvNVIwSmljQ3MyVEZGaFdWbFJVREJXUVVsak0wRlZOME5QYmk5ek5WQjRaRXBKUTBOdGVrRTBka1ZJVTFKYU5WUkJOVXB2Uldwa2RHRllhRWgzWlVoNWFFUmpNR1ZWZGtGcmVFWnhTMWhEUTJWMFFrNU5XRU5KYlcxWFFqUlRVMFI0YlROallYaEpURWs0WjNkUFExbG5TWGh1YlV4TGVUVXlNRUl4YkRZMlFqVjJVbmhQUlhoQk9HdFpaak5wUW05UU1IWnBlbFY0TWtWeWJIZG1SbEJWZGtremNHNWxPVGsyYTBOclNHZGlTSFExY1N0MU5tMVJURzVYTTFWa2NHOXBSRkUwYkhCUGVFOUllbUZXTUVkMWEwRjZXSEZXTjJOR0wyOXZia0VyTHpoNFpqbEVkRTlLVEd4emQwMXpObVJMT0hSRmREazVkV2x2VEdwTVZtNHZjVkpKYW5sTGJEaG1iR05YWlRGQlIxVllRalJoTjJFeGFqbGhZWEJKTW5weVNIZFRiRGhpUWl0UlpXcFVRMWx3Vm1aMlEwZFJRVUZCUVVKS1VsVTFSWEpyU21kblp6MDlQQzlpWVhKamIyUmxQZzBLSUNBZ0lDQWdQR0psY21WamFIUnBaM1Z1WjNORVlYUmxQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakVyTURFd01Ed3ZZbVZ5WldOb2RHbG5kVzVuYzBSaGRHVStEUW9nSUNBZ0lDQThaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakFyTURFd01Ed3ZaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQZzBLSUNBZ0lDQWdQR2QxWld4MGFXZHJaV2wwYzBWdVpHVStNakF4TXkweE1TMHhNMVF3TmpvMU16b3lNQ3N3TVRBd1BDOW5kV1ZzZEdsbmEyVnBkSE5GYm1SbFBnMEtJQ0FnSUNBZ1BHWnZjbTFoZEhSbFpGQnlaV2x6UGpJc01qQWdSVlZTUEM5bWIzSnRZWFIwWldSUWNtVnBjejROQ2lBZ0lDQWdJRHgzWVdWb2NuVnVaejR1UEM5M1lXVm9jblZ1Wno0TkNpQWdJQ0FnSUR4cmIyNTBjbTlzYkdWMWNuTkRiMlJsUGtWT01TMHhNQzB4TXpFeE1EVTFNend2YTI5dWRISnZiR3hsZFhKelEyOWtaVDROQ2lBZ0lDQWdJRHhyYjI1MGNtOXNiRzFsWkdsMWJUNVFLaW96TVRJek1USXpPSFk4TDJ0dmJuUnliMnhzYldWa2FYVnRQZzBLSUNBZ0lDQWdQSFJoWjJWelEyOWtaVDVOYjNScGRqd3ZkR0ZuWlhORGIyUmxQZzBLSUNBZ0lDQWdQSFJwWTJ0bGRFbEVQakkzTkRrME5qY3dORFE0TURFeU5Ud3ZkR2xqYTJWMFNVUStEUW9nSUNBZ0lDQThjMmxuYm1GMGRYSmxQaTB0VkVWVFZDMHRWRWxEUzBWVUxTMDhMM05wWjI1aGRIVnlaVDROQ2lBZ0lDQThMMkpsY21WamFIUnBaM1Z1Wno0TkNpQWdQQzlpWlhKbFkyaDBhV2QxYm1kbGJqNE5Dand2ZEdsamEyVjBSWEozWlhKaWMxQnliM3BsYzNOU1pYTndiMjV6WlQ0TkNnMEs="
+            "ticketContent": "UEQ5NGJXd2dkbVZ5YzJsdmJqMGlNUzR3SWlCbGJtTnZaR2x1WnowaVZWUkdMVGdpUHo0TkNqeDBhV15yWlhSRmNuZGxjbUp6VUhKdmVtVnpjMUpsYzNCdmJuTmxQZzBLSUNBOGNISmxhWE0rTWl3eU1Ed3ZjSEpsYVhNK0RRb2dJRHgzWVdWb2NuVnVaejVGVlZJOEwzZGhaV2h5ZFc1blBnMEtJQ0E4WVdkVVpYaDBQakY0SUVSV1FpQldWazh0UldsdWVtVnNabUZvY25RZ2JtOXliV0ZzSUZCeVpXbHpjM1IxWm1VZ01TQm13N3h5SUZwdmJtVWdSSEpsYzJSbGJpQm53N3hzZEdsbklERXpMakV4TGpFeklEQTFPalV6SUZWb2NpQmlhWE1nTURZNk5UTWdWV2h5TGp3dllXZFVaWGgwUGcwS0lDQThiV1Z6YzJGblpTQjBlWEJsUFNKM1lYSnVhVzVuSWo0OEwyMWxjM05oWjJVK0RRb2dJRHh1ZFhSNlpYSWdMejROQ2lBZ1BHSmxjbVZqYUhScFozVnVaMlZ1UGcwS0lDQWdJRHhpWlhKbFkyaDBhV2QxYm1jK0RRb2dJQ0FnSUNBOGMzUmhkSFZ6UGpBOEwzTjBZWFIxY3o0TkNpQWdJQ0FnSUR4MGVYQStNVHd2ZEhsd1BnMEtJQ0FnSUNBZ1BIQjJQall3TmpBOEwzQjJQZzBLSUNBZ0lDQWdQSEJ5YVcxaFpYSkxkbkErTmpBeE16d3ZjSEpwYldGbGNrdDJjRDROQ2lBZ0lDQWdJRHh6Wld0MWJtUmhaWEpMZG5BK05qQXhNend2YzJWcmRXNWtZV1Z5UzNad1BnMEtJQ0FnSUNBZ1BIQnliMlIxYTNSRGIyUmxQakU4TDNCeWIyUjFhM1JEYjJSbFBnMEtJQ0FnSUNBZ1BHZGxZbWxsZEhOSGRXVnNkR2xuYTJWcGRENHdQQzluWldKcFpYUnpSM1ZsYkhScFoydGxhWFErRFFvZ0lDQWdJQ0E4ZW1WcGRFZDFaV3gwYVdkclpXbDBQakE4TDNwbGFYUkhkV1ZzZEdsbmEyVnBkRDROQ2lBZ0lDQWdJRHh1ZFhSNlpYSlVlWEErTUR3dmJuVjBlbVZ5Vkhsd1BnMEtJQ0FnSUNBZ1BITjBZWEowV205dVpUNHhNRHd2YzNSaGNuUmFiMjVsUGcwS0lDQWdJQ0FnUEd0dmJXWnZjblErTVR3dmEyOXRabTl5ZEQ0TkNpQWdJQ0FnSUR4eGRXRnNhWFJoWlhRK01Ud3ZjWFZoYkdsMFlXVjBQZzBLSUNBZ0lDQWdQR0psYzJOb2NtVnBZblZ1Wno1RVZrSWdWbFpQTFVWcGJucGxiR1poYUhKMElHNXZjbTFoYkNCUWNtVnBjM04wZFdabElERWdac084Y2lCYWIyNWxJRVJ5WlhOa1pXNGdaOE84YkhScFp5QXhNeTR4TVM0eE15QXdOVG8xTXlCVmFISWdZbWx6SURBMk9qVXpJRlZvY2k0OEwySmxjMk5vY21WcFluVnVaejROQ2lBZ0lDQWdJRHgwWVhKcFptbHVabTgrUjJsc2RDQnBiaUJrWlhJZ1lXNW5aV2RsWW1WdVpXNGdWR0Z5YVdaNmIyNWxPeUJ0WVhndUlERWdVM1JrTGp3dmRHRnlhV1pwYm1adlBnMEtJQ0FnSUNBZ1BITnBZMmhsY21obGFYUnpUV1Z5YTIxaGJENUZUakV0TVRBdE1UTXhNVEExTlRNS1VDb3FNekV5TXpFeU16aDJDazF2ZEdsMklEUXhPVFV6TlRNM05qY0tMUzFVUlZOVUxTMVVTVU5MUlZRdExRbzhMM05wWTJobGNtaGxhWFJ6VFdWeWEyMWhiRDROQ2lBZ0lDQWdJRHhpWVhKamIyUmxQbWxXUWs5U2R6QkxSMmR2UVVGQlFVNVRWV2hGVldkQlFVRkpORUZCUVVOUFEwRk5RVUZCUkZGSk9FRTJRVUZCUVVKc1FrMVdSVmd2THk4NFFVRkJRbFozZEU0clFVRkJSVFZGYkVWUlZsSTBNblV5WXpJeU4ycE5RWGhGYkdZdkx6WlhNVkppUXpKU05UbEVjR3NyWTJoQ1ZHSlpTa3haT0hScGFHVm9jVTl6TVRsbVppdDJjamRtYmpJNVpuUTFaSEk1WkRNdk1TdDJZaXQyYmpWNlpsZ3laR051SzNodU4wVmtkSEpKU25nclkyOVdNRzV1ZDA1MlRVODBMMjR2WlVsMEwwRmtaSHA0UlU5TVoyNUJSREozWlhWcVVFZEhZMFV4Y1ZBeU1pdHZNM1EwS3pkbWRUUmxXRVJQVGpBdkwzazBUbnB0ZEhveFlWQnphMVpaVFRoR2VrbGlUbkJzZFZCaVMwMUdkMlZ1VERkMGRYTkxZM2hVYTNReWJGWkljbTFQZHpaT0szVktaMnhQV0U5VWJFZFhjbnB1UWxOeFVXVnpSbnBuV0daSVowMU5PVVJMWlRaeGRUWTRkWFYxY1VRM2MySTNORXg0T1M5UGNTc3ZkVVpHWjI1SVJqTnhaR3RQY21rMk4zUjFkMDlsU1RsV2IyNTNSRkUwWm1GR1YxTkNXVzByV2t0Vk1FWlZiME0yVUVJM0wwOUtaM3BOV2pKbGVua3JjMDkyTkdGWEt6RnJWM2xZZW5OT1JHaHRabmd2YldWVWRtNVJkRXBVU2tsSk5tSkViMDU2YkdsNE0yZFpRMHRHU1djMGNsSlRjVlJ5UWs4eWFrWlBSVXA0TlhOMWVsVmhVbTR6VFVaRlpGSllNRWxTTlVGSmFFMVFiWGd4VUdjM016STJOa1pOVFVsdFJuZGxhMHBsUm5sUFZubEVlRnB1V0hsM1prczRVMFY0ZFhkTlJHaEZha1pEY1RsV04yZGFSbEJzT0UxdVJtUkNiMk50Tmt0bGRVNVBVVkpKZHpSM1kxTnRXRVpNWlV0RWFXTkJSbEZFY0VaVGFUQjZRbXN2YmpBMU9VOUxlREZQWjNoalJEYzRhbk5RY0RSWk1sTkxVM0E0VDBsRmQzQjZaVlo2ZEhWWldWaERTVzVxV25FeGMzUXJUV3MxTWtOV1RsRkZjbUk0WTFScGRHUkdPRk16YWtKRk9XdFRjVXB0TlVjeFIwRmFTR2RsYm14cFVtTjNiRmhwYmpST2NGUXlhM0JuUVhsQ1MxRnZUM1EwWlZsdmNYcEZTRVJsU25sRFNIZFRUREJ6VTBsT1ZFb3lhRXRKWlc1NmVWbFlNakZKTTBwWE4wTmxSMFJvT1c5bVpWVnhObHBWU0ZSNlJGcEljVUY1VVZBeFQzY3ZRMWxZUzFKcGJERjVRMGd5YVhKaWJsZFJlbGR0ZUZkR2R6VnJVMEpEY0djclMxWTBVVGxqYkhWaVQwRkRNbmR0UW5kNVduQmtTMWR1TkVaUGVtbEtjM1JzVG1scmQyRkZWMVZETDJKb1FuZFRTM05XWTNkclFsQTVkRVpETkVWNlEwSnVXbTR2VW5scVkzRXlWWEJDY3k5U1EwVm9ZMDFwY0dOWlNrWTBTbmhsYjAxWVRVeG9UMU55ZVVFME0wWjZNSFJJVW1oVk5EWkxTVFphTmtvNFpWTkNiMlJHUTI0d05VODNia2xXVEN0V1VUbDNWMkZJTkRWRFRUWklNek5HSzNnNWVqZHNUVFUzVnpKcFpXTkhiMEpHTmtabFJrcDRaUzl1ZFhvemJWWTBabE5zWW5jMWMwUk9jMU56UTBScVZWaHdOVVp1WWpNMWN6QlVkakJvWmpaWGNsQlJTbWM0VDJ4NlRqTnhWMmRRUVdwU2FHc3dTVWxUSzJ0M1QwSTBWMDlVYm5kcFpreHJNVWRXTjNjeVVrZDNTbTFUY1RSdGRXMHdjMkp0ZUZseGFWVjBlVWRuWmtoRFQyVTNZWEJ4YjJKck9HZHhSR2RYTUZWTldVaEhkRFJ0VTNsTGIyOHlZazlOYkhCWFZIRmhRMWxsYTB3MVlrVnpOamwzVFhOdVJHaExjSGhaSzBGM1EyUkJXRXMxYldkdFZGbG1kMk5GWVhCalJYaGpUSEo0YzI5NVlXRmFXa3BEYlRKRlJFMXJRbE53UTBsblkwNTViVXhWYlhOd1lrVnBWVlJ1YlRoVVVGcFhNWEJqUzJkb05YUkpjbTkzV2xsM1IyVkhNRVpRWmxKU1JUSkJRVFJZT0hrMU4xaFdiM0Y2YlZJMFRqSnphSEkyVEdkMVJXcExUbTlMVWl0SGIyMWxlV1pwY1d4M2NFUk5Oa2d6TTJ4dVpuaGhXSFZ3TWxGek5WbDBNRGM1VnpocVFURnNkM0pJVWtkTmEyVkhTR0ZyYjJkRFNUaFhPWE5hUVVob01YVnNURWhhTWtOYVJWaFJWVGQyV1hKdlYwSlpaRVphWWpaU1ltdHZVV1ZQZGtKMFIxY3hRbHByZDA5SFUzbHlaMmxpYUZJMVZEQnFWMHg2YkhOMVIwRlFTRlZ6Y0ZvNVIwSmljQ3MyVEZGaFdWbFJVREJXUVVsak0wRlZOME5QYmk5ek5WQjRaRXBKUTBOdGVrRTBka1ZJVTFKYU5WUkJOVXB2Uldwa2RHRllhRWgzWlVoNWFFUmpNR1ZWZGtGcmVFWnhTMWhEUTJWMFFrNU5XRU5KYlcxWFFqUlRVMFI0YlROallYaEpURWs0WjNkUFExbG5TWGh1YlV4TGVUVXlNRUl4YkRZMlFqVjJVbmhQUlhoQk9HdFpaak5wUW05UU1IWnBlbFY0TWtWeWJIZG1SbEJWZGtremNHNWxPVGsyYTBOclNHZGlTSFExY1N0MU5tMVJURzVYTTFWa2NHOXBSRkUwYkhCUGVFOUllbUZXTUVkMWEwRjZXSEZXTjJOR0wyOXZia0VyTHpoNFpqbEVkRTlLVEd4emQwMXpObVJMT0hSRmREazVkV2x2VEdwTVZtNHZjVkpKYW5sTGJEaG1iR05YWlRGQlIxVllRalJoTjJFeGFqbGhZWEJKTW5weVNIZFRiRGhpUWl0UlpXcFVRMWx3Vm1aMlEwZFJRVUZCUVVKS1VsVTFSWEpyU21kblp6MDlQQzlpWVhKamIyUmxQZzBLSUNBZ0lDQWdQR0psY21WamFIUnBaM1Z1WjNORVlYUmxQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakVyTURFd01Ed3ZZbVZ5WldOb2RHbG5kVzVuYzBSaGRHVStEUW9nSUNBZ0lDQThaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakFyTURFd01Ed3ZaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQZzBLSUNBZ0lDQWdQR2QxWld4MGFXZHJaV2wwYzBWdVpHVStNakF4TXkweE1TMHhNMVF3TmpvMU16b3lNQ3N3TVRBd1BDOW5kV1ZzZEdsbmEyVnBkSE5GYm1SbFBnMEtJQ0FnSUNBZ1BHWnZjbTFoZEhSbFpGQnlaV2x6UGpJc01qQWdSVlZTUEM5bWIzSnRZWFIwWldSUWNtVnBjejROQ2lBZ0lDQWdJRHgzWVdWb2NuVnVaejR1UEM5M1lXVm9jblZ1Wno0TkNpQWdJQ0FnSUR4cmIyNTBjbTlzYkdWMWNuTkRiMlJsUGtWT01TMHhNQzB4TXpFeE1EVTFNend2YTI5dWRISnZiR3hsZFhKelEyOWtaVDROQ2lBZ0lDQWdJRHhyYjI1MGNtOXNiRzFsWkdsMWJUNVFLaW96TVRJek1USXpPSFk4TDJ0dmJuUnliMnhzYldWa2FYVnRQZzBLSUNBZ0lDQWdQSFJoWjJWelEyOWtaVDVOYjNScGRqd3ZkR0ZuWlhORGIyUmxQZzBLSUNBZ0lDQWdQSFJwWTJ0bGRFbEVQakkzTkRrME5qY3dORFE0TURFeU5Ud3ZkR2xqYTJWMFNVUStEUW9nSUNBZ0lDQThjMmxuYm1GMGRYSmxQaTB0VkVWVFZDMHRWRWxEUzBWVUxTMDhMM05wWjI1aGRIVnlaVDROQ2lBZ0lDQThMMkpsY21WamFIUnBaM1Z1Wno0TkNpQWdQQzlpWlhKbFkyaDBhV2QxYm1kbGJqNE5Dand2ZEdsamEyVjBSWEozWlhKaWMxQnliM3BsYzNOU1pYTndiMjV6WlQ0TkNnMEs="
         }
     }
 }
@@ -220,7 +220,7 @@ attribute | json data type | comments
 confirmed | Boolean | Value indicating success/failure
 
 
-PUT /api/V0/Processes/{processId}
+PUT /api/V1/Processes/{processId}
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -283,7 +283,7 @@ ticketIds | Array | Array of ticket ids
 ticketContent | Base64Binary | Content of Ticket
 
 
-GET /api/V0/Resources/Ticketing/Tickets
+GET /api/V1/Resources/Ticketing/Tickets
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -327,6 +327,9 @@ Parking Garages
 # General Description
 List parking garages in a specific area with basic information.
 
+# Request Headers
+If-modified-since - [Optional] Request only resources modified after a particular date-time
+
 # Query Parameters 
 Define area of interest as circle or box.
  
@@ -338,9 +341,13 @@ Define area of interest as circle or box.
 
 # Response 
 List of parking garages with basic information within the defined area of interest and a URI to request more details.
-The data structure of the response contains the following attributes:
+The data structure of the response contains the following attributes: 
 
 attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
 --- | --- | ---
 actions | Array | List of available actions on this resource (book, cancel, etc.)
 id | Number | Internal parking garage identification number
@@ -352,15 +359,35 @@ provider | String | Parking service provider (usually equals operator)
 operator | String | Parking space operator (usually equals provider)
 totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
 lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-Parts of the data structure might be omitted if the information is not available.
+Parts of the data structure might be omitted if the information is not available. 
 
 
 
-GET /api/V0/Resources/Parking/Garages
+GET /api/V1/Resources/Parking/Garages
 > Accept: application/json
 < 200
 < Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "parkopedia",
+            "lastUpdateTime": "2014-04-28T11:50:37+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "vmzParking",
+            "lastUpdateTime": "2014-04-28T11:50:37+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "stratosParking",
+            "lastUpdateTime": "2014-04-28T11:50:38+0200",
+            "messages": []
+        }
+    ],
+"resources":    
 [  
     {
         "actions": [],
@@ -403,6 +430,7 @@ GET /api/V0/Resources/Parking/Garages
         "lottype": "Tiefgarage"
     }
 ]
+}
 
 # General Description
 Show details for a specific parking garage.
@@ -412,7 +440,7 @@ Show details for a specific parking garage.
 - currently none
 
 # Response 
-Details of a specific parking garages, identified by `{id}` as retrieved through `GET /api/V0/Resources/Parking/Garages`.
+Details of a specific parking garages, identified by `{id}` as retrieved through `GET /api/V1/Resources/Parking/Garages`.
 The data structure of the response contains the attributes with the basic information and additionally the following attributes:
 
 attribute | json data type | comments
@@ -434,7 +462,7 @@ securityComment | String |  Securtiy features
 entrance | String |
 
 
-GET /api/V0/Resources/Parking/Garages/{id}
+GET /api/V1/Resources/Parking/Garages/{id}
 < 200
 < Content-Type: application/json
 {
@@ -495,8 +523,11 @@ Public Transportation
 # General Description
 List stations (U-Bahn/S-Bahn/train/bus/tram) in a specific area with basic information.
 
+# Request Headers
+If-modified-since - [Optional] Request only resources modified after a particular date-time
+
 # Query Parameters
-Define area of interest as circle or box.
+Define area of interest as circle or box. 
 
 ## circle
 `lat={lat}&lng={lng}&radius={r}`
@@ -509,52 +540,68 @@ List of public transport stations with basic information and a URI to get more d
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 description | String | Approximate location
 type | String | (="PublicTransportStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
 operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-
-GET /api/V0/Resources/PublicTransport/Stations
+GET /api/V1/Resources/PublicTransport/Stations
 > Accept: application/json
 < 200
 < Content-Type: application/json
-[
-    {
-        "actions": [],
-        "id": 958,
-        "description": "Berlin, Jüdisches Museum",
-        "type": "PublicTransportStation",
-        "uri": "Resources/PublicTransport/Stations/958",
-        "location": {
-            "latitude": 52.503543,
-            "longitude": 13.395639,
-            "system": "WGS_84"
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:07:56+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55280,
+            "description": "Berlin, Franz-Klühs-Str.",
+            "type": "PublicTransportStation",
+            "uri": "Resources/PublicTransport/Stations/55280",
+            "location": {
+                "latitude": 52.500417,
+                "longitude": 13.394804,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStation",
+            "operator": "VBBStation"
         },
-        "provider": "VBBStation",
-        "operator": "VBBStation"
-    },
-    {
-        "actions": [],
-        "id": 960,
-        "description": "S Hackescher Markt",
-        "type": "PublicTransportStation",
-        "uri": "Resources/PublicTransport/Stations/960",
-        "location": {
-            "latitude": 52.523070000000004,
-            "longitude": 13.402730000000002,
-            "system": "WGS_84"
-        },
-        "provider": "VBBStationS",
-        "operator": "VBBStationS"
-    }
-] 
+        {
+            "actions": [],
+            "id": 55265,
+            "description": "Berlin, Zossener Brücke",
+            "type": "PublicTransportStation",
+            "uri": "Resources/PublicTransport/Stations/55265",
+            "location": {
+                "latitude": 52.498427,
+                "longitude": 13.395845,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStation",
+            "operator": "VBBStation"
+        }
+    ]
+} 
 
 
 # General Description
 List Bus/Tram stations in a specific area with basic information.
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time
 
 # Query Parameters
 Define area of interest as circle or box.
@@ -570,38 +617,68 @@ List of public transport Bus/Tram stations with basic information and a URI to g
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 description | String | Approximate location
 type | String | (="PublicTransportBusStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | (="VBBStation")
 operator | String | (="VBBStation")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-
-GET /api/V0/Resources/PublicTransport/BusStations
+GET /api/V1/Resources/PublicTransport/BusStations
 > Accept: application/json
 < 200
 < Content-Type: application/json
-[
-    {
-        "actions": [],
-        "id": 958,
-        "description": "Berlin, Jüdisches Museum",
-        "type": "PublicTransportBusStation",
-        "uri": "Resources/PublicTransport/BusStations/958",
-        "location": {
-            "latitude": 52.503543,
-            "longitude": 13.395639,
-            "system": "WGS_84"
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:08:22+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55280,
+            "description": "Berlin, Franz-Klühs-Str.",
+            "type": "PublicTransportBusStation",
+            "uri": "Resources/PublicTransport/BusStations/55280",
+            "location": {
+                "latitude": 52.500417,
+                "longitude": 13.394804,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStation",
+            "operator": "VBBStation"
         },
-        "provider": "VBBStation",
-        "operator": "VBBStation"
-    }
-] 
+        {
+            "actions": [],
+            "id": 55265,
+            "description": "Berlin, Zossener Brücke",
+            "type": "PublicTransportBusStation",
+            "uri": "Resources/PublicTransport/BusStations/55265",
+            "location": {
+                "latitude": 52.498427,
+                "longitude": 13.395845,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStation",
+            "operator": "VBBStation"
+        }
+    ]
+}
 
 
 # General Description
 List Metro stations in a specific area with basic information.
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time
 
 # Query Parameters
 Define area of interest as circle or box.
@@ -617,38 +694,54 @@ List of public transport Metro stations with basic information and a URI to get 
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 description | String | Approximate location
 type | String | (="PublicTransportMetroStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | (="VBBStationU")
 operator | String | (="VBBStationU")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-
-GET /api/V0/Resources/PublicTransport/MetroStations
+GET /api/V1/Resources/PublicTransport/MetroStations
 > Accept: application/json
 < 200
 < Content-Type: application/json
-[
-    {
-        "actions": [],
-        "id": 954,
-        "description": "U Prinzenstr.",
-        "type": "PublicTransportMetroStation",
-        "uri": "Resources/PublicTransport/MetroStations/954",
-        "location": {
-            "latitude": 52.498270000000005,
-            "longitude": 13.406530000000002,
-            "system": "WGS_84"
-        },
-        "provider": "VBBStationU",
-        "operator": "VBBStationU"
-    }
-] 
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:08:45+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55060,
+            "description": "U Prinzenstr.",
+            "type": "PublicTransportMetroStation",
+            "uri": "Resources/PublicTransport/MetroStations/55060",
+            "location": {
+                "latitude": 52.498270000000005,
+                "longitude": 13.406530000000002,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStationU",
+            "operator": "VBBStationU"
+        }
+    ]
+}
 
 
 # General Description
 List City-Train/Regio stations in a specific area with basic information.
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time
 
 # Query Parameters
 Define area of interest as circle or box.
@@ -664,34 +757,47 @@ List of public transport City-Train/Regio stations with basic information and a 
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 description | String | Approximate location
 type | String | (="PublicTransportCityTrainStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | (="VBBStationS")
 operator | String | (="VBBStationS")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-
-GET /api/V0/Resources/PublicTransport/CityTrainStations
+GET /api/V1/Resources/PublicTransport/CityTrainStations
 > Accept: application/json
 < 200
 < Content-Type: application/json
-[
-    {
-        "actions": [],
-        "id": 960,
-        "description": "S Hackescher Markt",
-        "type": "PublicTransportCityTrainStation",
-        "uri": "Resources/PublicTransport/CityTrainStations/960",
-        "location": {
-            "latitude": 52.523070000000004,
-            "longitude": 13.402730000000002,
-            "system": "WGS_84"
-        },
-        "provider": "VBBStationS",
-        "operator": "VBBStationS"
-    }
-] 
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:09:30+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55050,
+            "description": "S Anhalter Bahnhof",
+            "type": "PublicTransportCityTrainStation",
+            "uri": "Resources/PublicTransport/CityTrainStations/55050",
+            "location": {
+                "latitude": 52.504430000000006,
+                "longitude": 13.382550000000002,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStationS",
+            "operator": "VBBStationS"
+        }
+    ]
+}
 
 
 # General Description
@@ -718,7 +824,7 @@ A PNG image which shows public transport stations.
 
 Note: The accept-header of this request must be set to `image/png`.
 
-GET /api/V0/Resources/PublicTransport
+GET /api/V1/Resources/PublicTransport
 > accept: image/png
 < 200
 < Content-Type: image/png
@@ -738,6 +844,9 @@ Get arrival and departure times at specified specified station.
 Arrival and/or departure times for a station specified by `{stationId}`.
 
 attribute | json data type | comments
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
 --- | --- | ---
 id | Number | Internal public transport station identification number
 ... | ... | ...
@@ -747,38 +856,61 @@ departures | String | Departures info containing direction, line and departure t
 
 Please note: expectedTime is not always available.
 
-GET /api/V0/Resources/PublicTransport/Stations/{stationId}/TimeTables
+GET /api/V1/Resources/PublicTransport/Stations/{stationId}/TimeTables
 < 200
 < Content-Type: application/json
-[
-    {
-        "actions": [],
-        "id": 80330,
-        "description": "U Prinzenstr. (Berlin)",
-        "type": "PublicTransportStation",
-        "uri": "Resources/PublicTransport/Stations/80330/TimeTables",
-        "location": {
-            "latitude": 52.498274,
-            "longitude": 13.406531,
-            "system": "WGS_84"
-        },
-        "provider": "VBBStation",
-        "operator": "VBBStation",
-        "arrivals": [],
-        "departures": [
-            {
-                "direction": "S+U Warschauer Str. (Berlin)",
-                "line": "U1",
-                "aimedTime": "2014-01-29T12:08:00+0100",
-                "expectedTime": null
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:10:09+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55050,
+            "description": "S Anhalter Bahnhof",
+            "type": "PublicTransportStation",
+            "uri": "Resources/PublicTransport/Stations/55050/TimeTables/55050",
+            "location": {
+                "latitude": 52.504430000000006,
+                "longitude": 13.382550000000002,
+                "system": "WGS_84"
             },
-            {
-                "direction": "U Uhlandstr. (Berlin)",
-                "line": "U1",
-                "aimedTime": "2014-01-29T12:09:00+0100",
-                "expectedTime": null
-            }
-  ]
+            "provider": "VBBStationS",
+            "operator": "VBBStationS",
+            "arrivals": [],
+            "departures": [
+                {
+                    "direction": "S Teltow Stadt",
+                    "line": "S25",
+                    "aimedTime": "2014-04-28T12:09:00+0200",
+                    "expectedTime": "2014-04-28T12:11:00+0200"
+                },
+                {
+                    "direction": "S Potsdam Hbf",
+                    "line": "S1",
+                    "aimedTime": "2014-04-28T12:11:00+0200",
+                    "expectedTime": "2014-04-28T12:12:00+0200"
+                },
+                {
+                    "direction": "U Wittenbergplatz",
+                    "line": "Bus M29",
+                    "aimedTime": "2014-04-28T12:12:00+0200",
+                    "expectedTime": null
+                },
+                {
+                    "direction": "S+U Hauptbahnhof",
+                    "line": "Bus M41",
+                    "aimedTime": "2014-04-28T12:12:00+0200",
+                    "expectedTime": null
+                }
+            ]
+        }
+    ]
+}
 
 
 
@@ -789,6 +921,9 @@ Bike Sharing
 
 # General Description
 Get list of bike sharing stations (for station-based bike sharing).
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time
 
 # Query Parameters
 Define area of interest as circle or box.
@@ -805,6 +940,10 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 actions | Array | Available actions
 id | Number | Internal bike sharing station identification number
 description | String | Approximate location
@@ -820,55 +959,81 @@ address | Object |
 numberOfBikes | Number | 
 numberOfFreeBikes | Number | 
 services | Array | 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-
-GET /api/V0/Resources/BikeSharing/Stations
+GET /api/V1/Resources/BikeSharing/Stations
 < 200
 < Content-Type: application/json
-[
-    {
-        "actions": [],
-        "id": 8281,
-        "description": "Zeughaus / Deutsches Historisches Museum",
-        "type": "BikeSharingStation",
-        "uri": "Resources/BikeSharing/Stations/8281",
-        "location": {
-            "latitude": 52.518394470214844,
-            "longitude": 13.395764350891113,
-            "system": "WGS_84"
+{
+    "metaData": [
+        {
+            "serviceAlias": "callabike",
+            "lastUpdateTime": "2014-04-28T12:11:14+0200",
+            "messages": []
         },
-        "provider": "CallABike",
-        "operator": "CallABike",
-        "phoneNo": null,
-        "operatorURI": null,
-        "operatorName": "CallABike",
-        "address": null,
-        "numberOfBikes": 30,
-        "numberOfFreeBikes": 11,
-        "services": null
-    },
-    {
-        "actions": [],
-        "id": 8294,
-        "description": "Jägerstraße / Friedrichstraße",
-        "type": "BikeSharingStation",
-        "uri": "Resources/BikeSharing/Stations/8294",
-        "location": {
-            "latitude": 52.51383590698242,
-            "longitude": 13.389104843139648,
-            "system": "WGS_84"
+        {
+            "serviceAlias": "nextbike",
+            "lastUpdateTime": "2014-04-28T12:11:14+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/BikeSharing/Stations/55317/Process?action=book"
+                }
+            ],
+            "id": 55317,
+            "description": "Geschwister-Scholl-Straße / Georgenstraße",
+            "type": "BikeSharingStation",
+            "uri": "Resources/BikeSharing/Stations/55317",
+            "location": {
+                "latitude": 52.52016067504883,
+                "longitude": 13.392001152038574,
+                "system": "WGS_84"
+            },
+            "provider": "CallABike",
+            "operator": "CallABike",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "CallABike",
+            "address": null,
+            "numberOfBikes": 33,
+            "numberOfFreeBikes": 6,
+            "services": null
         },
-        "provider": "CallABike",
-        "operator": "CallABike",
-        "phoneNo": null,
-        "operatorURI": null,
-        "operatorName": "CallABike",
-        "address": null,
-        "numberOfBikes": 19,
-        "numberOfFreeBikes": 6,
-        "services": null
-    }
-]
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/BikeSharing/Stations/55318/Process?action=book"
+                }
+            ],
+            "id": 55318,
+            "description": "S+U-Bhf. Friedrichstraße",
+            "type": "BikeSharingStation",
+            "uri": "Resources/BikeSharing/Stations/55318",
+            "location": {
+                "latitude": 52.519676208496094,
+                "longitude": 13.385995864868164,
+                "system": "WGS_84"
+            },
+            "provider": "CallABike",
+            "operator": "CallABike",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "CallABike",
+            "address": null,
+            "numberOfBikes": 16,
+            "numberOfFreeBikes": 11,
+            "services": null
+        }
+    ]
+}
 
 # General Description
 Book a bike available at a bike sharing station
@@ -894,7 +1059,7 @@ attribute | json data type | comments
 confirmationId | String | 
 comments | String | 
 
-POST /api/V0/Resources/BikeSharing/Stations/{stationId}/Process?action=book
+POST /api/V1/Resources/BikeSharing/Stations/{stationId}/Process?action=book
 > Content-Type: application/json
 > Accept: application/json
 { 
@@ -918,6 +1083,9 @@ Car Sharing
 # General Description
 Get list of available cars (free-floating and station-based) in a specific area.
 
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time
+
 # Query Parameters
 Define area of interest as circle or box.
 
@@ -940,6 +1108,10 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 actions | Array | 
 id | Number | 
 description | String | License ID or approximate location
@@ -948,56 +1120,104 @@ uri | URI | URI
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | 
 operator | String | 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-GET /api/V0/Resources/CarSharing/All
+GET /api/V1/Resources/CarSharing/All
 < 200
 < Content-Type: application/json
-[    
-    {
-        "actions": [
-                    {"name": "book",
-                     "method": "POST",
-                     "uri": "Resources/CarSharing/Cars/12196/Process?action=book"
-                    }
-                    ],
-        "id": 12196,
-        "description": "B-GO2104",
-        "type": "Cars",
-        "uri": "Resources/CarSharing/Cars/12196",
-        "location": {
-            "latitude": 52.51342,
-            "longitude": 13.39476,
-            "system": "WGS_84"
+{
+    "metaData": [
+        {
+            "serviceAlias": "driveNow",
+            "lastUpdateTime": "2014-04-28T12:12:36+0200",
+            "messages": []
         },
-        "provider": "Car2Go_Berlin",
-        "operator": "Car2Go_Berlin"
-    },
-    {
-        "actions": [
-            {
-                "name": "book",
-                "method": "POST",
-                "uri": "Resources/CarSharing/Stations/8150/Process?action=book"
+        {
+            "serviceAlias": "car2Go",
+            "lastUpdateTime": "2014-04-28T12:12:40+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "flinkster",
+            "lastUpdateTime": "2014-04-28T12:12:41+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Stations/55221/Process?action=book"
+                }
+            ],
+            "id": 55221,
+            "description": "Handwerkervereinshaus / Sophienstraße",
+            "type": "CarSharingStation",
+            "uri": "Resources/CarSharing/Stations/55221",
+            "location": {
+                "latitude": 52.52561167074207,
+                "longitude": 13.401126265525818,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "operator": "FlinksterDB",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "FlinksterDB",
+            "address": {
+                "citycode": "10178",
+                "city": "Berlin",
+                "street": "Sophienstraße",
+                "houseno": "18",
+                "district": "Mitte",
+                "region": null,
+                "country": null
             }
-        ],
-        "id": 8150,
-        "description": "Handwerkervereinshaus / Sophienstraße",
-        "type": "Stations",
-        "uri": "Resources/CarSharing/Stations/8150",
-        "location": {
-            "latitude": 52.52561167074207,
-            "longitude": 13.401126265525818,
-            "system": "WGS_84"
         },
-        "provider": "FlinksterDB",
-        "operator": "FlinksterDB"
-    }
-]
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Stations/54999/Process?action=book"
+                }
+            ],
+            "id": 54999,
+            "description": "Schumannstraße",
+            "type": "CarSharingStation",
+            "uri": "Resources/CarSharing/Stations/54999",
+            "location": {
+                "latitude": 52.523728447748866,
+                "longitude": 13.380703926086426,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "operator": "FlinksterDB",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "FlinksterDB",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Schumannstraße",
+                "houseno": null,
+                "district": "Mitte",
+                "region": null,
+                "country": null
+            }
+        }
+    ]
+}
 
 
 
 # General Description
 Get list of available free-floating cars in a specific area (NOTE: for free-floating car sharing only!).
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time
 
 # Query Parameters
 Define area of interest as circle or box.
@@ -1017,6 +1237,10 @@ with basic information and an URI to acquire more details.
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 actions | Array | Available actions (e.g. book)
 id | Number | Internal free-floating car identification number
 description | String | 
@@ -1030,78 +1254,373 @@ licenseId | String | License ID
 category | String | ENUM{"Fullsize", "Compact", "Smallsize", ... }
 fuelType | String | electric vehicle ("ELECTRICITY") or petrol car ("PETROL")
 imageLink | Link | link to the car image
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-GET /api/V0/Resources/CarSharing/Cars
+GET /api/V1/Resources/CarSharing/Cars
 < 200
 < Content-Type: application/json
-[
-     {
-        "actions": [
-            {
-                "name": "book",
-                "method": "POST",
-                "uri": "Resources/CarSharing/Cars/39117/Process?action=book"
-            }
-        ],
-        "id": 39117,
-        "description": "B-GO2424",
-        "type": "CarSharingCar",
-        "uri": "Resources/CarSharing/Cars/39117",
-        "location": {
-            "latitude": 52.51061,
-            "longitude": 13.37339,
-            "system": "WGS_84"
+{
+    "metaData": [
+        {
+            "serviceAlias": "driveNow",
+            "lastUpdateTime": "2014-04-28T12:13:13+0200",
+            "messages": []
         },
-        "provider": "Car2Go_Berlin",
-        "operator": "Car2Go_Berlin",
-        "address": {
-            "citycode": null,
-            "city": null,
-            "street": "Bellevuestraße 3, 10785 Berlin",
-            "houseno": null,
-            "district": null,
-            "region": null,
-            "country": null
+        {
+            "serviceAlias": "car2Go",
+            "lastUpdateTime": "2014-04-28T12:13:23+0200",
+            "messages": []
         },
-        "licenseId": "B-GO2424",
-        "category": null,
-        "fuelType": "PETROL",
-        "imageLink": null
-    },
-    {
-        "actions": [
-            {
-                "name": "book",
-                "method": "POST",
-                "uri": "Resources/CarSharing/Cars/39230/Process?action=book"
-            }
-        ],
-        "id": 39230,
-        "description": "B-GO4013",
-        "type": "CarSharingCar",
-        "uri": "Resources/CarSharing/Cars/39230",
-        "location": {
-            "latitude": 52.5074,
-            "longitude": 13.37516,
-            "system": "WGS_84"
+        {
+            "serviceAlias": "flinkster",
+            "lastUpdateTime": "2014-04-28T12:13:24+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55335/Process?action=book"
+                }
+            ],
+            "id": 55335,
+            "description": "Sam",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55335",
+            "location": {
+                "latitude": 52.518379,
+                "longitude": 13.3953,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Am Festungsgraben",
+                "houseno": "1",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7774",
+            "category": null,
+            "fuelType": "UNKNOWN",
+            "fuelLevel": 45,
+            "imageLink": null
         },
-        "provider": "Car2Go_Berlin",
-        "operator": "Car2Go_Berlin",
-        "address": {
-            "citycode": null,
-            "city": null,
-            "street": "Linkstraße 4, 10785 Berlin",
-            "houseno": null,
-            "district": null,
-            "region": null,
-            "country": null
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55336/Process?action=book"
+                }
+            ],
+            "id": 55336,
+            "description": "Artair",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55336",
+            "location": {
+                "latitude": 52.519664,
+                "longitude": 13.399584,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Am Lustgarten",
+                "houseno": "1",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX6850",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 30,
+            "imageLink": null
         },
-        "licenseId": "B-GO4013",
-        "category": null,
-        "fuelType": "ELECTRICITY",
-        "imageLink": null
-    }
-]
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55337/Process?action=book"
+                }
+            ],
+            "id": 55337,
+            "description": "Celina",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55337",
+            "location": {
+                "latitude": 52.515726,
+                "longitude": 13.390584,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Behrenstraße",
+                "houseno": "44-46",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7905",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 35,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55338/Process?action=book"
+                }
+            ],
+            "id": 55338,
+            "description": "Ash",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55338",
+            "location": {
+                "latitude": 52.520858,
+                "longitude": 13.391894,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Geschwister-Scholl-Straße",
+                "houseno": "6",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX5750",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 92,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55339/Process?action=book"
+                }
+            ],
+            "id": 55339,
+            "description": "Arney",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55339",
+            "location": {
+                "latitude": 52.514116,
+                "longitude": 13.394814,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Jägerstraße",
+                "houseno": "22-25",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX6449",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 36,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55340/Process?action=book"
+                }
+            ],
+            "id": 55340,
+            "description": "Athena",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55340",
+            "location": {
+                "latitude": 52.521293,
+                "longitude": 13.400609,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10178",
+                "city": "Berlin",
+                "street": "Stadtbahnbogen",
+                "houseno": "180",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX6412",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 40,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55341/Process?action=book"
+                }
+            ],
+            "id": 55341,
+            "description": "Nerta",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55341",
+            "location": {
+                "latitude": 52.513639,
+                "longitude": 13.380437,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Hannah-Arendt-Straße",
+                "houseno": "3",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7870",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 30,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55342/Process?action=book"
+                }
+            ],
+            "id": 55342,
+            "description": "Rocco",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55342",
+            "location": {
+                "latitude": 52.51796,
+                "longitude": 13.387433,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Mittelstraße",
+                "houseno": "17",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7680",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 35,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55343/Process?action=book"
+                }
+            ],
+            "id": 55343,
+            "description": "Amalea",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55343",
+            "location": {
+                "latitude": 52.511443,
+                "longitude": 13.393177,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Kronenstraße",
+                "houseno": "46",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX5669",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 55,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55344/Process?action=book"
+                }
+            ],
+            "id": 55344,
+            "description": "Shellysheldon",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55344",
+            "location": {
+                "latitude": 52.523668,
+                "longitude": 13.400799,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "operator": "DriveNow",
+            "address": {
+                "citycode": "10178",
+                "city": "Berlin",
+                "street": "Hackescher Markt",
+                "houseno": "2-3",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7976",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 87,
+            "imageLink": null
+        }
+       
+    ]
+}
 
 
 # General Description
@@ -1111,7 +1630,7 @@ Get details about a specific free-floating car.
 currently none  
 
 # Response
-Details about a specific free-floating car determined by `{carId}` as retrieved through GET /api/V0/Resources/CarSharing/Cars.
+Details about a specific free-floating car determined by `{carId}` as retrieved through GET /api/V1/Resources/CarSharing/Cars.
 The data structure of the response contains the attributes with the basic information and additionally the following attributes:
 
 attribute | json data type | comments
@@ -1128,7 +1647,7 @@ locationNote | String |
 operatorURI | URI | operator URI
 fee | String | car costs per time unit
 
-GET /api/V0/Resources/CarSharing/Cars/{carId}
+GET /api/V1/Resources/CarSharing/Cars/{carId}
 < 200
 < Content-Type: application/json
 {
@@ -1179,6 +1698,9 @@ GET /api/V0/Resources/CarSharing/Cars/{carId}
 # General Description
 Get list of car sharing stations (for station-based car sharing).
 
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time
+
 # Query Parameters 
 Define area of interest as circle or box.
 
@@ -1202,6 +1724,10 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 actions | Array | 
 id | Number | 
 description | String | Approximate location
@@ -1213,77 +1739,96 @@ operator | String |
 operatorURI | String | 
 operatorName | String | 
 address | Object | Street, city, etc.
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-
-GET /api/V0/Resources/CarSharing/Stations
+GET /api/V1/Resources/CarSharing/Stations
 < 200
 < Content-Type: application/json
-[
-    {
-        "actions": [
-            {
-                "name": "book",
-                "method": "POST",
-                "uri": "Resources/CarSharing/Stations/1627/Process?action=book"
-            }
-        ],
-        "id": 1627,
-        "description": "Christinenstraße",
-        "type": null,
-        "uri": "Resources/CarSharing/Stations/1627",
-        "location": {
-            "latitude": 52.531388124911125,
-            "longitude": 13.409093767404556,
-            "system": "WGS_84"
+{
+    "metaData": [
+        {
+            "serviceAlias": "driveNow",
+            "lastUpdateTime": "2014-04-28T12:15:19+0200",
+            "messages": []
         },
-        "provider": "FlinksterDB",
-        "operator": "FlinksterDB",
-        "phoneNo": null,
-        "operatorURI": null,
-        "operatorName": "FlinksterDB",
-        "address": {
-            "citycode": "10119",
-            "city": "Berlin",
-            "street": "Christinenstraße",
-            "houseno": "13",
-            "district": "Prenzlauer Berg",
-            "region": null,
-            "country": null
-        }
-    },
-    {
-        "actions": [
-            {
-                "name": "book",
-                "method": "POST",
-                "uri": "Resources/CarSharing/Stations/1634/Process?action=book"
-            }
-        ],
-        "id": 1634,
-        "description": "Friedrichstr.",
-        "type": null,
-        "uri": "Resources/CarSharing/Stations/1634",
-        "location": {
-            "latitude": 52.5083274841,
-            "longitude": 13.3902387619,
-            "system": "WGS_84"
+        {
+            "serviceAlias": "car2Go",
+            "lastUpdateTime": "2014-04-28T12:15:25+0200",
+            "messages": []
         },
-        "provider": "FlinksterDB",
-        "operator": "FlinksterDB",
-        "phoneNo": null,
-        "operatorURI": null,
-        "operatorName": "FlinksterDB",
-        "address": {
-            "citycode": "10117",
-            "city": "Berlin",
-            "street": "Friedrichstr.",
-            "houseno": "50-55",
-            "district": null,
-            "region": null,
-            "country": null
+        {
+            "serviceAlias": "flinkster",
+            "lastUpdateTime": "2014-04-28T12:15:25+0200",
+            "messages": []
         }
-    }
-]
+    ],
+    "resources": [
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Stations/55221/Process?action=book"
+                }
+            ],
+            "id": 55221,
+            "description": "Handwerkervereinshaus / Sophienstraße",
+            "type": "CarSharingStation",
+            "uri": "Resources/CarSharing/Stations/55221",
+            "location": {
+                "latitude": 52.52561167074207,
+                "longitude": 13.401126265525818,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "operator": "FlinksterDB",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "FlinksterDB",
+            "address": {
+                "citycode": "10178",
+                "city": "Berlin",
+                "street": "Sophienstraße",
+                "houseno": "18",
+                "district": "Mitte",
+                "region": null,
+                "country": null
+            }
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Stations/55415/Process?action=book"
+                }
+            ],
+            "id": 55415,
+            "description": "Schumannstraße",
+            "type": "CarSharingStation",
+            "uri": "Resources/CarSharing/Stations/55415",
+            "location": {
+                "latitude": 52.523728447748866,
+                "longitude": 13.380703926086426,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "operator": "FlinksterDB",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "FlinksterDB",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Schumannstraße",
+                "houseno": null,
+                "district": "Mitte",
+                "region": null,
+                "country": null
+            }
+        }
+    ]
+}
 
 
 # General Description
@@ -1315,7 +1860,7 @@ services | Array |
 availableCars | Number | 
 
 
-GET /api/V0/Resources/CarSharing/Stations/{stationId}
+GET /api/V1/Resources/CarSharing/Stations/{stationId}
 < 200
 < Content-Type: application/json
 {
@@ -1360,6 +1905,9 @@ GET /api/V0/Resources/CarSharing/Stations/{stationId}
 # General Description
 Get list of available cars at a specific car sharing station.
 
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time
+
 # Query Parameters
 Optional time interval in the future:
 
@@ -1372,6 +1920,10 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 actions | Array of objects | [ { "name": String, "method": String, "uri": String } ]
 id | String |
 description | String | 
@@ -1382,66 +1934,50 @@ location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "
 licenceId | String | 
 category | String |
 provider | String |
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
 
-GET /api/V0/Resources/CarSharing/Stations/{stationId}/Cars
+GET /api/V1/Resources/CarSharing/Stations/{stationId}/Cars
 < 200
 < Content-Type: application/json
-[
-    {
-        "actions": [],
-        "id": 1700,
-        "description": "Friedrichstr.",
-        "type": "CarSharingStationCar",
-        "uri": "Resources/CarSharing/Stations/1634/Cars/1700",
-        "location": {
-            "latitude": 52.5083274841,
-            "longitude": 13.3902387619,
-            "system": "WGS_84"
-        },
-        "provider": "FlinksterDB",
-        "operator": "FlinksterDB",
-        "address": {
-            "citycode": "10117",
-            "city": "Berlin",
-            "street": "Friedrichstr.",
-            "houseno": "50-55",
-            "district": null,
-            "region": null,
-            "country": null
-        },
-        "licenseId": null,
-        "category": null,
-        "fuelType": "UNKNOWN",
-        "imageLink": null
-    },
-    {
-        "actions": [],
-        "id": 1701,
-        "description": "Friedrichstr.",
-        "type": "CarSharingStationCar",
-        "uri": "Resources/CarSharing/Stations/1634/Cars/1701",
-        "location": {
-            "latitude": 52.5083274841,
-            "longitude": 13.3902387619,
-            "system": "WGS_84"
-        },
-        "provider": "FlinksterDB",
-        "operator": "FlinksterDB",
-        "address": {
-            "citycode": "10117",
-            "city": "Berlin",
-            "street": "Friedrichstr.",
-            "houseno": "50-55",
-            "district": null,
-            "region": null,
-            "country": null
-        },
-        "licenseId": null,
-        "category": null,
-        "fuelType": "UNKNOWN",
-        "imageLink": null
-    }    
-]
+{
+    "metaData": [
+        {
+            "serviceAlias": "flinkster",
+            "lastUpdateTime": "2014-04-28T12:15:59+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55416,
+            "description": "Schumannstraße",
+            "type": "CarSharingStationCar",
+            "uri": "Resources/CarSharing/Stations/55415/Cars/55416",
+            "location": {
+                "latitude": 52.523728447748866,
+                "longitude": 13.380703926086426,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "operator": "FlinksterDB",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Schumannstraße",
+                "houseno": null,
+                "district": "Mitte",
+                "region": null,
+                "country": null
+            },
+            "licenseId": "B-R 1262",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": null,
+            "imageLink": "www.flinkster.de/common/gethashdata.php?uniquebid=b6544bc36ee0f6ead98cf824b489cb3d"
+        }
+    ]
+}
 
 
 # General Description
@@ -1468,7 +2004,7 @@ attribute | json data type | comments
 confirmationId | String | 
 comments | String | 
 
-POST /api/V0/Resources/CarSharing/Cars/{carId}/Process?action=book
+POST /api/V1/Resources/CarSharing/Cars/{carId}/Process?action=book
 > Accept: application/json
 > Content-Type: application/json
 { 
@@ -1478,7 +2014,7 @@ POST /api/V0/Resources/CarSharing/Cars/{carId}/Process?action=book
     "userId": "4711/10" 
 }
 < 201
-< Location: /api/V0/Process/4711
+< Location: /api/V1/Process/4711
 < Content-Type: application/json
 {  
     "confirmationId": "1012020020",
@@ -1510,7 +2046,7 @@ attribute | json data type | comments
 confirmationId | String | 
 comments | String | 
 
-POST /api/V0/Resources/CarSharing/Stations/{stationId}/Cars/{carId}/Process?action=book
+POST /api/V1/Resources/CarSharing/Stations/{stationId}/Cars/{carId}/Process?action=book
 > Content-Type: application/json
 > Accept: application/json
 { 
@@ -1552,7 +2088,7 @@ attribute | json data type | comments
 confirmationId | String | 
 comments | String | 
 
-POST /api/V0/Resources/CarSharing/Stations/{stationId}/Process?action=book
+POST /api/V1/Resources/CarSharing/Stations/{stationId}/Process?action=book
 > Content-Type: application/json
 > Accept: application/json
 { 
@@ -1578,6 +2114,9 @@ EV Charging Station
 # General Description
 Get list of EV Charging Stations.
 
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time
+
 # Query Parameters 
 Define area of interest as circle or box.
 
@@ -1593,6 +2132,10 @@ together with geo location, name, and a URI to acquire more details.
 
 attribute | json data type | comments
 --- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
 actions | Array | List of available actions on this resource
 id | Number | Internal charging station identification numberg
 description | String | Approximate location or parking garage operator
@@ -1602,59 +2145,45 @@ location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "
 provider |  String| Charging station operator (usually equals provider)
 operator | String | Charging station provider (usually equals operator)
 address | Object | 
- 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request  
 
-GET /api/V0/Resources/EVCharging/Stations
+GET /api/V1/Resources/EVCharging/Stations
 < 200
 < Content-Type: application/json
-[
-    {
-        "actions": [],
-        "id": 81635,
-        "description": "Conti",
-        "type": "EVChargingStation",
-        "uri": "Resources/EVCharging/Stations/81635",
-        "location": {
-            "latitude": 52.51474,
-            "longitude": 13.38639,
-            "system": "WGS_84"
-        },
-        "provider": "Vattenfall",
-        "operator": "Vattenfall",
-        "address": {
-            "citycode": "10117",
-            "city": "Berlin",
-            "street": "Glinkastr.",
-            "houseno": "38",
-            "district": null,
-            "region": null,
-            "country": null
+{
+    "metaData": [
+        {
+            "serviceAlias": "vattenfall",
+            "lastUpdateTime": "2014-04-28T12:16:48+0200",
+            "messages": []
         }
-    },
-    {
-        "actions": [],
-        "id": 85970,
-        "description": "vor Mini",
-        "type": "EVChargingStation",
-        "uri": "Resources/EVCharging/Stations/85970",
-        "location": {
-            "latitude": 52.5108049,
-            "longitude": 13.3897369,
-            "system": "WGS_84"
-        },
-        "provider": "Vattenfall",
-        "operator": "Vattenfall",
-        "address": {
-            "citycode": "10117",
-            "city": "Berlin",
-            "street": "Friedrichstraße",
-            "houseno": "191",
-            "district": null,
-            "region": null,
-            "country": null
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55208,
+            "description": "Conti",
+            "type": "EVChargingStation",
+            "uri": "Resources/EVCharging/Stations/55208",
+            "location": {
+                "latitude": 52.51474,
+                "longitude": 13.38639,
+                "system": "WGS_84"
+            },
+            "provider": "Vattenfall",
+            "operator": "Vattenfall",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Glinkastr.",
+                "houseno": "38",
+                "district": null,
+                "region": null,
+                "country": null
+            }
         }
-    }
-]
+    ]
+}
 
 
 # General Description
@@ -1681,7 +2210,7 @@ chargingPoints |  |
 properties |  |  
 
 
-GET /api/V0/Resources/EVCharging/Stations/{id}
+GET /api/V1/Resources/EVCharging/Stations/{id}
 < 200
 < Content-Type: application/json
 {
@@ -1750,7 +2279,7 @@ Behavior: additional parameters have to be passed to WMS server such as format=i
 A PNG content which dispays the current traffic situation.
 
 Please note: The accept-header of this request must be set to "image/png".
-GET /api/V0/Info/TrafficInfo
+GET /api/V1/Info/TrafficInfo
 > accept: image/png
 < 200
 < Content-Type: image/png
@@ -1794,7 +2323,7 @@ trafficTypes | Array | list of traffic types used in the proposed trip
 description | String | list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
 costs | Array | list of costs for the proposed trip
 
-POST /api/V0/TripProposals
+POST /api/V1/TripProposals
 > Content-Type: application/json
 > Accept: application/json
 {
@@ -2099,10 +2628,10 @@ destination | Object | endpoint of the proposed trip
 
 Please note:
 
-The trip proposals as returned by "GET /api/V0/TripProposals" are internally stored only for a certain time; afterward they expire and details are no longer available. 
+The trip proposals as returned by "GET /api/V1/TripProposals" are internally stored only for a certain time; afterward they expire and details are no longer available. 
 The current expiration time is 10 minutes.
 
-GET /api/V0/TripProposals/{proposalId}
+GET /api/V1/TripProposals/{proposalId}
 < 200
 < Content-Type: application/json
 {
@@ -3006,7 +3535,7 @@ Specified in the request body as described in the sample request
 # Response
 List of trip proposals with basic information such as distance, duration and an URI for details.
 
-POST /api/V0/TripProposals
+POST /api/V1/TripProposals
 > Content-Type: application/json
 > Accept: application/json
 {
@@ -3317,7 +3846,7 @@ Define area of interest as a bounding box and with further optional parameters.
 PNG file with requested service categories.
 
 Please note: The accept-header of this request must be set to "image/png"
-GET /api/V0/Resources?system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&right_upper_lng={max_lng}&right_upper_lat={max_lat}&width={w}&heigth={h}&serviceNames={categories}
+GET /api/V1/Resources?system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&right_upper_lng={max_lng}&right_upper_lat={max_lat}&width={w}&heigth={h}&serviceNames={categories}
 > accept: image/png
 < 200
 < Content-Type: image/png
@@ -3330,7 +3859,7 @@ Registered IMP Partners
 --
 
 Request for new Partner (starts "New Partner" Process).
-POST /api/V0/Partners
+POST /api/V1/Partners
 > Content-Type: application/json
 > Accept: application/json
 { "companyName":"ContiPark", roles": [ "ServiceProvider" ]}
@@ -3342,7 +3871,7 @@ POST /api/V0/Partners
 { "name":"Partner 1" }
 
 Show details of specified Partner.
-GET /api/V0/Partners/{PartnerId}
+GET /api/V1/Partners/{PartnerId}
 < 200
 < Content-Type: application/json
 { "status": "requested", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] }
@@ -3361,7 +3890,7 @@ DELETE /Partners/{PartnerId}
 < 204
 
 List all registered Partners (only for Admin).
-GET /api/V0/Partners
+GET /api/V1/Partners
 < 200
 < Content-Type: application/json
 { "items": [
@@ -3375,7 +3904,7 @@ Generate user token (starts "User Token Generation" Process).
 Query Parameters
 
 - `action={register}`: Must be "register" to start token generation
-POST /api/V0/Partners/User/Process
+POST /api/V1/Partners/User/Process
 > Content-Type: application/json
 > Accept: application/json
 < 201
@@ -3392,7 +3921,7 @@ Query Parameters (optional - if date range not provided then results are fetched
  
 - `startDate={fromDate}`
 - `endDate={toDate}`
-GET /api/V0/Partners/User/Transactions
+GET /api/V1/Partners/User/Transactions
 > Content-Type: application/json
 > Accept: application/json
 > userToken: {userToken}
@@ -3420,7 +3949,7 @@ ServiceOfferings per Partner
 --
 
 Request registration of new Service for Partner (starts "New Service" Process) [UC PM-3].
-POST /api/V0/Partners/{PartnerId}/ServiceOfferings
+POST /api/V1/Partners/{PartnerId}/ServiceOfferings
 > Content-Type: application/json
 > Accept: application/json
 { "companyName":"Parking / Partner 1", "url": "..." }
@@ -3430,17 +3959,17 @@ POST /api/V0/Partners/{PartnerId}/ServiceOfferings
 { "status": "requested", "url": "/Partners/1/ServiceOfferings/1", "companyName":"Parking / Partner 1" }
 
 Request deletion of specified Service (starts "Delete Service" Process) [UC PM-3].
-DELETE /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+DELETE /V1/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
 < 204
 
 Show details of specified Service.
-GET /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+GET /V1/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
 < 200
 < Content-Type: application/json
 { "offeringStatus": "requested", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" }
 
 Show availability of specified Service [IMP-222].
-GET /V0/Partners/{PartnerId}/ServiceOfferings/{ServiceId}/Availability?from={from_time}&to={to_time}
+GET /V1/Partners/{PartnerId}/ServiceOfferings/{ServiceId}/Availability?from={from_time}&to={to_time}
 < 200
 < Content-Type: application/json
 { "offeringStatus": "available", "url": "/Partners/1/ServiceOfferings/1/Availability" }
@@ -3459,7 +3988,7 @@ ServiceOfferings for all Partners
 --
 
 List all offered Services.
-GET /api/V0/ServiceOfferings
+GET /api/V1/ServiceOfferings
 < 200
 < Content-Type: application/json
 { "items": [
@@ -3468,7 +3997,7 @@ GET /api/V0/ServiceOfferings
 ] }
 
 List all offered Services of a specified type.
-GET /api/V0/ServiceOfferings?category=Parking
+GET /api/V1/ServiceOfferings?category=Parking
 < 200
 < Content-Type: application/json
 { "items": [
@@ -3481,7 +4010,7 @@ Service Subscriptions
 --
 
 List all Subscriptions for specified Partner (requested by MobilityProvider).
-GET /api/V0/Partners/{PartnerId}/ServiceSubscriptions
+GET /api/V1/Partners/{PartnerId}/ServiceSubscriptions
 < 200
 < Content-Type: application/json
 { "items": [
@@ -3489,7 +4018,7 @@ GET /api/V0/Partners/{PartnerId}/ServiceSubscriptions
 ] }
 
 MobilityProvider subscribes to ServiceOffering
-POST /api/V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+POST /api/V1/ServiceOfferings/{ServiceId}/ServiceSubscriptions
 > Content-Type: application/json
 > Accept: application/json
 { "partnerId" : "1" }
@@ -3499,7 +4028,7 @@ POST /api/V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
 { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
 
 List all ServiceSubscriptions for a ServiceOffering (requested by ServiceProvider)
-GET /api/V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+GET /api/V1/ServiceOfferings/{ServiceId}/ServiceSubscriptions
 < 200
 < Content-Type: application/json
 { "items": [
@@ -3507,7 +4036,7 @@ GET /api/V0/ServiceOfferings/{ServiceId}/ServiceSubscriptions
 ] }
 
 Unsubscribe Service
-DELETE /api/V0/ServiceOfferings/1/ServiceSubscriptions/4711
+DELETE /api/V1/ServiceOfferings/1/ServiceSubscriptions/4711
 < 204
 
 --
@@ -3515,7 +4044,7 @@ Service Categories
 --
 
 List all available Service Categories
-GET /api/V0/ServiceCategories
+GET /api/V1/ServiceCategories
 < 200
 < Content-Type: application/json
 { "items": [
@@ -3527,7 +4056,7 @@ GET /api/V0/ServiceCategories
 --
 
 Options (for CORS, only for mock).
-OPTIONS /api/V0/Partners
+OPTIONS /api/V1/Partners
 < 200
 < Access-Control-Allow-Origin: *
 < Access-Control-Allow-Methods: POST, GET, PUT, UPDATE, DELETE, OPTIONS
@@ -3554,10 +4083,18 @@ Define area of interest as circle or box.
 List of available taxis with basic information.
 
 
-GET /api/V0/Resources/TaxiService/Taxis
+GET /api/V1/Resources/TaxiService/Taxis
 < 200
 < Content-Type: application/json
-[
+{
+    "metaData": [
+        {
+            "serviceAlias": "vattenfall",
+            "lastUpdateTime": "2014-04-28T12:16:48+0200",
+            "messages": []
+        }
+    ],
+"resources":[
     { 
         "id": 5120, 
         "location": {"latitude":52.5244,  "longitude":13.2541, "system":"WGS_84" }, 
@@ -3595,7 +4132,7 @@ GET /api/V0/Resources/TaxiService/Taxis
         "licenceId":"B-JW 448" 
     }
 ]
-
+}
 
 # General Description
 Get estimated fare for trips from origin to destination.
@@ -3614,7 +4151,7 @@ Further conditions might specify: number of passengers, extra luggage, start tim
 # Response
 fare information for the specified trip.
 
-GET /api/V0/Info/TaxiService/Fares
+GET /api/V1/Info/TaxiService/Fares
 < 200
 < Content-Type: application/json
 {
@@ -3677,7 +4214,7 @@ Please note:
 - Since data about the traveler is usually requested by the taxi SP, we assume that the end-user (or the mobility provider) himself is responsible to register at the service provider.
 - We currently require one operator in the input body.
 
-POST /api/V0/Resources/TaxiService/Taxis/Processes?action=Book
+POST /api/V1/Resources/TaxiService/Taxis/Processes?action=Book
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -3697,7 +4234,7 @@ POST /api/V0/Resources/TaxiService/Taxis/Processes?action=Book
     }
 }
 < 201
-< Location: /api/V0/Process/4711
+< Location: /api/V1/Process/4711
 < Content-Type: application/json
 {
     "processId" : 123,
@@ -3727,7 +4264,7 @@ POST /api/V0/Resources/TaxiService/Taxis/Processes?action=Book
         {
             "name": "Cancel",
             "method": "PUT",
-            "uri": "/api/V0/Processes/123?action=Cancel"
+            "uri": "/api/V1/Processes/123?action=Cancel"
         }
     ]
 }
@@ -3750,7 +4287,7 @@ Input in request body:
 
 # Output
 information about the originally planned taxi ride and the cancelation fee
-PUT /api/V0/Process/123?action=Cancel
+PUT /api/V1/Process/123?action=Cancel
 > Accept: application/json
 > Content-Type: application/json
 > userToken: {userToken}
@@ -3762,7 +4299,7 @@ PUT /api/V0/Process/123?action=Cancel
     }
 }
 < 201
-< Location: /api/V0/Process/123
+< Location: /api/V1/Process/123
 < Content-Type: application/json
 {
     "userId": "MP1_1",
@@ -3804,7 +4341,7 @@ Define area of interest as circle or box.
 
 # Response
 List of traffic information in the specified geo location specified by query parameters.
-GET /api/V0/Info/Incidents
+GET /api/V1/Info/Incidents
 < 200
 < Content-Type: application/json
 [   {
@@ -3883,7 +4420,7 @@ Define area of interest as circle or box.
 # Response 
 List of traffic information in the specified geo location specified by query parameters.
 
-GET /api/V0/Info/Incidents/IndividualTransport
+GET /api/V1/Info/Incidents/IndividualTransport
 < 200
 < Content-Type: application/json
 [    {
@@ -3932,7 +4469,7 @@ Define area of interest as circle or box.
 # Response 
 List of traffic data in the specified geo location specified by query parameters.
 
-GET /api/V0/Info/Incidents/PublicTransport
+GET /api/V1/Info/Incidents/PublicTransport
 < 200
 < Content-Type: application/json
 [   {
@@ -3986,7 +4523,7 @@ Get service usage statistics for specified date range.
  
 # Response
 List of service with usage statistics.
-GET /api/V0/Reporting/serviceUsageStatistics
+GET /api/V1/Reporting/serviceUsageStatistics
 < 200
 < Content-Type: application/json
 [   
@@ -4013,7 +4550,7 @@ Get service performance statistics for specified date range.
  
 # Response
 List of service with performance statistics.
-GET /api/V0/Reporting/servicePerformanceStatistics
+GET /api/V1/Reporting/servicePerformanceStatistics
 < 200
 < Content-Type: application/json
 [   
