@@ -2333,6 +2333,14 @@ destination | Object | endpoint of the proposed trip
 trafficTypes | Array | list of traffic types used in the proposed trip  
 description | String | list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
 costs | Array | list of costs for the proposed trip
+useBikeSharing | Boolean | use bike sharing services for routing [default: false]
+useCarSharing | Boolean | use car sharing services for routing [default: false]
+--- | --- | ---
+ownVehicles | Object | 
+--- | --- | ---
+trafficType | Enum | Own vehicle type - Car / Bike
+useParking | Boolean | Use parking for own vehicle 
+useParkAndRide | Boolean | Use parking and ride for own vehicle 
 
 POST /api/V1/TripProposals
 > Content-Type: application/json
@@ -2370,7 +2378,15 @@ POST /api/V1/TripProposals
     "CityTrain",
     "Bus"
   ],
-  "routingConstraints": []
+  "routingConstraints": [],
+  "useBikeSharing": "false",
+ "useCarSharing": "true", 
+ "ownVehicles":[
+                {  "trafficType":"Car",
+                    "useParking":"true",
+                    "useParkAndRide":"true"
+                }
+            ]
 }
 < 200
 < Content-Type: application/json
