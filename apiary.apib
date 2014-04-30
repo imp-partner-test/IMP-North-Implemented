@@ -359,7 +359,7 @@ provider | String | Parking service provider (usually equals operator)
 operator | String | Parking space operator (usually equals provider)
 totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
 lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Sinceodified-Since header is passed in the request 
 
 Parts of the data structure might be omitted if the information is not available. 
 
@@ -550,7 +550,7 @@ uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
 operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/PublicTransport/Stations
 > Accept: application/json
@@ -627,7 +627,7 @@ uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | (="VBBStation")
 operator | String | (="VBBStation")
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/PublicTransport/BusStations
 > Accept: application/json
@@ -704,7 +704,7 @@ uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | (="VBBStationU")
 operator | String | (="VBBStationU")
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/PublicTransport/MetroStations
 > Accept: application/json
@@ -767,7 +767,7 @@ uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | (="VBBStationS")
 operator | String | (="VBBStationS")
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/PublicTransport/CityTrainStations
 > Accept: application/json
@@ -959,7 +959,7 @@ address | Object |
 numberOfBikes | Number | 
 numberOfFreeBikes | Number | 
 services | Array | 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/BikeSharing/Stations
 < 200
@@ -1120,7 +1120,7 @@ uri | URI | URI
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | 
 operator | String | 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/CarSharing/All
 < 200
@@ -1254,7 +1254,7 @@ licenseId | String | License ID
 category | String | ENUM{"Fullsize", "Compact", "Smallsize", ... }
 fuelType | String | electric vehicle ("ELECTRICITY") or petrol car ("PETROL")
 imageLink | Link | link to the car image
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/CarSharing/Cars
 < 200
@@ -1739,7 +1739,7 @@ operator | String |
 operatorURI | String | 
 operatorName | String | 
 address | Object | Street, city, etc.
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/CarSharing/Stations
 < 200
@@ -1934,7 +1934,7 @@ location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "
 licenceId | String | 
 category | String |
 provider | String |
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/CarSharing/Stations/{stationId}/Cars
 < 200
@@ -2145,7 +2145,7 @@ location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "
 provider |  String| Charging station operator (usually equals provider)
 operator | String | Charging station provider (usually equals operator)
 address | Object | 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the Is-Modified-Since header is passed in the request  
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
 
 GET /api/V1/Resources/EVCharging/Stations
 < 200
