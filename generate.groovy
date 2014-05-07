@@ -3,7 +3,7 @@
 import groovy.json.*
 
 def slurper = new JsonSlurper()
-def ctlJson = new File("project-control.json").getText("UTF-8")
+def ctlJson = new File("IMP-North-Implemented/project-control.json").getText("UTF-8")
 
 def ctl = slurper.parseText(ctlJson)
 
