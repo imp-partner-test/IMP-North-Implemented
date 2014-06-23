@@ -4355,7 +4355,7 @@ Incidents / Traffic Info
 --
 
 # General Description
-Get recent general incidents / traffic info in a specific area.
+Get all recent general incidents (incidents that affect public and individual transport) in a specific area.
 
 # Query Parameters
 Define area of interest as circle or box.
@@ -4372,7 +4372,7 @@ The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-category | Enum | {"Congestion", "Incident", "Roadworks", "Blockade", "Event", "Other", etc}
+category | Enum | {"Roadworks", "Blockade", "Indefinition", "Congestion"} are the categories for the incidents with type "IncidentIndividualTransport", {"Construction", "Imbalance", "Diversion", "RailReplacement"} are the categories for incidents with type "IncidentPublicTransport"
 message | String | 
 timePeriod | Object | time period of the incident
 coordinates | Object | coordinates of the incident
@@ -4385,7 +4385,7 @@ source | String | {= "PT", "INKO", etc.}
 affectedTrips | Array | list of affected trips
 net | NetType  | 
 description | String | description of an incident information
-type | String | (="IndividualTransport", "PublicTransportation", etc.)
+type | String | There are 2 types of incidents: Incidents with the type "IncidentIndividualTransport" affect individual transport (car, bycicle), incidents with the type "IncidentPublicTransport" affect public transport (bus, tram, etc.)
 uri | URI | URI
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | Enum | {"News", etc.}
@@ -4478,7 +4478,7 @@ GET /api/V1/Info/Incidents
 ]
 
 # General Description
-Get recent individual transportation incidents / traffic info in a specific area.
+Get recent general incidents that affect individual transport only in a specific area.
 
 # Query Parameters
 Define area of interest as circle or box.
@@ -4527,7 +4527,7 @@ GET /api/V1/Info/Incidents/IndividualTransport
 
 
 # General Description
-Get recent public transportation incidents / traffic info in a specific area.
+Get recent general incidents that affect public transport only in a specific area.
 
 # Query Parameters
 Define area of interest as circle or box.
