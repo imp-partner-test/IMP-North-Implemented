@@ -2692,7 +2692,7 @@ The data structure of the response contains the attributes with the basic inform
 attribute | json data type | comments
 --- | --- | ---
 segmentId | URI | URI to request more details
-origin | Object | start point of the proposed trip
+origin | Object | start point of the proposed trip. For car sharing segment we have "operatorId" and "unitId" and for CityTrain/RegioTrain segment we have "platform", "stationId" and "direction"
 destination | Object | endpoint of the proposed trip
 
 
@@ -2705,193 +2705,753 @@ GET /api/V1/TripProposals/{proposalId}
 < 200
 < Content-Type: application/json
 {
-    "url": "TripProposals/80813/",
+    "url": "TripProposals/21844/",
     "segments": [
         {
             "segmentId": "1",
-            "description": null,
+            "description": "@52.52164199999999,13.411007000000039:@52.57783508300779,13.3144836425781",
             "origin": {
                 "location": {
-                    "latitude": 52.3934874,
-                    "longitude": 13.0744217,
+                    "latitude": 52.52180099487305,
+                    "longitude": 13.411330223083496,
                     "system": "WGS_84"
                 },
                 "address": null,
-                "time": "2014-03-27T10:30:00+0100"
+                "time": "2014-06-28T14:04:02+0200"
             },
             "destination": {
                 "location": {
-                    "latitude": 52.3903545,
-                    "longitude": 13.0669629,
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.314399719238281,
                     "system": "WGS_84"
                 },
                 "address": null,
-                "time": "2014-03-27T10:45:12+0100"
+                "time": "2014-06-28T14:28:02+0200"
             },
-            "trafficType": "Walk",
+            "trafficType": "Car",
             "cost": {
                 "distance": {
                     "unit": "Meter",
-                    "value": 1216
+                    "value": 10905
                 },
                 "duration": {
                     "unit": "Minute",
-                    "value": 15.2
+                    "value": 24.533333333333335
                 },
                 "price": {
                     "unit": "Euro",
-                    "value": 0
+                    "value": 4.9072499999999994
                 },
                 "emission": {
                     "unit": "Gram",
-                    "value": 0
+                    "value": 1635.75
                 },
                 "ticketPrice": null
             },
             "wayPoints": [
                 {
-                    "latitude": 52.39349,
-                    "longitude": 13.07442,
+                    "latitude": 52.52180099487305,
+                    "longitude": 13.411330223083496,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39296,
-                    "longitude": 13.07358,
+                    "latitude": 52.52207946777344,
+                    "longitude": 13.410940170288086,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39279,
-                    "longitude": 13.07332,
+                    "latitude": 52.52252960205078,
+                    "longitude": 13.410249710083008,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39267,
-                    "longitude": 13.07314,
+                    "latitude": 52.52259826660156,
+                    "longitude": 13.410090446472168,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39268,
-                    "longitude": 13.07309,
+                    "latitude": 52.52323913574219,
+                    "longitude": 13.411160469055176,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39269,
-                    "longitude": 13.07305,
+                    "latitude": 52.523460388183594,
+                    "longitude": 13.411490440368652,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39268,
-                    "longitude": 13.07301,
+                    "latitude": 52.524410247802734,
+                    "longitude": 13.412690162658691,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39266,
-                    "longitude": 13.07293,
+                    "latitude": 52.525089263916016,
+                    "longitude": 13.413570404052734,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39259,
-                    "longitude": 13.07286,
+                    "latitude": 52.526611328125,
+                    "longitude": 13.415470123291016,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39255,
-                    "longitude": 13.07287,
+                    "latitude": 52.52676010131836,
+                    "longitude": 13.415670394897461,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39253,
-                    "longitude": 13.07287,
+                    "latitude": 52.527069091796875,
+                    "longitude": 13.415969848632812,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39253,
-                    "longitude": 13.07257,
+                    "latitude": 52.527191162109375,
+                    "longitude": 13.415719985961914,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39265,
-                    "longitude": 13.06952,
+                    "latitude": 52.52745819091797,
+                    "longitude": 13.415060043334961,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39276,
-                    "longitude": 13.06683,
+                    "latitude": 52.52819061279297,
+                    "longitude": 13.412469863891602,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39286,
-                    "longitude": 13.06429,
+                    "latitude": 52.528350830078125,
+                    "longitude": 13.412030220031738,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39277,
-                    "longitude": 13.06385,
+                    "latitude": 52.52854919433594,
+                    "longitude": 13.411230087280273,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39252,
-                    "longitude": 13.0633,
+                    "latitude": 52.52873992919922,
+                    "longitude": 13.41001033782959,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39221,
-                    "longitude": 13.06359,
+                    "latitude": 52.52878952026367,
+                    "longitude": 13.409740447998047,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39199,
-                    "longitude": 13.06367,
+                    "latitude": 52.52885818481445,
+                    "longitude": 13.409480094909668,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39148,
-                    "longitude": 13.06378,
+                    "latitude": 52.52886962890625,
+                    "longitude": 13.4093599319458,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39131,
-                    "longitude": 13.06384,
+                    "latitude": 52.52912139892578,
+                    "longitude": 13.40822982788086,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39118,
-                    "longitude": 13.06394,
+                    "latitude": 52.52928924560547,
+                    "longitude": 13.407270431518555,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39088,
-                    "longitude": 13.0643,
+                    "latitude": 52.529579162597656,
+                    "longitude": 13.405449867248535,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39059,
-                    "longitude": 13.06463,
+                    "latitude": 52.52988052368164,
+                    "longitude": 13.403739929199219,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39058,
-                    "longitude": 13.06481,
+                    "latitude": 52.52989959716797,
+                    "longitude": 13.403400421142578,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39048,
-                    "longitude": 13.06593,
+                    "latitude": 52.52980041503906,
+                    "longitude": 13.401590347290039,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.39035,
-                    "longitude": 13.06696,
+                    "latitude": 52.529781341552734,
+                    "longitude": 13.401490211486816,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52975845336914,
+                    "longitude": 13.401300430297852,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53007125854492,
+                    "longitude": 13.401000022888184,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.531681060791016,
+                    "longitude": 13.399620056152344,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53229904174805,
+                    "longitude": 13.399080276489258,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.532588958740234,
+                    "longitude": 13.398920059204102,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.536251068115234,
+                    "longitude": 13.39758014678955,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53641891479492,
+                    "longitude": 13.397560119628906,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53717041015625,
+                    "longitude": 13.396949768066406,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53813934326172,
+                    "longitude": 13.39622974395752,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53860092163086,
+                    "longitude": 13.3958101272583,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53916931152344,
+                    "longitude": 13.395380020141602,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53955841064453,
+                    "longitude": 13.39507007598877,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.541141510009766,
+                    "longitude": 13.393850326538086,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54167175292969,
+                    "longitude": 13.393449783325195,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54228973388672,
+                    "longitude": 13.392970085144043,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54256057739258,
+                    "longitude": 13.392749786376953,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54690933227539,
+                    "longitude": 13.389419555664062,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54790115356445,
+                    "longitude": 13.388649940490723,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5482292175293,
+                    "longitude": 13.38838005065918,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54838180541992,
+                    "longitude": 13.388270378112793,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54869842529297,
+                    "longitude": 13.38794994354248,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54916000366211,
+                    "longitude": 13.38722038269043,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54936981201172,
+                    "longitude": 13.386930465698242,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55004119873047,
+                    "longitude": 13.385780334472656,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55070114135742,
+                    "longitude": 13.384710311889648,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.551658630371094,
+                    "longitude": 13.383119583129883,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55192184448242,
+                    "longitude": 13.382539749145508,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.552181243896484,
+                    "longitude": 13.3818998336792,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.552398681640625,
+                    "longitude": 13.381279945373535,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55268859863281,
+                    "longitude": 13.380510330200195,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55287170410156,
+                    "longitude": 13.379839897155762,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55302810668945,
+                    "longitude": 13.378809928894043,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55310821533203,
+                    "longitude": 13.378430366516113,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55316925048828,
+                    "longitude": 13.378270149230957,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55324172973633,
+                    "longitude": 13.378129959106445,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55358123779297,
+                    "longitude": 13.377519607543945,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5537109375,
+                    "longitude": 13.377360343933105,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55400085449219,
+                    "longitude": 13.377059936523438,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55427169799805,
+                    "longitude": 13.376740455627441,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5561408996582,
+                    "longitude": 13.374640464782715,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.556339263916016,
+                    "longitude": 13.374380111694336,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.556861877441406,
+                    "longitude": 13.373760223388672,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55731964111328,
+                    "longitude": 13.373180389404297,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.557861328125,
+                    "longitude": 13.37246036529541,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55812072753906,
+                    "longitude": 13.372139930725098,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.558189392089844,
+                    "longitude": 13.372039794921875,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5594482421875,
+                    "longitude": 13.370389938354492,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5601806640625,
+                    "longitude": 13.36948013305664,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.560569763183594,
+                    "longitude": 13.3689603805542,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56098175048828,
+                    "longitude": 13.368379592895508,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56258010864258,
+                    "longitude": 13.366310119628906,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56293869018555,
+                    "longitude": 13.365799903869629,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56298065185547,
+                    "longitude": 13.365679740905762,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56296157836914,
+                    "longitude": 13.365429878234863,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.562931060791016,
+                    "longitude": 13.365229606628418,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56293869018555,
+                    "longitude": 13.36454963684082,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56367874145508,
+                    "longitude": 13.364410400390625,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56412887573242,
+                    "longitude": 13.364270210266113,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56623077392578,
+                    "longitude": 13.363129615783691,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56726837158203,
+                    "longitude": 13.362589836120605,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56779098510742,
+                    "longitude": 13.362310409545898,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56863021850586,
+                    "longitude": 13.3618803024292,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56977081298828,
+                    "longitude": 13.3612699508667,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57062911987305,
+                    "longitude": 13.36083984375,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57229995727539,
+                    "longitude": 13.359970092773438,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.573158264160156,
+                    "longitude": 13.35949993133545,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5732307434082,
+                    "longitude": 13.359439849853516,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57334899902344,
+                    "longitude": 13.35923957824707,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57341003417969,
+                    "longitude": 13.35906982421875,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.573429107666016,
+                    "longitude": 13.358949661254883,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57339859008789,
+                    "longitude": 13.357379913330078,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57352828979492,
+                    "longitude": 13.355330467224121,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57378005981445,
+                    "longitude": 13.352100372314453,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57381057739258,
+                    "longitude": 13.351880073547363,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.573829650878906,
+                    "longitude": 13.351590156555176,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.573970794677734,
+                    "longitude": 13.350520133972168,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5743408203125,
+                    "longitude": 13.348150253295898,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57440185546875,
+                    "longitude": 13.347829818725586,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57442092895508,
+                    "longitude": 13.34766960144043,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57469177246094,
+                    "longitude": 13.345990180969238,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57489013671875,
+                    "longitude": 13.344670295715332,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575191497802734,
+                    "longitude": 13.342599868774414,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57535171508789,
+                    "longitude": 13.340889930725098,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57542037963867,
+                    "longitude": 13.339269638061523,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575439453125,
+                    "longitude": 13.338430404663086,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5754508972168,
+                    "longitude": 13.335969924926758,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575469970703125,
+                    "longitude": 13.334819793701172,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575538635253906,
+                    "longitude": 13.332220077514648,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57561111450195,
+                    "longitude": 13.330249786376953,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57556915283203,
+                    "longitude": 13.330129623413086,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57556915283203,
+                    "longitude": 13.329480171203613,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575679779052734,
+                    "longitude": 13.32699966430664,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575679779052734,
+                    "longitude": 13.326889991760254,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57577896118164,
+                    "longitude": 13.324529647827148,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575801849365234,
+                    "longitude": 13.323929786682129,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575828552246094,
+                    "longitude": 13.323380470275879,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575828552246094,
+                    "longitude": 13.32328987121582,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575870513916016,
+                    "longitude": 13.322600364685059,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57598876953125,
+                    "longitude": 13.319840431213379,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57609176635742,
+                    "longitude": 13.318900108337402,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57630157470703,
+                    "longitude": 13.317150115966797,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.576568603515625,
+                    "longitude": 13.315110206604004,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.577510833740234,
+                    "longitude": 13.315449714660645,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57767105102539,
+                    "longitude": 13.315520286560059,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57780075073242,
+                    "longitude": 13.315600395202637,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.577850341796875,
+                    "longitude": 13.315489768981934,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.315369606018066,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.578121185302734,
+                    "longitude": 13.314900398254395,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57817077636719,
+                    "longitude": 13.314820289611816,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57802963256836,
+                    "longitude": 13.314689636230469,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57793045043945,
+                    "longitude": 13.314519882202148,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.314399719238281,
                     "system": "WGS_84"
                 }
             ],
             "guidingPoints": [
                 {
-                    "description": "Head <b>southwest</b> on <b>Humboldtring</b>",
+                    "description": "Leave from  Alexanderplatz, Berlin",
                     "location": {
                         "location": {
-                            "latitude": 52.3934874,
-                            "longitude": 13.0744217,
+                            "latitude": 52.52180099487305,
+                            "longitude": 13.411330223083496,
                             "system": "WGS_84"
                         },
                         "address": null,
@@ -2912,14 +3472,19 @@ GET /api/V1/TripProposals/{proposalId}
                     },
                     "operator": null,
                     "pointId": null,
-                    "comment": []
+                    "comment": [
+                        {
+                            "text": "Unknown Road",
+                            "type": "WARNING"
+                        }
+                    ]
                 },
                 {
-                    "description": "At the roundabout, take the <b>1st</b> exit onto <b>Babelsberger Straße</b>",
+                    "description": "Turn right onto  Karl-Liebknecht-Straße",
                     "location": {
                         "location": {
-                            "latitude": 52.3926736,
-                            "longitude": 13.0731367,
+                            "latitude": 52.52259826660156,
+                            "longitude": 13.410090446472168,
                             "system": "WGS_84"
                         },
                         "address": null,
@@ -2928,11 +3493,11 @@ GET /api/V1/TripProposals/{proposalId}
                     "cost": {
                         "distance": {
                             "unit": "Meter",
-                            "value": 126
+                            "value": 121
                         },
                         "duration": {
                             "unit": "Second",
-                            "value": 91
+                            "value": 44
                         },
                         "price": null,
                         "emission": null,
@@ -2943,11 +3508,11 @@ GET /api/V1/TripProposals/{proposalId}
                     "comment": []
                 },
                 {
-                    "description": "Turn <b>left</b> onto <b>Lange Brücke/B2</b><div style=\"font-size:0.9em\">Continue to follow B2</div>",
+                    "description": "Turn left onto  Torstraße",
                     "location": {
                         "location": {
-                            "latitude": 52.3925224,
-                            "longitude": 13.0632988,
+                            "latitude": 52.52676010131836,
+                            "longitude": 13.415670394897461,
                             "system": "WGS_84"
                         },
                         "address": null,
@@ -2956,11 +3521,11 @@ GET /api/V1/TripProposals/{proposalId}
                     "cost": {
                         "distance": {
                             "unit": "Meter",
-                            "value": 818
+                            "value": 713
                         },
                         "duration": {
                             "unit": "Second",
-                            "value": 618
+                            "value": 142
                         },
                         "price": null,
                         "emission": null,
@@ -2971,11 +3536,11 @@ GET /api/V1/TripProposals/{proposalId}
                     "comment": []
                 },
                 {
-                    "description": "Turn <b>left</b> onto <b>Friedrich-Engels-Straße</b><div style=\"font-size:0.9em\">Destination will be on the left</div>",
+                    "description": "Turn right onto  Brunnenstraße",
                     "location": {
                         "location": {
-                            "latitude": 52.3905932,
-                            "longitude": 13.064633,
+                            "latitude": 52.52975845336914,
+                            "longitude": 13.401300430297852,
                             "system": "WGS_84"
                         },
                         "address": null,
@@ -2984,11 +3549,11 @@ GET /api/V1/TripProposals/{proposalId}
                     "cost": {
                         "distance": {
                             "unit": "Meter",
-                            "value": 1056
+                            "value": 1805
                         },
                         "duration": {
                             "unit": "Second",
-                            "value": 792
+                            "value": 302
                         },
                         "price": null,
                         "emission": null,
@@ -2999,24 +3564,136 @@ GET /api/V1/TripProposals/{proposalId}
                     "comment": []
                 },
                 {
-                    "description": "Friedrich-Engels-Straße 72, 14473 Potsdam, Germany",
+                    "description": "Turn right onto B96 Markstraße",
                     "location": {
                         "location": {
-                            "latitude": 52.3903545,
-                            "longitude": 13.0669629,
+                            "latitude": 52.56296157836914,
+                            "longitude": 13.365429878234863,
                             "system": "WGS_84"
                         },
                         "address": null,
-                        "time": "2014-03-27T10:45:12+0100"
+                        "time": null
                     },
                     "cost": {
                         "distance": {
                             "unit": "Meter",
-                            "value": 1216
+                            "value": 6349
                         },
                         "duration": {
                             "unit": "Second",
-                            "value": 912
+                            "value": 888
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn right onto  Eichborndamm",
+                    "location": {
+                        "location": {
+                            "latitude": 52.576568603515625,
+                            "longitude": 13.315110206604004,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 10665
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1400
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn left onto  Miraustraße",
+                    "location": {
+                        "location": {
+                            "latitude": 52.57780075073242,
+                            "longitude": 13.315600395202637,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 10801
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1426
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn left onto  Breitenbachstraße",
+                    "location": {
+                        "location": {
+                            "latitude": 52.57817077636719,
+                            "longitude": 13.314820289611816,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 10865
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1454
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Arrive at  Breitenbachstraße, Borsigwalde",
+                    "location": {
+                        "location": {
+                            "latitude": 52.57788848876953,
+                            "longitude": 13.314399719238281,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 10905
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1472
                         },
                         "price": null,
                         "emission": null,
@@ -3030,34 +3707,36 @@ GET /api/V1/TripProposals/{proposalId}
         },
         {
             "segmentId": "2",
-            "description": "CityTrain/S1 Direction: S Oranienburg Bhf",
+            "description": "parking part",
             "origin": {
                 "location": {
-                    "latitude": 52.39093,
-                    "longitude": 13.06716,
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.314399719238281,
                     "system": "WGS_84"
                 },
-                "address": null,
-                "time": "2014-03-27T10:40:00+0100"
+                "address": "P+R Eichborndamm (S)",
+                "time": "2014-06-28T14:28:02+0200",
+                "operatorId": "PR",
+                "unitId": "21846"
             },
             "destination": {
                 "location": {
-                    "latitude": 52.421458,
-                    "longitude": 13.179103,
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.314399719238281,
                     "system": "WGS_84"
                 },
                 "address": null,
-                "time": "2014-03-27T10:51:00+0100"
+                "time": "2014-06-28T14:28:02+0200"
             },
-            "trafficType": "CityTrain",
+            "trafficType": "Other",
             "cost": {
                 "distance": {
                     "unit": "Meter",
-                    "value": 8783.240546630148
+                    "value": 0
                 },
                 "duration": {
                     "unit": "Minute",
-                    "value": 11
+                    "value": 0
                 },
                 "price": {
                     "unit": "Euro",
@@ -3065,397 +3744,84 @@ GET /api/V1/TripProposals/{proposalId}
                 },
                 "emission": {
                     "unit": "Gram",
-                    "value": 202.0145325724934
+                    "value": 0
                 },
                 "ticketPrice": null
             },
             "wayPoints": [],
             "guidingPoints": [
                 {
-                    "description": "S Potsdam Hbf",
+                    "description": "P+R Eichborndamm (S)",
                     "location": {
                         "location": {
-                            "latitude": 52.39093,
-                            "longitude": 13.06716,
+                            "latitude": 52.57788848876953,
+                            "longitude": 13.314399719238281,
                             "system": "WGS_84"
                         },
                         "address": null,
-                        "time": "2014-03-27T10:40:00+0100"
+                        "time": "2014-06-28T14:28:02+0200"
                     },
                     "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80817",
-                    "comment": []
-                },
-                {
-                    "description": "S Babelsberg",
-                    "location": {
-                        "location": {
-                            "latitude": 52.391371,
-                            "longitude": 13.094622,
-                            "system": "WGS_84"
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 0
                         },
-                        "address": null,
-                        "time": "2014-03-27T10:43:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80818",
-                    "comment": []
-                },
-                {
-                    "description": "S Griebnitzsee Bhf",
-                    "location": {
-                        "location": {
-                            "latitude": 52.393987,
-                            "longitude": 13.128916,
-                            "system": "WGS_84"
+                        "duration": {
+                            "unit": "Minute",
+                            "value": 0
                         },
-                        "address": null,
-                        "time": "2014-03-27T10:46:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80819",
-                    "comment": []
-                },
-                {
-                    "description": "S Wannsee Bhf (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.421458,
-                            "longitude": 13.179103,
-                            "system": "WGS_84"
+                        "price": {
+                            "unit": "Euro",
+                            "value": 0
                         },
-                        "address": null,
-                        "time": "2014-03-27T10:52:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
+                        "emission": {
+                            "unit": "Gram",
+                            "value": 0
+                        },
                         "ticketPrice": null
                     },
                     "operator": null,
-                    "pointId": "80820",
+                    "pointId": null,
                     "comment": []
                 }
             ]
         },
         {
             "segmentId": "3",
-            "description": "CityTrain/S7 Direction: S Ahrensfelde Bhf (Berlin)",
-            "origin": {
-                "location": {
-                    "latitude": 52.421458,
-                    "longitude": 13.179103,
-                    "system": "WGS_84"
-                },
-                "address": null,
-                "time": "2014-03-27T10:53:00+0100"
-            },
-            "destination": {
-                "location": {
-                    "latitude": 52.525849,
-                    "longitude": 13.368928,
-                    "system": "WGS_84"
-                },
-                "address": null,
-                "time": "2014-03-27T11:18:00+0100"
-            },
-            "trafficType": "CityTrain",
-            "cost": {
-                "distance": {
-                    "unit": "Meter",
-                    "value": 18226.572890606763
-                },
-                "duration": {
-                    "unit": "Minute",
-                    "value": 25
-                },
-                "price": {
-                    "unit": "Euro",
-                    "value": 0
-                },
-                "emission": {
-                    "unit": "Gram",
-                    "value": 419.21117648395557
-                },
-                "ticketPrice": null
-            },
-            "wayPoints": [],
-            "guidingPoints": [
-                {
-                    "description": "S Wannsee Bhf (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.421458,
-                            "longitude": 13.179103,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T10:53:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80820",
-                    "comment": []
-                },
-                {
-                    "description": "S Nikolassee (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.431211,
-                            "longitude": 13.193297,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T10:55:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80821",
-                    "comment": []
-                },
-                {
-                    "description": "S Grunewald (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.488679,
-                            "longitude": 13.261947,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T11:02:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80822",
-                    "comment": []
-                },
-                {
-                    "description": "S Westkreuz (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.501147,
-                            "longitude": 13.283036,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T11:05:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80823",
-                    "comment": []
-                },
-                {
-                    "description": "S Charlottenburg Bhf (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.505048,
-                            "longitude": 13.305212,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T11:07:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80824",
-                    "comment": []
-                },
-                {
-                    "description": "S Savignyplatz (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.505219,
-                            "longitude": 13.319002,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T11:09:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80825",
-                    "comment": []
-                },
-                {
-                    "description": "S+U Zoologischer Garten Bhf (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.506882,
-                            "longitude": 13.332926,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T11:12:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80826",
-                    "comment": []
-                },
-                {
-                    "description": "S Tiergarten (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.513966,
-                            "longitude": 13.336234,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T11:14:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80827",
-                    "comment": []
-                },
-                {
-                    "description": "S Bellevue (Berlin)",
-                    "location": {
-                        "location": {
-                            "latitude": 52.519953,
-                            "longitude": 13.347102,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T11:16:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80828",
-                    "comment": []
-                },
-                {
-                    "description": "S+U Berlin Hauptbahnhof",
-                    "location": {
-                        "location": {
-                            "latitude": 52.525849,
-                            "longitude": 13.368928,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T11:18:00+0100"
-                    },
-                    "cost": {
-                        "distance": null,
-                        "duration": null,
-                        "price": null,
-                        "emission": null,
-                        "ticketPrice": null
-                    },
-                    "operator": null,
-                    "pointId": "80829",
-                    "comment": []
-                }
-            ]
-        },
-        {
-            "segmentId": "4",
             "description": null,
             "origin": {
                 "location": {
-                    "latitude": 52.525818,
-                    "longitude": 13.3689252,
+                    "latitude": 52.5778392,
+                    "longitude": 13.3144837,
                     "system": "WGS_84"
                 },
-                "address": null,
-                "time": "2014-03-27T11:18:00+0100"
+                "address": "Breitenbachstraße 13, 13509 Berlin, Germany",
+                "time": "2014-06-28T14:28:02+0200",
+                "platform": null,
+                "stationId": null,
+                "direction": null
             },
             "destination": {
                 "location": {
-                    "latitude": 52.525804,
-                    "longitude": 13.3695257,
+                    "latitude": 52.5635387,
+                    "longitude": 13.3194514,
                     "system": "WGS_84"
                 },
-                "address": null,
-                "time": "2014-03-27T11:18:29+0100"
+                "address": "Meteorstraße 40a, 13405 Berlin, Germany",
+                "time": "2014-06-28T14:54:51+0200",
+                "platform": null,
+                "stationId": null,
+                "direction": null
             },
             "trafficType": "Walk",
             "cost": {
                 "distance": {
                     "unit": "Meter",
-                    "value": 41
+                    "value": 2169
                 },
                 "duration": {
                     "unit": "Minute",
-                    "value": 0.48333333333333334
+                    "value": 26.816666666666666
                 },
                 "price": {
                     "unit": "Euro",
@@ -3469,38 +3835,128 @@ GET /api/V1/TripProposals/{proposalId}
             },
             "wayPoints": [
                 {
-                    "latitude": 52.52582,
-                    "longitude": 13.36893,
+                    "latitude": 52.57784,
+                    "longitude": 13.31448,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.52582,
-                    "longitude": 13.36908,
+                    "latitude": 52.57783,
+                    "longitude": 13.31523,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.5258,
-                    "longitude": 13.36911,
+                    "latitude": 52.57788,
+                    "longitude": 13.3153,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.5258,
-                    "longitude": 13.36925,
+                    "latitude": 52.57777,
+                    "longitude": 13.31551,
                     "system": "WGS_84"
                 },
                 {
-                    "latitude": 52.5258,
-                    "longitude": 13.36953,
+                    "latitude": 52.57765,
+                    "longitude": 13.31545,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57658,
+                    "longitude": 13.3151,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57142,
+                    "longitude": 13.31322,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56963,
+                    "longitude": 13.31254,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56798,
+                    "longitude": 13.31196,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56788,
+                    "longitude": 13.31192,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56786,
+                    "longitude": 13.31205,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56776,
+                    "longitude": 13.31264,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56727,
+                    "longitude": 13.31466,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56685,
+                    "longitude": 13.31642,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56661,
+                    "longitude": 13.3174,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56652,
+                    "longitude": 13.31732,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56573,
+                    "longitude": 13.31678,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56536,
+                    "longitude": 13.31645,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56435,
+                    "longitude": 13.31553,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56428,
+                    "longitude": 13.31553,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56422,
+                    "longitude": 13.31559,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56419,
+                    "longitude": 13.3157,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56354,
+                    "longitude": 13.31945,
                     "system": "WGS_84"
                 }
             ],
             "guidingPoints": [
                 {
-                    "description": "Head <b>east</b> on <b>Ella-Trebe-Straße/Europaplatz</b>",
+                    "description": "Head <b>east</b> toward <b>Antonienstraße</b>",
                     "location": {
                         "location": {
-                            "latitude": 52.525818,
-                            "longitude": 13.3689252,
+                            "latitude": 52.5778392,
+                            "longitude": 13.3144837,
                             "system": "WGS_84"
                         },
                         "address": null,
@@ -3524,11 +3980,11 @@ GET /api/V1/TripProposals/{proposalId}
                     "comment": []
                 },
                 {
-                    "description": "Slight <b>right</b> to stay on <b>Ella-Trebe-Straße/Europaplatz</b><div style=\"font-size:0.9em\">Destination will be on the right</div>",
+                    "description": "Turn <b>left</b> onto <b>Antonienstraße</b>",
                     "location": {
                         "location": {
-                            "latitude": 52.5258183,
-                            "longitude": 13.3690774,
+                            "latitude": 52.5778331,
+                            "longitude": 13.3152393,
                             "system": "WGS_84"
                         },
                         "address": null,
@@ -3537,11 +3993,11 @@ GET /api/V1/TripProposals/{proposalId}
                     "cost": {
                         "distance": {
                             "unit": "Meter",
-                            "value": 10
+                            "value": 51
                         },
                         "duration": {
                             "unit": "Second",
-                            "value": 7
+                            "value": 34
                         },
                         "price": null,
                         "emission": null,
@@ -3552,24 +4008,164 @@ GET /api/V1/TripProposals/{proposalId}
                     "comment": []
                 },
                 {
-                    "description": "Europaplatz 1, 10557 Berlin, Germany",
+                    "description": "Turn <b>right</b> onto <b>Miraustraße</b>",
                     "location": {
                         "location": {
-                            "latitude": 52.525804,
-                            "longitude": 13.3695257,
+                            "latitude": 52.5778815,
+                            "longitude": 13.3152959,
                             "system": "WGS_84"
                         },
                         "address": null,
-                        "time": "2014-03-27T11:18:29+0100"
+                        "time": null
                     },
                     "cost": {
                         "distance": {
                             "unit": "Meter",
-                            "value": 41
+                            "value": 58
                         },
                         "duration": {
                             "unit": "Second",
-                            "value": 29
+                            "value": 39
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>right</b> onto <b>Eichborndamm</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5777704,
+                            "longitude": 13.3155112,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 77
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 58
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>left</b> onto <b>Scharnweberstraße</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5678802,
+                            "longitude": 13.3119237,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 1203
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 892
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>right</b> onto <b>Uranusweg</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5666126,
+                            "longitude": 13.3174002,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 1599
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1185
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "<b>Uranusweg</b> turns <b>left</b> and becomes <b>Meteorstraße</b><div style=\"font-size:0.9em\">Destination will be on the right</div>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5642758,
+                            "longitude": 13.3155262,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 1889
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1406
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Meteorstraße 40a, 13405 Berlin, Germany",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5635387,
+                            "longitude": 13.3194514,
+                            "system": "WGS_84"
+                        },
+                        "address": "Meteorstraße 40a, 13405 Berlin, Germany",
+                        "time": "2014-06-28T14:54:51+0200"
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 2169
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1609
                         },
                         "price": null,
                         "emission": null,
@@ -3583,7 +4179,6 @@ GET /api/V1/TripProposals/{proposalId}
         }
     ]
 }
-
 
 
 # General Description
