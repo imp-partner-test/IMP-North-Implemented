@@ -2197,6 +2197,8 @@ provider |  String| Charging station operator (usually equals provider)
 availability | Double | Availability in percentage
 operator | String | Charging station provider (usually equals operator)
 address | Object | 
+plugTypes | Enum value | Type of the plug.
+power | Number |  
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
 
 GET /api/V1/Resources/EVCharging/Stations
@@ -2234,6 +2236,14 @@ GET /api/V1/Resources/EVCharging/Stations
                 "region": null,
                 "country": null
             }
+             "plugTypes": [
+                "Type2Outlet",
+                "TypeFSchuko"
+            ],
+            "power": {
+                "unit": "KiloWatt",
+                "value": 11040
+            }
         }
     ]
 }
@@ -2256,48 +2266,63 @@ attribute | json data type | comments
 chargingStationType | String |  
 managedChargeable | Boolean |  
 owner | String |  
-plugTypes | Enum value | Type of the plug. Allowed values: 
+plugTypes | Enum value | Type of the plug.
 power | Number |  
 voltage | Number |  
 chargingPoints |  |  
 properties |  |  
+units | EVChargingUnit | Details of EV Charging units
 
 
 GET /api/V1/Resources/EVCharging/Stations/{id}
 < 200
 < Content-Type: application/json
 {
-    "description": "vor Mini",
+    "actions": [],
+    "id": 21848,
+    "description": "Charging Station RWE Effizienz",
     "type": "EVChargingStationDetails",
-    "url": "Resources/EVCharging/Stations/227/",
+    "uri": "Resources/EVCharging/Stations/21848/",
     "location": {
-        "latitude": 52.5108049,
-        "longitude": 13.3897369,
+        "latitude": 52.519231,
+        "longitude": 13.390489,
         "system": "WGS_84"
     },
-    "provider": "Vattenfall",
-    "availability" : 100,
-    "operator": "Vattenfall",
+    "provider": "hubject",
+    "availability": 50,
+    "operator": "Hubject",
     "address": {
         "citycode": "10117",
         "city": "Berlin",
-        "street": "Friedrichstraße",
-        "houseno": "191",
+        "street": "Planckstr.",
+        "houseno": "4",
         "district": null,
-        "region": null,
-        "country": null
+        "region": "11",
+        "country": "DE"
     },
-    "chargingStationType": "Doppelsäule 32A",
-    "managedChargeable": false,
-    "owner": "Berlin",
-    "plugTypes": null,
-    "power": 22080,
-    "voltage": 230,
-    "chargingPoints": [
-        "015013=!=015013_R",
-        "015013=!=015013_L"
+    "plugTypes": [
+        "Type2Outlet"
     ],
-    "properties": null
+    "power": null,
+    "chargingStationType": null,
+    "managedChargeable": null,
+    "owner": null,
+    "voltage": null,
+    "properties": null,
+    "numberOfUnits": 2,
+    "availableUnits": 1,
+    "units": [
+        {
+            "description": "+49*809*010*150109",
+            "state": "FREE",
+            "plugType": "Type2Outlet"
+        },
+        {
+            "description": "+49*809*010*150108",
+            "state": "IN_USE",
+            "plugType": "Type2Outlet"
+        }
+    ]
 }
 
 
