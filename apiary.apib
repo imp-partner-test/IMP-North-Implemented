@@ -356,6 +356,7 @@ type | String | (="ParkingGarage")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
 provider | String | Parking service provider (usually equals operator)
+availability | Double | Availability in percentage
 operator | String | Parking space operator (usually equals provider)
 totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
 lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
@@ -401,6 +402,7 @@ GET /api/V1/Resources/Parking/Garages
             "system": "WGS_84"
         },
         "provider": "Parkinglot",
+        "availability" : 90,
         "operator": "Parkinglot",
         "totalnumber": {
             "others": 1150,
@@ -421,6 +423,7 @@ GET /api/V1/Resources/Parking/Garages
             "system": "WGS_84"
         },
         "provider": "Parkinglot",
+        "availability" : 90,
         "operator": "Parkinglot",
         "totalnumber": {
             "others": 173,
@@ -477,6 +480,7 @@ GET /api/V1/Resources/Parking/Garages/{id}
         "system": "WGS_84"
     },
     "provider": "Parkinglot",
+    "availability" : 10,
     "operator": "Parkinglot",
     "totalnumber": {
         "others": 173,
@@ -504,7 +508,7 @@ GET /api/V1/Resources/Parking/Garages/{id}
     "openingHours": null,
     "bookable": false,
     "heightLimit": null,
-    "occupancyRate": 0,
+    "occupancyRate": 90,
     "allowedStay": null,
     "generalInformations": null,
     "restrictions": null,
@@ -549,6 +553,7 @@ type | String | (="PublicTransportStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+availability | Double | Availability in percentage
 operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
@@ -577,6 +582,7 @@ GET /api/V1/Resources/PublicTransport/Stations
                 "system": "WGS_84"
             },
             "provider": "VBBStation",
+            "availability" : 100,
             "operator": "VBBStation"
         },
         {
@@ -591,6 +597,7 @@ GET /api/V1/Resources/PublicTransport/Stations
                 "system": "WGS_84"
             },
             "provider": "VBBStation",
+            "availability" : 100,
             "operator": "VBBStation"
         }
     ]
@@ -626,6 +633,7 @@ type | String | (="PublicTransportBusStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | (="VBBStation")
+availability | Double | Availability in percentage
 operator | String | (="VBBStation")
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
@@ -654,6 +662,7 @@ GET /api/V1/Resources/PublicTransport/BusStations
                 "system": "WGS_84"
             },
             "provider": "VBBStation",
+            "availability" : 100,
             "operator": "VBBStation"
         },
         {
@@ -668,6 +677,7 @@ GET /api/V1/Resources/PublicTransport/BusStations
                 "system": "WGS_84"
             },
             "provider": "VBBStation",
+            "availability" : 100,
             "operator": "VBBStation"
         }
     ]
@@ -703,6 +713,7 @@ type | String | (="PublicTransportMetroStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | (="VBBStationU")
+availability | Double | Availability in percentage
 operator | String | (="VBBStationU")
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
@@ -731,6 +742,7 @@ GET /api/V1/Resources/PublicTransport/MetroStations
                 "system": "WGS_84"
             },
             "provider": "VBBStationU",
+            "availability" : 100,
             "operator": "VBBStationU"
         }
     ]
@@ -766,6 +778,7 @@ type | String | (="PublicTransportCityTrainStation")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | (="VBBStationS")
+availability | Double | Availability in percentage
 operator | String | (="VBBStationS")
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
@@ -794,6 +807,7 @@ GET /api/V1/Resources/PublicTransport/CityTrainStations
                 "system": "WGS_84"
             },
             "provider": "VBBStationS",
+            "availability" : 100,
             "operator": "VBBStationS"
         }
     ]
@@ -844,6 +858,7 @@ Get arrival and departure times at specified specified station.
 Arrival and/or departure times for a station specified by `{stationId}`.
 
 attribute | json data type | comments
+--- | --- | ---
 metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
 --- | --- | ---
 resources | Array | Array of resources within the search area
@@ -880,6 +895,7 @@ GET /api/V1/Resources/PublicTransport/Stations/{stationId}/TimeTables
                 "system": "WGS_84"
             },
             "provider": "VBBStationS",
+            "availability" : 100,
             "operator": "VBBStationS",
             "arrivals": [],
             "departures": [
@@ -951,6 +967,7 @@ type | String | Type of bike sharing station
 uri | URI | URI to request more details.
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | service provider
+availability | Double | Availability in percentage
 operator | String | resource operator
 phoneNo | String | 
 operatorURI | String |
@@ -996,6 +1013,7 @@ GET /api/V1/Resources/BikeSharing/Stations
                 "system": "WGS_84"
             },
             "provider": "CallABike",
+            "availability" : 100,
             "operator": "CallABike",
             "phoneNo": null,
             "operatorURI": null,
@@ -1023,6 +1041,7 @@ GET /api/V1/Resources/BikeSharing/Stations
                 "system": "WGS_84"
             },
             "provider": "CallABike",
+            "availability" : 100,
             "operator": "CallABike",
             "phoneNo": null,
             "operatorURI": null,
@@ -1119,6 +1138,7 @@ type | String |
 uri | URI | URI
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | 
+availability | Double | Availability in percentage
 operator | String | 
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
@@ -1162,6 +1182,7 @@ GET /api/V1/Resources/CarSharing/All
                 "system": "WGS_84"
             },
             "provider": "FlinksterDB",
+            "availability" : 100,
             "operator": "FlinksterDB",
             "phoneNo": null,
             "operatorURI": null,
@@ -1194,6 +1215,7 @@ GET /api/V1/Resources/CarSharing/All
                 "system": "WGS_84"
             },
             "provider": "FlinksterDB",
+            "availability" : 100,
             "operator": "FlinksterDB",
             "phoneNo": null,
             "operatorURI": null,
@@ -1248,6 +1270,7 @@ type | String | (=Cars)
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | Car sharing provider (usually equals operator)
+availability | Double | Availability in percentage
 operator | String | Car sharing operator (usually equals provider)
 address | String | Street, city, etc.
 licenseId | String | License ID
@@ -1296,6 +1319,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1331,6 +1355,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1366,6 +1391,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1401,6 +1427,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1436,6 +1463,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1471,6 +1499,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1506,6 +1535,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1541,6 +1571,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1576,6 +1607,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1611,6 +1643,7 @@ GET /api/V1/Resources/CarSharing/Cars
                 "system": "WGS_84"
             },
             "provider": "DriveNow",
+            "availability" : 100,
             "operator": "DriveNow",
             "model": "MINI Clubman",
             "address": {
@@ -1628,7 +1661,6 @@ GET /api/V1/Resources/CarSharing/Cars
             "fuelLevel": 87,
             "imageLink": null
         }
-       
     ]
 }
 
@@ -1678,6 +1710,7 @@ GET /api/V1/Resources/CarSharing/Cars/{carId}
         "system": "WGS_84"
     },
     "provider": "Car2Go_Berlin",
+    "availability" : 100,
     "operator": "Car2Go_Berlin",
     "model": null,
     "address": {
@@ -1745,6 +1778,7 @@ type | String |
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String | 
+availability | Double | Availability in percentage
 operator | String | 
 operatorURI | String | 
 operatorName | String | 
@@ -1791,6 +1825,7 @@ GET /api/V1/Resources/CarSharing/Stations
                 "system": "WGS_84"
             },
             "provider": "FlinksterDB",
+            "availability" : 100,
             "operator": "FlinksterDB",
             "phoneNo": null,
             "operatorURI": null,
@@ -1823,6 +1858,7 @@ GET /api/V1/Resources/CarSharing/Stations
                 "system": "WGS_84"
             },
             "provider": "FlinksterDB",
+            "availability" : 100,
             "operator": "FlinksterDB",
             "phoneNo": null,
             "operatorURI": null,
@@ -1860,6 +1896,7 @@ type | String |
 uri | String | 
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | String |
+availability | Double | Availability in percentage
 operator | String | 
 phoneNo | String | 
 operatorURI | String | 
@@ -1891,6 +1928,7 @@ GET /api/V1/Resources/CarSharing/Stations/{stationId}
         "system": "WGS_84"
     },
     "provider": "FlinksterDB",
+    "availability" : 100,
     "operator": "FlinksterDB",
     "phoneNo": null,
     "operatorURI": null,
@@ -1944,6 +1982,7 @@ location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "
 licenceId | String | 
 category | String |
 provider | String |
+availability | Double | Availability in percentage
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 GET /api/V1/Resources/CarSharing/Stations/{stationId}/Cars
@@ -1970,6 +2009,7 @@ GET /api/V1/Resources/CarSharing/Stations/{stationId}/Cars
                 "system": "WGS_84"
             },
             "provider": "FlinksterDB",
+            "availability" : 100,
             "operator": "FlinksterDB",
             "model": null,
             "address": {
@@ -2154,6 +2194,7 @@ type | String | ="EVChargingStation"
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider |  String| Charging station operator (usually equals provider)
+availability | Double | Availability in percentage
 operator | String | Charging station provider (usually equals operator)
 address | Object | 
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
@@ -2182,6 +2223,7 @@ GET /api/V1/Resources/EVCharging/Stations
                 "system": "WGS_84"
             },
             "provider": "Vattenfall",
+            "availability" : 100,
             "operator": "Vattenfall",
             "address": {
                 "citycode": "10117",
