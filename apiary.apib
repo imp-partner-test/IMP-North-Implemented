@@ -2410,7 +2410,7 @@ trafficType | Enum | Own vehicle type - Car / Bike
 useParking | Boolean | Use parking for own vehicle 
 useParkAndRide | Boolean | Use parking and ride for own vehicle 
 
-POST /api/V1/TripProposals
+POST /api/V1/TripProposals/IMR
 > Content-Type: application/json
 > Accept: application/json
 {
@@ -2460,7 +2460,7 @@ POST /api/V1/TripProposals
 < Content-Type: application/json
 [
     {
-        "url": "TripProposals/80812",
+        "url": "TripProposals//IMR/80812",
         "origin": {
             "location": {
                 "latitude": 52.39339065551758,
@@ -2504,7 +2504,7 @@ POST /api/V1/TripProposals
         }
     },
     {
-        "url": "TripProposals/80813",
+        "url": "TripProposals/IMR/80813",
         "origin": {
             "location": {
                 "latitude": 52.393295,
@@ -2557,7 +2557,7 @@ POST /api/V1/TripProposals
         }
     },
     {
-        "url": "TripProposals/80814",
+        "url": "TripProposals/IMR/80814",
         "origin": {
             "location": {
                 "latitude": 52.39339065551758,
@@ -2602,7 +2602,7 @@ POST /api/V1/TripProposals
         }
     },
     {
-        "url": "TripProposals/80815",
+        "url": "TripProposals/IMR/80815",
         "origin": {
             "location": {
                 "latitude": 52.39339065551758,
@@ -2647,7 +2647,7 @@ POST /api/V1/TripProposals
         }
     },
     {
-        "url": "TripProposals/80816",
+        "url": "TripProposals/IMR/80816",
         "origin": {
             "location": {
                 "latitude": 52.39339065551758,
@@ -2726,7 +2726,7 @@ Please note:
 The trip proposals as returned by "GET /api/V1/TripProposals" are internally stored only for a certain time; afterward they expire and details are no longer available. 
 The current expiration time is 10 minutes.
 
-GET /api/V1/TripProposals/{proposalId}
+GET /api/V1/TripProposals/IMR/{proposalId}
 < 200
 < Content-Type: application/json
 {
@@ -4225,7 +4225,7 @@ Specified in the request body as described in the sample request
 # Response
 List of trip proposals with basic information such as distance, duration and an URI for details.
 
-POST /api/V1/TripProposals
+POST /api/V1/TripProposals/IMR
 > Content-Type: application/json
 > Accept: application/json
 {
@@ -4284,7 +4284,7 @@ POST /api/V1/TripProposals
 < Content-Type: application/json
 [
     {
-        "url": "TripProposals/80843",
+        "url": "TripProposals/IMR/80843",
         "origin": {
             "location": {
                 "latitude": 52.39419937133789,
@@ -4330,7 +4330,7 @@ POST /api/V1/TripProposals
         }
     },
     {
-        "url": "TripProposals/80844",
+        "url": "TripProposals/IMR/80844",
         "origin": {
             "location": {
                 "latitude": 52.39419937133789,
@@ -4366,7 +4366,7 @@ POST /api/V1/TripProposals
         }
     },
     {
-        "url": "TripProposals/80845",
+        "url": "TripProposals/IMR/80845",
         "origin": {
             "location": {
                 "latitude": 52.39419937133789,
@@ -4412,7 +4412,7 @@ POST /api/V1/TripProposals
         }
     },
     {
-        "url": "TripProposals/80846",
+        "url": "TripProposals/IMR/80846",
         "origin": {
             "location": {
                 "latitude": 52.39419937133789,
@@ -4458,7 +4458,7 @@ POST /api/V1/TripProposals
         }
     },
     {
-        "url": "TripProposals/80847",
+        "url": "TripProposals/IMR/80847",
         "origin": {
             "location": {
                 "latitude": 52.39419937133789,
@@ -4501,6 +4501,90 @@ POST /api/V1/TripProposals
                 "departureZone": "5851",
                 "arrivalZone": "5656"
             }
+        }
+    }
+]
+
+
+# General Description
+Get trip information with Car Journey Planner (min/max values).
+
+# Selection criteria 
+Specified in the request body as described in the sample request 
+
+- origin: start point specified by a geo location 
+  (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
+- destination: start point specified by a geo location
+- either orgin or destination might specify a time
+- viaPoints: list of geo locations that the route should use
+- costFunction: list of cost factors (such as Distance, Duration, Price, Economy), each with a percentual weight 
+- routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
+- userId: user that requests a trip
+
+# Response
+List of trip proposals with basic information such as distance, duration and an URI for details.
+
+POST /api/V1/TripProposals/CarRouter
+> Content-Type: application/json
+> Accept: application/json
+{
+  "origin": {
+    "location": {
+      "longitude": 13.072690999999963,
+      "latitude": 52.3941887,
+      "system": "WGS84"
+    },
+    "time": "2014-03-27T12:04:02UTC+05:30"
+  },
+  "destination": {
+    "location": {
+      "longitude": 13.319420000000036,
+      "latitude": 52.56347100000001,
+      "system": "WGS84"
+    },
+    "time": null
+  },
+  "viaPoints": [],
+  "costFunctions": [],
+  "userId": "4711/10",
+  "routingConstraints": []
+}
+< 200
+< Content-Type: application/json
+[
+    {
+        "url": "TripProposals/CarRouter/80844",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563589,
+                "longitude": 13.319065,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:48:09+0100"
+        },
+        "trafficTypes": [
+            "Car"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 5947.563361271776
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": null
         }
     }
 ]
