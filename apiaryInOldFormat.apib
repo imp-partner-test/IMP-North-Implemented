@@ -1,0 +1,5390 @@
+HOST: https://as.production.imp.mobilitaetsdienste.de:8443/imp-endpoint
+
+--- IMP North: Implemented ---
+
+--
+Readme before making any changes 
+
+Please keep the groovy generating script in synch with this documentation. Read more on Wiki: https://confluence.imp.mobilitaetsdienste.de/display/IMP/Apiary.
+
+- update the goovy script if you change names of any chapter 
+- chapter names can not contain special characters "(", ")", "\", etc. which have a meaning in regular expressions
+
+--
+
+--
+Introduction
+
+This is a description of a public REST interface offered by Siemens AG and its subsidiary VMZ Berlin Betreibergesellschaft GmbH 
+in the project Open Mobility Berlin. A mockup of this interface can be tried using the URLs listed on the right. For access to the production
+system please write an email to `henrik.koberg@siemens.com`
+
+(c) Siemens AG 2014 All rights reserved
+
+--
+
+
+-- 
+Handy Ticket
+--
+# General Description
+List of available products for specified origin and destination. Both are public transport stations and are identified by `{pointId}`. 
+PointId can be retrieved using `GET /api/V1/Resources/PublicTransport/Stations` 
+
+# Query Parameters 
+`action=book`
+
+# Input in request body: 
+
+- origin: Point id and address string
+- destination: Point id and address string
+- viaPoints: List of geo locations the route should pass
+- numberOfTickets: Number of tickets
+- ticketingCategory: Specified zone. Possible values: B0, B1, B2, B3
+
+# Response 
+List of available product for buying.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of available actions on this resource (buy/confirm)
+id | Number | Resource id
+description | String | 
+type | String | 
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | 
+operator | String | Name of Ticket Operator
+tariffText | String | Contains Zone and Validity inforation
+tariffInformation | String | Conditions applied for ticket
+price | double | Price of ticket
+currency | String | Currency
+
+
+POST /api/V1/Resources/Ticketing/Tickets
+> Accept: application/json
+> Content-Type: application/json
+{   "origin": { 
+    "id": "{pointId}", 
+    "address": "Dresden Hauptbahnhof"
+    },
+    "destination": { 
+  	"id": "{pointId}",         
+	"address": "Dresden Postplatz"      
+    },
+    "numberOfTickets": "1",
+    "ticketingCategory": "B0",
+    "viaPoints": []
+}
+< 200
+< Content-Type: application/json
+[
+    {
+        "actions": [
+            {
+                "name": "buy",
+                "method": "POST",
+                "uri": "Resources/Ticketing/Tickets/{resourceId}/Process?action=buy"
+            }
+        ],
+        "id": {resourceId},
+        "description": null,
+        "type": null,
+        "uri": "Resources/Ticketing/Tickets/157",
+        "location": null,
+        "provider": null,
+        "operator": "handyticket",
+        "tariffText": "DVB VVO-Einzelfahrt normal Preisstufe 1 für Zone Dresden gültig 18.11.13 12:21 Uhr bis 13:21 Uhr.",
+        "tariffInformation": "Gilt in der angegebenen Tarifzone; max. 1 Std.",
+        "price": 2.2,
+        "currency": "EUR"
+    }
+]
+
+
+# General Description
+Buy ticket with resource Id.
+
+# Query Parameters 
+`action=buy`
+
+# Request Path Parameters
+- `resourceId={String}, resource id`
+
+# Input in request body: 
+
+- name: Name of Ticket Operator
+- userId: User id for buying ticket
+- password: Password for buying ticket
+
+# Input in headers:
+
+- userToken={userToken} in basic auth. Token generated for the user.
+
+# Response 
+
+Details of a bought ticket, identified by {ticketIds} and {ticketContent}.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of available actions on this resource (confirm)
+processId | Number | BPMN process id
+confirmation | Object | Buy ticket response data
+
+
+confirmation contains following fileds:
+
+attribute | json data type | comments
+--- | --- | ---
+requestId | String | Resource id received while initiating the booking
+ticketIds | Array | Array of ticket ids 
+ticketContent | Base64Binary | Content of Ticket
+
+
+
+POST /api/V1/Resources/Ticketing/Tickets/{resourceId}/Process
+> Accept: application/json
+> Content-Type: application/json
+> userToken: {userToken}
+{
+    "operator": {
+        "name": "handyticket",
+        "userId": "01805006013",
+        "password": "7555"
+    }
+}
+< 201
+< Content-Type: application/json
+{
+    "actions": [
+        {
+            "name": "confirm",
+            "method": "PUT",
+            "uri": "Processes/{processId}?action=confirm"
+        }
+    ],
+    "processId": {processId},
+    "confirmation": {
+        "featureType": "BUY",
+        "confirmationId": null,
+        "confirmationData": {
+            "requestId": "{resourceid}"
+            "ticketIds": [
+                "274946704480125"
+            ],
+            "ticketContent": "UEQ5NGJXd2dkbVZ5YzJsdmJqMGlNUzR3SWlCbGJtTnZaR2x1WnowaVZWUkdMVGdpUHo0TkNqeDBhV15yWlhSRmNuZGxjbUp6VUhKdmVtVnpjMUpsYzNCdmJuTmxQZzBLSUNBOGNISmxhWE0rTWl3eU1Ed3ZjSEpsYVhNK0RRb2dJRHgzWVdWb2NuVnVaejVGVlZJOEwzZGhaV2h5ZFc1blBnMEtJQ0E4WVdkVVpYaDBQakY0SUVSV1FpQldWazh0UldsdWVtVnNabUZvY25RZ2JtOXliV0ZzSUZCeVpXbHpjM1IxWm1VZ01TQm13N3h5SUZwdmJtVWdSSEpsYzJSbGJpQm53N3hzZEdsbklERXpMakV4TGpFeklEQTFPalV6SUZWb2NpQmlhWE1nTURZNk5UTWdWV2h5TGp3dllXZFVaWGgwUGcwS0lDQThiV1Z6YzJGblpTQjBlWEJsUFNKM1lYSnVhVzVuSWo0OEwyMWxjM05oWjJVK0RRb2dJRHh1ZFhSNlpYSWdMejROQ2lBZ1BHSmxjbVZqYUhScFozVnVaMlZ1UGcwS0lDQWdJRHhpWlhKbFkyaDBhV2QxYm1jK0RRb2dJQ0FnSUNBOGMzUmhkSFZ6UGpBOEwzTjBZWFIxY3o0TkNpQWdJQ0FnSUR4MGVYQStNVHd2ZEhsd1BnMEtJQ0FnSUNBZ1BIQjJQall3TmpBOEwzQjJQZzBLSUNBZ0lDQWdQSEJ5YVcxaFpYSkxkbkErTmpBeE16d3ZjSEpwYldGbGNrdDJjRDROQ2lBZ0lDQWdJRHh6Wld0MWJtUmhaWEpMZG5BK05qQXhNend2YzJWcmRXNWtZV1Z5UzNad1BnMEtJQ0FnSUNBZ1BIQnliMlIxYTNSRGIyUmxQakU4TDNCeWIyUjFhM1JEYjJSbFBnMEtJQ0FnSUNBZ1BHZGxZbWxsZEhOSGRXVnNkR2xuYTJWcGRENHdQQzluWldKcFpYUnpSM1ZsYkhScFoydGxhWFErRFFvZ0lDQWdJQ0E4ZW1WcGRFZDFaV3gwYVdkclpXbDBQakE4TDNwbGFYUkhkV1ZzZEdsbmEyVnBkRDROQ2lBZ0lDQWdJRHh1ZFhSNlpYSlVlWEErTUR3dmJuVjBlbVZ5Vkhsd1BnMEtJQ0FnSUNBZ1BITjBZWEowV205dVpUNHhNRHd2YzNSaGNuUmFiMjVsUGcwS0lDQWdJQ0FnUEd0dmJXWnZjblErTVR3dmEyOXRabTl5ZEQ0TkNpQWdJQ0FnSUR4eGRXRnNhWFJoWlhRK01Ud3ZjWFZoYkdsMFlXVjBQZzBLSUNBZ0lDQWdQR0psYzJOb2NtVnBZblZ1Wno1RVZrSWdWbFpQTFVWcGJucGxiR1poYUhKMElHNXZjbTFoYkNCUWNtVnBjM04wZFdabElERWdac084Y2lCYWIyNWxJRVJ5WlhOa1pXNGdaOE84YkhScFp5QXhNeTR4TVM0eE15QXdOVG8xTXlCVmFISWdZbWx6SURBMk9qVXpJRlZvY2k0OEwySmxjMk5vY21WcFluVnVaejROQ2lBZ0lDQWdJRHgwWVhKcFptbHVabTgrUjJsc2RDQnBiaUJrWlhJZ1lXNW5aV2RsWW1WdVpXNGdWR0Z5YVdaNmIyNWxPeUJ0WVhndUlERWdVM1JrTGp3dmRHRnlhV1pwYm1adlBnMEtJQ0FnSUNBZ1BITnBZMmhsY21obGFYUnpUV1Z5YTIxaGJENUZUakV0TVRBdE1UTXhNVEExTlRNS1VDb3FNekV5TXpFeU16aDJDazF2ZEdsMklEUXhPVFV6TlRNM05qY0tMUzFVUlZOVUxTMVVTVU5MUlZRdExRbzhMM05wWTJobGNtaGxhWFJ6VFdWeWEyMWhiRDROQ2lBZ0lDQWdJRHhpWVhKamIyUmxQbWxXUWs5U2R6QkxSMmR2UVVGQlFVNVRWV2hGVldkQlFVRkpORUZCUVVOUFEwRk5RVUZCUkZGSk9FRTJRVUZCUVVKc1FrMVdSVmd2THk4NFFVRkJRbFozZEU0clFVRkJSVFZGYkVWUlZsSTBNblV5WXpJeU4ycE5RWGhGYkdZdkx6WlhNVkppUXpKU05UbEVjR3NyWTJoQ1ZHSlpTa3haT0hScGFHVm9jVTl6TVRsbVppdDJjamRtYmpJNVpuUTFaSEk1WkRNdk1TdDJZaXQyYmpWNlpsZ3laR051SzNodU4wVmtkSEpKU25nclkyOVdNRzV1ZDA1MlRVODBMMjR2WlVsMEwwRmtaSHA0UlU5TVoyNUJSREozWlhWcVVFZEhZMFV4Y1ZBeU1pdHZNM1EwS3pkbWRUUmxXRVJQVGpBdkwzazBUbnB0ZEhveFlWQnphMVpaVFRoR2VrbGlUbkJzZFZCaVMwMUdkMlZ1VERkMGRYTkxZM2hVYTNReWJGWkljbTFQZHpaT0szVktaMnhQV0U5VWJFZFhjbnB1UWxOeFVXVnpSbnBuV0daSVowMU5PVVJMWlRaeGRUWTRkWFYxY1VRM2MySTNORXg0T1M5UGNTc3ZkVVpHWjI1SVJqTnhaR3RQY21rMk4zUjFkMDlsU1RsV2IyNTNSRkUwWm1GR1YxTkNXVzByV2t0Vk1FWlZiME0yVUVJM0wwOUtaM3BOV2pKbGVua3JjMDkyTkdGWEt6RnJWM2xZZW5OT1JHaHRabmd2YldWVWRtNVJkRXBVU2tsSk5tSkViMDU2YkdsNE0yZFpRMHRHU1djMGNsSlRjVlJ5UWs4eWFrWlBSVXA0TlhOMWVsVmhVbTR6VFVaRlpGSllNRWxTTlVGSmFFMVFiWGd4VUdjM016STJOa1pOVFVsdFJuZGxhMHBsUm5sUFZubEVlRnB1V0hsM1prczRVMFY0ZFhkTlJHaEZha1pEY1RsV04yZGFSbEJzT0UxdVJtUkNiMk50Tmt0bGRVNVBVVkpKZHpSM1kxTnRXRVpNWlV0RWFXTkJSbEZFY0VaVGFUQjZRbXN2YmpBMU9VOUxlREZQWjNoalJEYzRhbk5RY0RSWk1sTkxVM0E0VDBsRmQzQjZaVlo2ZEhWWldWaERTVzVxV25FeGMzUXJUV3MxTWtOV1RsRkZjbUk0WTFScGRHUkdPRk16YWtKRk9XdFRjVXB0TlVjeFIwRmFTR2RsYm14cFVtTjNiRmhwYmpST2NGUXlhM0JuUVhsQ1MxRnZUM1EwWlZsdmNYcEZTRVJsU25sRFNIZFRUREJ6VTBsT1ZFb3lhRXRKWlc1NmVWbFlNakZKTTBwWE4wTmxSMFJvT1c5bVpWVnhObHBWU0ZSNlJGcEljVUY1VVZBeFQzY3ZRMWxZUzFKcGJERjVRMGd5YVhKaWJsZFJlbGR0ZUZkR2R6VnJVMEpEY0djclMxWTBVVGxqYkhWaVQwRkRNbmR0UW5kNVduQmtTMWR1TkVaUGVtbEtjM1JzVG1scmQyRkZWMVZETDJKb1FuZFRTM05XWTNkclFsQTVkRVpETkVWNlEwSnVXbTR2VW5scVkzRXlWWEJDY3k5U1EwVm9ZMDFwY0dOWlNrWTBTbmhsYjAxWVRVeG9UMU55ZVVFME0wWjZNSFJJVW1oVk5EWkxTVFphTmtvNFpWTkNiMlJHUTI0d05VODNia2xXVEN0V1VUbDNWMkZJTkRWRFRUWklNek5HSzNnNWVqZHNUVFUzVnpKcFpXTkhiMEpHTmtabFJrcDRaUzl1ZFhvemJWWTBabE5zWW5jMWMwUk9jMU56UTBScVZWaHdOVVp1WWpNMWN6QlVkakJvWmpaWGNsQlJTbWM0VDJ4NlRqTnhWMmRRUVdwU2FHc3dTVWxUSzJ0M1QwSTBWMDlVYm5kcFpreHJNVWRXTjNjeVVrZDNTbTFUY1RSdGRXMHdjMkp0ZUZseGFWVjBlVWRuWmtoRFQyVTNZWEJ4YjJKck9HZHhSR2RYTUZWTldVaEhkRFJ0VTNsTGIyOHlZazlOYkhCWFZIRmhRMWxsYTB3MVlrVnpOamwzVFhOdVJHaExjSGhaSzBGM1EyUkJXRXMxYldkdFZGbG1kMk5GWVhCalJYaGpUSEo0YzI5NVlXRmFXa3BEYlRKRlJFMXJRbE53UTBsblkwNTViVXhWYlhOd1lrVnBWVlJ1YlRoVVVGcFhNWEJqUzJkb05YUkpjbTkzV2xsM1IyVkhNRVpRWmxKU1JUSkJRVFJZT0hrMU4xaFdiM0Y2YlZJMFRqSnphSEkyVEdkMVJXcExUbTlMVWl0SGIyMWxlV1pwY1d4M2NFUk5Oa2d6TTJ4dVpuaGhXSFZ3TWxGek5WbDBNRGM1VnpocVFURnNkM0pJVWtkTmEyVkhTR0ZyYjJkRFNUaFhPWE5hUVVob01YVnNURWhhTWtOYVJWaFJWVGQyV1hKdlYwSlpaRVphWWpaU1ltdHZVV1ZQZGtKMFIxY3hRbHByZDA5SFUzbHlaMmxpYUZJMVZEQnFWMHg2YkhOMVIwRlFTRlZ6Y0ZvNVIwSmljQ3MyVEZGaFdWbFJVREJXUVVsak0wRlZOME5QYmk5ek5WQjRaRXBKUTBOdGVrRTBka1ZJVTFKYU5WUkJOVXB2Uldwa2RHRllhRWgzWlVoNWFFUmpNR1ZWZGtGcmVFWnhTMWhEUTJWMFFrNU5XRU5KYlcxWFFqUlRVMFI0YlROallYaEpURWs0WjNkUFExbG5TWGh1YlV4TGVUVXlNRUl4YkRZMlFqVjJVbmhQUlhoQk9HdFpaak5wUW05UU1IWnBlbFY0TWtWeWJIZG1SbEJWZGtremNHNWxPVGsyYTBOclNHZGlTSFExY1N0MU5tMVJURzVYTTFWa2NHOXBSRkUwYkhCUGVFOUllbUZXTUVkMWEwRjZXSEZXTjJOR0wyOXZia0VyTHpoNFpqbEVkRTlLVEd4emQwMXpObVJMT0hSRmREazVkV2x2VEdwTVZtNHZjVkpKYW5sTGJEaG1iR05YWlRGQlIxVllRalJoTjJFeGFqbGhZWEJKTW5weVNIZFRiRGhpUWl0UlpXcFVRMWx3Vm1aMlEwZFJRVUZCUVVKS1VsVTFSWEpyU21kblp6MDlQQzlpWVhKamIyUmxQZzBLSUNBZ0lDQWdQR0psY21WamFIUnBaM1Z1WjNORVlYUmxQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakVyTURFd01Ed3ZZbVZ5WldOb2RHbG5kVzVuYzBSaGRHVStEUW9nSUNBZ0lDQThaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakFyTURFd01Ed3ZaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQZzBLSUNBZ0lDQWdQR2QxWld4MGFXZHJaV2wwYzBWdVpHVStNakF4TXkweE1TMHhNMVF3TmpvMU16b3lNQ3N3TVRBd1BDOW5kV1ZzZEdsbmEyVnBkSE5GYm1SbFBnMEtJQ0FnSUNBZ1BHWnZjbTFoZEhSbFpGQnlaV2x6UGpJc01qQWdSVlZTUEM5bWIzSnRZWFIwWldSUWNtVnBjejROQ2lBZ0lDQWdJRHgzWVdWb2NuVnVaejR1UEM5M1lXVm9jblZ1Wno0TkNpQWdJQ0FnSUR4cmIyNTBjbTlzYkdWMWNuTkRiMlJsUGtWT01TMHhNQzB4TXpFeE1EVTFNend2YTI5dWRISnZiR3hsZFhKelEyOWtaVDROQ2lBZ0lDQWdJRHhyYjI1MGNtOXNiRzFsWkdsMWJUNVFLaW96TVRJek1USXpPSFk4TDJ0dmJuUnliMnhzYldWa2FYVnRQZzBLSUNBZ0lDQWdQSFJoWjJWelEyOWtaVDVOYjNScGRqd3ZkR0ZuWlhORGIyUmxQZzBLSUNBZ0lDQWdQSFJwWTJ0bGRFbEVQakkzTkRrME5qY3dORFE0TURFeU5Ud3ZkR2xqYTJWMFNVUStEUW9nSUNBZ0lDQThjMmxuYm1GMGRYSmxQaTB0VkVWVFZDMHRWRWxEUzBWVUxTMDhMM05wWjI1aGRIVnlaVDROQ2lBZ0lDQThMMkpsY21WamFIUnBaM1Z1Wno0TkNpQWdQQzlpWlhKbFkyaDBhV2QxYm1kbGJqNE5Dand2ZEdsamEyVjBSWEozWlhKaWMxQnliM3BsYzNOU1pYTndiMjV6WlQ0TkNnMEs="
+        }
+    }
+}
+
+
+# General Description
+Confirm ticket delivery.
+
+# Query Parameters 
+`action=confirm`
+
+# Request Path Parameters
+- `processId={String}, BPMN process id`
+
+
+# Input in request body: 
+- requestId: Resource id
+- ticketIds: Tickets ids for confirmation
+- operator: Name of Ticket Operator
+
+# Response 
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of available actions on this resource (confirm)
+processId | Number | BPMN process id
+confirmation | Object | Confirm ticket response data
+
+
+confirmation contains following fileds:
+
+attribute | json data type | comments
+--- | --- | ---
+featureType | String | Feature type
+confirmationId | String | 
+confirmationData | Object | Response of confirm ticket request
+
+confirmationData contains following fileds:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmed | Boolean | Value indicating success/failure
+
+
+PUT /api/V1/Processes/{processId}
+> Accept: application/json
+> Content-Type: application/json
+> userToken: {userToken}
+{
+  "requestId": "{resourceId}",
+  "ticketIds": [
+                "274946704480125"
+               ],
+   "operator": {
+        "name": "handyticket"        
+    }
+}
+< 200
+< Content-Type: application/json
+{
+    "process": {
+        "actions": [],
+        "processId": "{processId}",
+        "confirmation": {
+            "featureType": "CONFIRM",
+            "confirmationId": null,
+            "confirmationData": {
+                "confirmed": true
+            }
+        }
+    }
+}
+
+
+# General Description
+Get Unconfirmed Tickets for a user.
+
+# Query Parameters 
+- currently none
+
+# Request Path Parameters
+- currently none
+
+
+# Input in request body
+- currently none
+
+# Response 
+List of tickets bought, identified by {ticketIds} and {ticketContent}.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array | List of available actions on this resource (confirm)
+processId | Number | BPMN process id
+confirmation | Object | Buy ticket response data
+
+
+confirmation contains following fileds:
+
+attribute | json data type | comments
+--- | --- | ---
+requestId | String | Resource id received while initiating the booking
+ticketIds | Array | Array of ticket ids 
+ticketContent | Base64Binary | Content of Ticket
+
+
+GET /api/V1/Resources/Ticketing/Tickets
+> Accept: application/json
+> Content-Type: application/json
+> userToken: {userToken}
+< 200
+< Content-Type: application/json
+[
+    {
+        "actions": [
+            {
+                "name": "confirm",
+                "method": "PUT",
+                "uri": "Processes/{processId}?action=confirm"
+            }
+        ],
+        "processId": {processId},
+        "confirmation": {
+            "featureType": "BUY",
+            "confirmationId": null,
+            "confirmationData": {
+                "requestId": "{resourceid}"
+                "ticketIds": [
+                    "274946704480125"
+                ],
+                "ticketContent": "UEQ5NGJXd2dkbVZ5YzJsdmJqMGlNUzR3SWlCbGJtTnZaR2x1WnowaVZWUkdMVGdpUHo0TkNqeDBhV05yWlhSRmNuZGxjbUp6VUhKdmVtVnpjMUpsYzNCdmJuTmxQZzBLSUNBOGNISmxhWE0rTWl3eU1Ed3ZjSEpsYVhNK0RRb2dJRHgzWVdWb2NuVnVaejVGVlZJOEwzZGhaV2h5ZFc1blBnMEtJQ0E4WVdkVVpYaDBQakY0SUVSV1FpQldWazh0UldsdWVtVnNabUZvY25RZ2JtOXliV0ZzSUZCeVpXbHpjM1IxWm1VZ01TQm13N3h5SUZwdmJtVWdSSEpsYzJSbGJpQm53N3hzZEdsbklERXpMakV4TGpFeklEQTFPalV6SUZWb2NpQmlhWE1nTURZNk5UTWdWV2h5TGp3dllXZFVaWGgwUGcwS0lDQThiV1Z6YzJGblpTQjBlWEJsUFNKM1lYSnVhVzVuSWo0OEwyMWxjM05oWjJVK0RRb2dJRHh1ZFhSNlpYSWdMejROQ2lBZ1BHSmxjbVZqYUhScFozVnVaMlZ1UGcwS0lDQWdJRHhpWlhKbFkyaDBhV2QxYm1jK0RRb2dJQ0FnSUNBOGMzUmhkSFZ6UGpBOEwzTjBZWFIxY3o0TkNpQWdJQ0FnSUR4MGVYQStNVHd2ZEhsd1BnMEtJQ0FnSUNBZ1BIQjJQall3TmpBOEwzQjJQZzBLSUNBZ0lDQWdQSEJ5YVcxaFpYSkxkbkErTmpBeE16d3ZjSEpwYldGbGNrdDJjRDROQ2lBZ0lDQWdJRHh6Wld0MWJtUmhaWEpMZG5BK05qQXhNend2YzJWcmRXNWtZV1Z5UzNad1BnMEtJQ0FnSUNBZ1BIQnliMlIxYTNSRGIyUmxQakU4TDNCeWIyUjFhM1JEYjJSbFBnMEtJQ0FnSUNBZ1BHZGxZbWxsZEhOSGRXVnNkR2xuYTJWcGRENHdQQzluWldKcFpYUnpSM1ZsYkhScFoydGxhWFErRFFvZ0lDQWdJQ0E4ZW1WcGRFZDFaV3gwYVdkclpXbDBQakE4TDNwbGFYUkhkV1ZzZEdsbmEyVnBkRDROQ2lBZ0lDQWdJRHh1ZFhSNlpYSlVlWEErTUR3dmJuVjBlbVZ5Vkhsd1BnMEtJQ0FnSUNBZ1BITjBZWEowV205dVpUNHhNRHd2YzNSaGNuUmFiMjVsUGcwS0lDQWdJQ0FnUEd0dmJXWnZjblErTVR3dmEyOXRabTl5ZEQ0TkNpQWdJQ0FnSUR4eGRXRnNhWFJoWlhRK01Ud3ZjWFZoYkdsMFlXVjBQZzBLSUNBZ0lDQWdQR0psYzJOb2NtVnBZblZ1Wno1RVZrSWdWbFpQTFVWcGJucGxiR1poYUhKMElHNXZjbTFoYkNCUWNtVnBjM04wZFdabElERWdac084Y2lCYWIyNWxJRVJ5WlhOa1pXNGdaOE84YkhScFp5QXhNeTR4TVM0eE15QXdOVG8xTXlCVmFISWdZbWx6SURBMk9qVXpJRlZvY2k0OEwySmxjMk5vY21WcFluVnVaejROQ2lBZ0lDQWdJRHgwWVhKcFptbHVabTgrUjJsc2RDQnBiaUJrWlhJZ1lXNW5aV2RsWW1WdVpXNGdWR0Z5YVdaNmIyNWxPeUJ0WVhndUlERWdVM1JrTGp3dmRHRnlhV1pwYm1adlBnMEtJQ0FnSUNBZ1BITnBZMmhsY21obGFYUnpUV1Z5YTIxaGJENUZUakV0TVRBdE1UTXhNVEExTlRNS1VDb3FNekV5TXpFeU16aDJDazF2ZEdsMklEUXhPVFV6TlRNM05qY0tMUzFVUlZOVUxTMVVTVU5MUlZRdExRbzhMM05wWTJobGNtaGxhWFJ6VFdWeWEyMWhiRDROQ2lBZ0lDQWdJRHhpWVhKamIyUmxQbWxXUWs5U2R6QkxSMmR2UVVGQlFVNVRWV2hGVldkQlFVRkpORUZCUVVOUFEwRk5RVUZCUkZGSk9FRTJRVUZCUVVKc1FrMVdSVmd2THk4NFFVRkJRbFozZEU0clFVRkJSVFZGYkVWUlZsSTBNblV5WXpJeU4ycE5RWGhGYkdZdkx6WlhNVkppUXpKU05UbEVjR3NyWTJoQ1ZHSlpTa3haT0hScGFHVm9jVTl6TVRsbVppdDJjamRtYmpJNVpuUTFaSEk1WkRNdk1TdDJZaXQyYmpWNlpsZ3laR051SzNodU4wVmtkSEpKU25nclkyOVdNRzV1ZDA1MlRVODBMMjR2WlVsMEwwRmtaSHA0UlU5TVoyNUJSREozWlhWcVVFZEhZMFV4Y1ZBeU1pdHZNM1EwS3pkbWRUUmxXRVJQVGpBdkwzazBUbnB0ZEhveFlWQnphMVpaVFRoR2VrbGlUbkJzZFZCaVMwMUdkMlZ1VERkMGRYTkxZM2hVYTNReWJGWkljbTFQZHpaT0szVktaMnhQV0U5VWJFZFhjbnB1UWxOeFVXVnpSbnBuV0daSVowMU5PVVJMWlRaeGRUWTRkWFYxY1VRM2MySTNORXg0T1M5UGNTc3ZkVVpHWjI1SVJqTnhaR3RQY21rMk4zUjFkMDlsU1RsV2IyNTNSRkUwWm1GR1YxTkNXVzByV2t0Vk1FWlZiME0yVUVJM0wwOUtaM3BOV2pKbGVua3JjMDkyTkdGWEt6RnJWM2xZZW5OT1JHaHRabmd2YldWVWRtNVJkRXBVU2tsSk5tSkViMDU2YkdsNE0yZFpRMHRHU1djMGNsSlRjVlJ5UWs4eWFrWlBSVXA0TlhOMWVsVmhVbTR6VFVaRlpGSllNRWxTTlVGSmFFMVFiWGd4VUdjM016STJOa1pOVFVsdFJuZGxhMHBsUm5sUFZubEVlRnB1V0hsM1prczRVMFY0ZFhkTlJHaEZha1pEY1RsV04yZGFSbEJzT0UxdVJtUkNiMk50Tmt0bGRVNVBVVkpKZHpSM1kxTnRXRVpNWlV0RWFXTkJSbEZFY0VaVGFUQjZRbXN2YmpBMU9VOUxlREZQWjNoalJEYzRhbk5RY0RSWk1sTkxVM0E0VDBsRmQzQjZaVlo2ZEhWWldWaERTVzVxV25FeGMzUXJUV3MxTWtOV1RsRkZjbUk0WTFScGRHUkdPRk16YWtKRk9XdFRjVXB0TlVjeFIwRmFTR2RsYm14cFVtTjNiRmhwYmpST2NGUXlhM0JuUVhsQ1MxRnZUM1EwWlZsdmNYcEZTRVJsU25sRFNIZFRUREJ6VTBsT1ZFb3lhRXRKWlc1NmVWbFlNakZKTTBwWE4wTmxSMFJvT1c5bVpWVnhObHBWU0ZSNlJGcEljVUY1VVZBeFQzY3ZRMWxZUzFKcGJERjVRMGd5YVhKaWJsZFJlbGR0ZUZkR2R6VnJVMEpEY0djclMxWTBVVGxqYkhWaVQwRkRNbmR0UW5kNVduQmtTMWR1TkVaUGVtbEtjM1JzVG1scmQyRkZWMVZETDJKb1FuZFRTM05XWTNkclFsQTVkRVpETkVWNlEwSnVXbTR2VW5scVkzRXlWWEJDY3k5U1EwVm9ZMDFwY0dOWlNrWTBTbmhsYjAxWVRVeG9UMU55ZVVFME0wWjZNSFJJVW1oVk5EWkxTVFphTmtvNFpWTkNiMlJHUTI0d05VODNia2xXVEN0V1VUbDNWMkZJTkRWRFRUWklNek5HSzNnNWVqZHNUVFUzVnpKcFpXTkhiMEpHTmtabFJrcDRaUzl1ZFhvemJWWTBabE5zWW5jMWMwUk9jMU56UTBScVZWaHdOVVp1WWpNMWN6QlVkakJvWmpaWGNsQlJTbWM0VDJ4NlRqTnhWMmRRUVdwU2FHc3dTVWxUSzJ0M1QwSTBWMDlVYm5kcFpreHJNVWRXTjNjeVVrZDNTbTFUY1RSdGRXMHdjMkp0ZUZseGFWVjBlVWRuWmtoRFQyVTNZWEJ4YjJKck9HZHhSR2RYTUZWTldVaEhkRFJ0VTNsTGIyOHlZazlOYkhCWFZIRmhRMWxsYTB3MVlrVnpOamwzVFhOdVJHaExjSGhaSzBGM1EyUkJXRXMxYldkdFZGbG1kMk5GWVhCalJYaGpUSEo0YzI5NVlXRmFXa3BEYlRKRlJFMXJRbE53UTBsblkwNTViVXhWYlhOd1lrVnBWVlJ1YlRoVVVGcFhNWEJqUzJkb05YUkpjbTkzV2xsM1IyVkhNRVpRWmxKU1JUSkJRVFJZT0hrMU4xaFdiM0Y2YlZJMFRqSnphSEkyVEdkMVJXcExUbTlMVWl0SGIyMWxlV1pwY1d4M2NFUk5Oa2d6TTJ4dVpuaGhXSFZ3TWxGek5WbDBNRGM1VnpocVFURnNkM0pJVWtkTmEyVkhTR0ZyYjJkRFNUaFhPWE5hUVVob01YVnNURWhhTWtOYVJWaFJWVGQyV1hKdlYwSlpaRVphWWpaU1ltdHZVV1ZQZGtKMFIxY3hRbHByZDA5SFUzbHlaMmxpYUZJMVZEQnFWMHg2YkhOMVIwRlFTRlZ6Y0ZvNVIwSmljQ3MyVEZGaFdWbFJVREJXUVVsak0wRlZOME5QYmk5ek5WQjRaRXBKUTBOdGVrRTBka1ZJVTFKYU5WUkJOVXB2Uldwa2RHRllhRWgzWlVoNWFFUmpNR1ZWZGtGcmVFWnhTMWhEUTJWMFFrNU5XRU5KYlcxWFFqUlRVMFI0YlROallYaEpURWs0WjNkUFExbG5TWGh1YlV4TGVUVXlNRUl4YkRZMlFqVjJVbmhQUlhoQk9HdFpaak5wUW05UU1IWnBlbFY0TWtWeWJIZG1SbEJWZGtremNHNWxPVGsyYTBOclNHZGlTSFExY1N0MU5tMVJURzVYTTFWa2NHOXBSRkUwYkhCUGVFOUllbUZXTUVkMWEwRjZXSEZXTjJOR0wyOXZia0VyTHpoNFpqbEVkRTlLVEd4emQwMXpObVJMT0hSRmREazVkV2x2VEdwTVZtNHZjVkpKYW5sTGJEaG1iR05YWlRGQlIxVllRalJoTjJFeGFqbGhZWEJKTW5weVNIZFRiRGhpUWl0UlpXcFVRMWx3Vm1aMlEwZFJRVUZCUVVKS1VsVTFSWEpyU21kblp6MDlQQzlpWVhKamIyUmxQZzBLSUNBZ0lDQWdQR0psY21WamFIUnBaM1Z1WjNORVlYUmxQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakVyTURFd01Ed3ZZbVZ5WldOb2RHbG5kVzVuYzBSaGRHVStEUW9nSUNBZ0lDQThaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQakl3TVRNdE1URXRNVE5VTURVNk5UTTZNakFyTURFd01Ed3ZaM1ZsYkhScFoydGxhWFJ6UW1WbmFXNXVQZzBLSUNBZ0lDQWdQR2QxWld4MGFXZHJaV2wwYzBWdVpHVStNakF4TXkweE1TMHhNMVF3TmpvMU16b3lNQ3N3TVRBd1BDOW5kV1ZzZEdsbmEyVnBkSE5GYm1SbFBnMEtJQ0FnSUNBZ1BHWnZjbTFoZEhSbFpGQnlaV2x6UGpJc01qQWdSVlZTUEM5bWIzSnRZWFIwWldSUWNtVnBjejROQ2lBZ0lDQWdJRHgzWVdWb2NuVnVaejR1UEM5M1lXVm9jblZ1Wno0TkNpQWdJQ0FnSUR4cmIyNTBjbTlzYkdWMWNuTkRiMlJsUGtWT01TMHhNQzB4TXpFeE1EVTFNend2YTI5dWRISnZiR3hsZFhKelEyOWtaVDROQ2lBZ0lDQWdJRHhyYjI1MGNtOXNiRzFsWkdsMWJUNVFLaW96TVRJek1USXpPSFk4TDJ0dmJuUnliMnhzYldWa2FYVnRQZzBLSUNBZ0lDQWdQSFJoWjJWelEyOWtaVDVOYjNScGRqd3ZkR0ZuWlhORGIyUmxQZzBLSUNBZ0lDQWdQSFJwWTJ0bGRFbEVQakkzTkRrME5qY3dORFE0TURFeU5Ud3ZkR2xqYTJWMFNVUStEUW9nSUNBZ0lDQThjMmxuYm1GMGRYSmxQaTB0VkVWVFZDMHRWRWxEUzBWVUxTMDhMM05wWjI1aGRIVnlaVDROQ2lBZ0lDQThMMkpsY21WamFIUnBaM1Z1Wno0TkNpQWdQQzlpWlhKbFkyaDBhV2QxYm1kbGJqNE5Dand2ZEdsamEyVjBSWEozWlhKaWMxQnliM3BsYzNOU1pYTndiMjV6WlQ0TkNnMEs="
+            }
+        }
+    }
+]
+
+
+
+
+
+
+
+
+
+-- 
+Parking Garages
+--
+# General Description
+List parking garages in a specific area with basic information.
+
+# Request Headers
+If-modified-since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters 
+Define area of interest as circle or box.
+ 
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of parking garages with basic information within the defined area of interest and a URI to request more details.
+The data structure of the response contains the following attributes: 
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | List of available actions on this resource (book, cancel, etc.)
+id | Number | Internal parking garage identification number
+description | String | Approximate location
+type | String | (="ParkingGarage")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
+provider | String | Parking service provider (usually equals operator)
+availability | Double | Availability in percentage
+operator | String | Parking space operator (usually equals provider)
+totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
+lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Sinceodified-Since header is passed in the request 
+
+Parts of the data structure might be omitted if the information is not available. 
+
+
+
+GET /api/V1/Resources/Parking/Garages
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "parkopedia",
+            "lastUpdateTime": "2014-04-28T11:50:37+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "vmzParking",
+            "lastUpdateTime": "2014-04-28T11:50:37+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "stratosParking",
+            "lastUpdateTime": "2014-04-28T11:50:38+0200",
+            "messages": []
+        }
+    ],
+"resources":    
+[  
+    {
+        "actions": [],
+        "id": 8320,
+        "description": "Mitte, Friedrichstadt Passagen",
+        "type": "ParkingGarage",
+        "uri": "Resources/Parking/Garages/8320",
+        "location": {
+            "latitude": 52.51381000000001,
+            "longitude": 13.390620000000002,
+            "system": "WGS_84"
+        },
+        "provider": "Parkinglot",
+        "availability" : 90,
+        "operator": "Parkinglot",
+        "totalnumber": {
+            "others": 1150,
+            "handicappedOnly": 12,
+            "womenOnly": 6
+        },
+        "lottype": "Parkhaus"
+    },
+    {
+        "actions": [],
+        "id": 8367,
+        "description": "Mitte, Hotel Adlon",
+        "type": "ParkingGarage",
+        "uri": "Resources/Parking/Garages/8367",
+        "location": {
+            "latitude": 52.515130000000006,
+            "longitude": 13.379420000000001,
+            "system": "WGS_84"
+        },
+        "provider": "Parkinglot",
+        "availability" : 90,
+        "operator": "Parkinglot",
+        "totalnumber": {
+            "others": 173,
+            "handicappedOnly": 2,
+            "womenOnly": 0
+        },
+        "lottype": "Tiefgarage"
+    }
+]
+}
+
+# General Description
+Show details for a specific parking garage.
+
+# Query Parameters 
+
+- currently none
+
+# Response 
+Details of a specific parking garages, identified by `{id}` as retrieved through `GET /api/V1/Resources/Parking/Garages`.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+address | Object | Address {"citycode": String, "city": String, "street": String, "houseno": String }
+pricing | String | Price structure 
+payment | Array | Payment options {COINPAY, BANKNOTEPAY, BANKCARDPAY, CREDICARDPAY, PREPAIDCARDPAY, PAYCARDPAY, DEBITPAY}
+category | Enum | P - parking, P+R park and ride, etc. { "P+R","B+R", "P", ... } 
+openingHours | String | Opening hours
+bookable | Boolean |  
+heightLimit | Object | Height limit { "value": Number, "unit": String } 
+occupancyRate | Number | Occupany rate in percent (real time data) 
+allowedStay | Object | Allowed stay { "value": Number, "unit": String } 
+generalInformations | String |
+restrictions | Array | Usage restrictions {"VisitorsOnly","GuestsOnly"}
+services | Array | Special services { "WomenParking", "DisabledParking", "Monitored", "ChargingStation", "ParentChild", "MotorCycle", ... } 
+securityComment | String |  Securtiy features
+entrance | String |
+
+
+GET /api/V1/Resources/Parking/Garages/{id}
+< 200
+< Content-Type: application/json
+{
+    "actions": [],
+    "id": 8367,
+    "description": "Mitte, Hotel Adlon",
+    "type": "ParkingGarage",
+    "uri": "Resources/Parking/Garages/8367/",
+    "location": {
+        "latitude": 52.515130000000006,
+        "longitude": 13.379420000000001,
+        "system": "WGS_84"
+    },
+    "provider": "Parkinglot",
+    "availability" : 10,
+    "operator": "Parkinglot",
+    "totalnumber": {
+        "others": 173,
+        "handicappedOnly": 2,
+        "womenOnly": 0
+    },
+    "lottype": "Tiefgarage",
+    "address": {
+        "citycode": "10117",
+        "city": "Berlin",
+        "street": "Behrenstr.",
+        "houseno": "1",
+        "district": "Mitte",
+        "region": null,
+        "country": null
+    },
+    "pricing": "EUR 2.00 je angefangene halbe Stunde <br> maximale Tagesgebühr: EUR 32,00",
+    "payment": [
+        "BANKNOTEPAY",
+        "COINPAY"
+    ],
+    "category": [
+        "P"
+    ],
+    "openingHours": null,
+    "bookable": false,
+    "heightLimit": null,
+    "occupancyRate": 90,
+    "allowedStay": null,
+    "generalInformations": null,
+    "restrictions": null,
+    "services": null,
+    "securityComment": "Videoüberwachung<br>Notrufsäulen",
+    "entrance": null
+}
+
+
+
+
+-- 
+Public Transportation 
+--
+
+# General Description
+List stations (U-Bahn/S-Bahn/train/bus/tram) in a specific area with basic information.
+
+# Request Headers
+If-modified-since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters
+Define area of interest as circle or box. 
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of public transport stations with basic information and a URI to get more details.
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+availability | Double | Availability in percentage
+operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+GET /api/V1/Resources/PublicTransport/Stations
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:07:56+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55280,
+            "description": "Berlin, Franz-Klühs-Str.",
+            "type": "PublicTransportStation",
+            "uri": "Resources/PublicTransport/Stations/55280",
+            "location": {
+                "latitude": 52.500417,
+                "longitude": 13.394804,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStation",
+            "availability" : 100,
+            "operator": "VBBStation"
+        },
+        {
+            "actions": [],
+            "id": 55265,
+            "description": "Berlin, Zossener Brücke",
+            "type": "PublicTransportStation",
+            "uri": "Resources/PublicTransport/Stations/55265",
+            "location": {
+                "latitude": 52.498427,
+                "longitude": 13.395845,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStation",
+            "availability" : 100,
+            "operator": "VBBStation"
+        }
+    ]
+} 
+
+
+# General Description
+List Bus/Tram stations in a specific area with basic information.
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of public transport Bus/Tram stations with basic information and a URI to get more details.
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportBusStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | (="VBBStation")
+availability | Double | Availability in percentage
+operator | String | (="VBBStation")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+GET /api/V1/Resources/PublicTransport/BusStations
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:08:22+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55280,
+            "description": "Berlin, Franz-Klühs-Str.",
+            "type": "PublicTransportBusStation",
+            "uri": "Resources/PublicTransport/BusStations/55280",
+            "location": {
+                "latitude": 52.500417,
+                "longitude": 13.394804,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStation",
+            "availability" : 100,
+            "operator": "VBBStation"
+        },
+        {
+            "actions": [],
+            "id": 55265,
+            "description": "Berlin, Zossener Brücke",
+            "type": "PublicTransportBusStation",
+            "uri": "Resources/PublicTransport/BusStations/55265",
+            "location": {
+                "latitude": 52.498427,
+                "longitude": 13.395845,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStation",
+            "availability" : 100,
+            "operator": "VBBStation"
+        }
+    ]
+}
+
+
+# General Description
+List Metro stations in a specific area with basic information.
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of public transport Metro stations with basic information and a URI to get more details.
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportMetroStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | (="VBBStationU")
+availability | Double | Availability in percentage
+operator | String | (="VBBStationU")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+GET /api/V1/Resources/PublicTransport/MetroStations
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:08:45+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55060,
+            "description": "U Prinzenstr.",
+            "type": "PublicTransportMetroStation",
+            "uri": "Resources/PublicTransport/MetroStations/55060",
+            "location": {
+                "latitude": 52.498270000000005,
+                "longitude": 13.406530000000002,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStationU",
+            "availability" : 100,
+            "operator": "VBBStationU"
+        }
+    ]
+}
+
+
+# General Description
+List City-Train/Regio stations in a specific area with basic information.
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of public transport City-Train/Regio stations with basic information and a URI to get more details.
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportCityTrainStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | (="VBBStationS")
+availability | Double | Availability in percentage
+operator | String | (="VBBStationS")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+GET /api/V1/Resources/PublicTransport/CityTrainStations
+> Accept: application/json
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:09:30+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55050,
+            "description": "S Anhalter Bahnhof",
+            "type": "PublicTransportCityTrainStation",
+            "uri": "Resources/PublicTransport/CityTrainStations/55050",
+            "location": {
+                "latitude": 52.504430000000006,
+                "longitude": 13.382550000000002,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStationS",
+            "availability" : 100,
+            "operator": "VBBStationS"
+        }
+    ]
+}
+
+
+# General Description
+Get WMS in PNG format with public transport stations.
+
+# Query Parameters
+Define area of interest as a box.
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameters
+
+### width
+- `width={w}`: width of map output in pixels (semantics according to WMS GetMap request)
+- the default value is 250
+
+### height 
+- `height={h}`: height of map output in pixels (semantics according to WMS GetMap request)
+- the default value is 250
+
+# Response
+A PNG image which shows public transport stations.
+
+Note: The accept-header of this request must be set to `image/png`.
+
+GET /api/V1/Resources/PublicTransport
+> accept: image/png
+< 200
+< Content-Type: image/png
+{ "... this should be a PNG ... "
+}
+
+
+# General Description
+Get arrival and departure times at specified specified station.
+
+# Query Parameters
+
+- currently none
+
+# Response 
+
+Arrival and/or departure times for a station specified by `{stationId}`.
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+id | Number | Internal public transport station identification number
+... | ... | ...
+arrivals | String | Arrivals info containing direction, line and arrival times
+departures | String | Departures info containing direction, line and departure times
+
+
+Please note: expectedTime is not always available.
+
+GET /api/V1/Resources/PublicTransport/Stations/{stationId}/TimeTables
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "vmzStation",
+            "lastUpdateTime": "2014-04-28T12:10:09+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55050,
+            "description": "S Anhalter Bahnhof",
+            "type": "PublicTransportStation",
+            "uri": "Resources/PublicTransport/Stations/55050/TimeTables/55050",
+            "location": {
+                "latitude": 52.504430000000006,
+                "longitude": 13.382550000000002,
+                "system": "WGS_84"
+            },
+            "provider": "VBBStationS",
+            "availability" : 100,
+            "operator": "VBBStationS",
+            "arrivals": [],
+            "departures": [
+                {
+                    "direction": "S Teltow Stadt",
+                    "line": "S25",
+                    "aimedTime": "2014-04-28T12:09:00+0200",
+                    "expectedTime": "2014-04-28T12:11:00+0200"
+                },
+                {
+                    "direction": "S Potsdam Hbf",
+                    "line": "S1",
+                    "aimedTime": "2014-04-28T12:11:00+0200",
+                    "expectedTime": "2014-04-28T12:12:00+0200"
+                },
+                {
+                    "direction": "U Wittenbergplatz",
+                    "line": "Bus M29",
+                    "aimedTime": "2014-04-28T12:12:00+0200",
+                    "expectedTime": null
+                },
+                {
+                    "direction": "S+U Hauptbahnhof",
+                    "line": "Bus M41",
+                    "aimedTime": "2014-04-28T12:12:00+0200",
+                    "expectedTime": null
+                }
+            ]
+        }
+    ]
+}
+
+
+
+
+-- 
+Bike Sharing 
+--
+
+# General Description
+Get list of bike sharing stations (for station-based bike sharing).
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+List of bike sharing stations with basic information within the defined area of interest and a URI to request more details.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | Available actions
+id | Number | Internal bike sharing station identification number
+description | String | Approximate location
+type | String | Type of bike sharing station
+uri | URI | URI to request more details.
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | service provider
+availability | Double | Availability in percentage
+operator | String | resource operator
+phoneNo | String | 
+operatorURI | String |
+operatorName | String | 
+address | Object | 
+numberOfBikes | Number | 
+numberOfFreeBikes | Number | 
+services | Array | 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+GET /api/V1/Resources/BikeSharing/Stations
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "callabike",
+            "lastUpdateTime": "2014-04-28T12:11:14+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "nextbike",
+            "lastUpdateTime": "2014-04-28T12:11:14+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/BikeSharing/Stations/55317/Process?action=book"
+                }
+            ],
+            "id": 55317,
+            "description": "Geschwister-Scholl-Straße / Georgenstraße",
+            "type": "BikeSharingStation",
+            "uri": "Resources/BikeSharing/Stations/55317",
+            "location": {
+                "latitude": 52.52016067504883,
+                "longitude": 13.392001152038574,
+                "system": "WGS_84"
+            },
+            "provider": "CallABike",
+            "availability" : 100,
+            "operator": "CallABike",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "CallABike",
+            "address": null,
+            "numberOfBikes": 33,
+            "numberOfFreeBikes": 6,
+            "services": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/BikeSharing/Stations/55318/Process?action=book"
+                }
+            ],
+            "id": 55318,
+            "description": "S+U-Bhf. Friedrichstraße",
+            "type": "BikeSharingStation",
+            "uri": "Resources/BikeSharing/Stations/55318",
+            "location": {
+                "latitude": 52.519676208496094,
+                "longitude": 13.385995864868164,
+                "system": "WGS_84"
+            },
+            "provider": "CallABike",
+            "availability" : 100,
+            "operator": "CallABike",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "CallABike",
+            "address": null,
+            "numberOfBikes": 16,
+            "numberOfFreeBikes": 11,
+            "services": null
+        }
+    ]
+}
+
+# General Description
+Book a bike available at a bike sharing station
+
+# Request Path Parameters
+
+- `stationId={String}, Bike sharing station id where the bike is to be booked`
+
+# Request Body
+The data structure of the request contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional
+
+# Response
+A booking confirmation for the bike. The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+POST /api/V1/Resources/BikeSharing/Stations/{stationId}/Process?action=book
+> Content-Type: application/json
+> Accept: application/json
+{ 
+    "operator": "nextbike",
+    "from": null,
+    "to": null,
+    "userId": "4711/10" 
+}
+< 201
+< Content-Type: application/json
+{  
+    "confirmationId": "1012020020",
+    "comments": "Comments"
+}
+
+
+-- 
+Car Sharing 
+--
+
+# General Description
+Get list of available cars (free-floating and station-based) in a specific area.
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameter
+- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter electric vehicles ("ELECTRICITY") or petrol cars ("PETROL")
+
+
+# Response
+A list of available car sharing locations, both free-floating and/or station-based specified by the query parameters, 
+with basic information and a URI to acquire more details.
+In case of station-based cars, only the URI of the Car Sharing station is returned; 
+in case of free-floating cars, the URI to the car itself.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | 
+id | Number | 
+description | String | License ID or approximate location
+type | String | 
+uri | URI | URI
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | 
+availability | Double | Availability in percentage
+operator | String | 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+GET /api/V1/Resources/CarSharing/All
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "driveNow",
+            "lastUpdateTime": "2014-04-28T12:12:36+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "car2Go",
+            "lastUpdateTime": "2014-04-28T12:12:40+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "flinkster",
+            "lastUpdateTime": "2014-04-28T12:12:41+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Stations/55221/Process?action=book"
+                }
+            ],
+            "id": 55221,
+            "description": "Handwerkervereinshaus / Sophienstraße",
+            "type": "CarSharingStation",
+            "uri": "Resources/CarSharing/Stations/55221",
+            "location": {
+                "latitude": 52.52561167074207,
+                "longitude": 13.401126265525818,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "availability" : 100,
+            "operator": "FlinksterDB",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "FlinksterDB",
+            "address": {
+                "citycode": "10178",
+                "city": "Berlin",
+                "street": "Sophienstraße",
+                "houseno": "18",
+                "district": "Mitte",
+                "region": null,
+                "country": null
+            }
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Stations/54999/Process?action=book"
+                }
+            ],
+            "id": 54999,
+            "description": "Schumannstraße",
+            "type": "CarSharingStation",
+            "uri": "Resources/CarSharing/Stations/54999",
+            "location": {
+                "latitude": 52.523728447748866,
+                "longitude": 13.380703926086426,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "availability" : 100,
+            "operator": "FlinksterDB",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "FlinksterDB",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Schumannstraße",
+                "houseno": null,
+                "district": "Mitte",
+                "region": null,
+                "country": null
+            }
+        }
+    ]
+}
+
+
+
+# General Description
+Get list of available free-floating cars in a specific area (NOTE: for free-floating car sharing only!).
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameter
+- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter electric vehicles ("ELECTRICITY") or petrol cars ("PETROL")
+
+# Response
+A list of available free-floating cars specified by the query parameters, 
+with basic information and an URI to acquire more details.
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | Available actions (e.g. book)
+id | Number | Internal free-floating car identification number
+description | String | 
+type | String | (=Cars)
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | Car sharing provider (usually equals operator)
+availability | Double | Availability in percentage
+operator | String | Car sharing operator (usually equals provider)
+address | String | Street, city, etc.
+licenseId | String | License ID
+category | String | ENUM{"Fullsize", "Compact", "Smallsize", ... }
+fuelType | String | electric vehicle ("ELECTRICITY") or petrol car ("PETROL")
+imageLink | Link | link to the car image
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+GET /api/V1/Resources/CarSharing/Cars
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "driveNow",
+            "lastUpdateTime": "2014-04-28T12:13:13+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "car2Go",
+            "lastUpdateTime": "2014-04-28T12:13:23+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "flinkster",
+            "lastUpdateTime": "2014-04-28T12:13:24+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55335/Process?action=book"
+                }
+            ],
+            "id": 55335,
+            "description": "Sam",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55335",
+            "location": {
+                "latitude": 52.518379,
+                "longitude": 13.3953,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Am Festungsgraben",
+                "houseno": "1",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7774",
+            "category": null,
+            "fuelType": "UNKNOWN",
+            "fuelLevel": 45,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55336/Process?action=book"
+                }
+            ],
+            "id": 55336,
+            "description": "Artair",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55336",
+            "location": {
+                "latitude": 52.519664,
+                "longitude": 13.399584,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Am Lustgarten",
+                "houseno": "1",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX6850",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 30,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55337/Process?action=book"
+                }
+            ],
+            "id": 55337,
+            "description": "Celina",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55337",
+            "location": {
+                "latitude": 52.515726,
+                "longitude": 13.390584,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Behrenstraße",
+                "houseno": "44-46",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7905",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 35,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55338/Process?action=book"
+                }
+            ],
+            "id": 55338,
+            "description": "Ash",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55338",
+            "location": {
+                "latitude": 52.520858,
+                "longitude": 13.391894,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Geschwister-Scholl-Straße",
+                "houseno": "6",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX5750",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 92,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55339/Process?action=book"
+                }
+            ],
+            "id": 55339,
+            "description": "Arney",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55339",
+            "location": {
+                "latitude": 52.514116,
+                "longitude": 13.394814,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Jägerstraße",
+                "houseno": "22-25",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX6449",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 36,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55340/Process?action=book"
+                }
+            ],
+            "id": 55340,
+            "description": "Athena",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55340",
+            "location": {
+                "latitude": 52.521293,
+                "longitude": 13.400609,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10178",
+                "city": "Berlin",
+                "street": "Stadtbahnbogen",
+                "houseno": "180",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX6412",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 40,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55341/Process?action=book"
+                }
+            ],
+            "id": 55341,
+            "description": "Nerta",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55341",
+            "location": {
+                "latitude": 52.513639,
+                "longitude": 13.380437,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Hannah-Arendt-Straße",
+                "houseno": "3",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7870",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 30,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55342/Process?action=book"
+                }
+            ],
+            "id": 55342,
+            "description": "Rocco",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55342",
+            "location": {
+                "latitude": 52.51796,
+                "longitude": 13.387433,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Mittelstraße",
+                "houseno": "17",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7680",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 35,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55343/Process?action=book"
+                }
+            ],
+            "id": 55343,
+            "description": "Amalea",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55343",
+            "location": {
+                "latitude": 52.511443,
+                "longitude": 13.393177,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Kronenstraße",
+                "houseno": "46",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX5669",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 55,
+            "imageLink": null
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Cars/55344/Process?action=book"
+                }
+            ],
+            "id": 55344,
+            "description": "Shellysheldon",
+            "type": "CarSharingCar",
+            "uri": "Resources/CarSharing/Cars/55344",
+            "location": {
+                "latitude": 52.523668,
+                "longitude": 13.400799,
+                "system": "WGS_84"
+            },
+            "provider": "DriveNow",
+            "availability" : 100,
+            "operator": "DriveNow",
+            "model": "MINI Clubman",
+            "address": {
+                "citycode": "10178",
+                "city": "Berlin",
+                "street": "Hackescher Markt",
+                "houseno": "2-3",
+                "district": null,
+                "region": null,
+                "country": "Deutschland"
+            },
+            "licenseId": "M-DX7976",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": 87,
+            "imageLink": null
+        }
+    ]
+}
+
+
+# General Description
+Get details about a specific free-floating car.
+
+# Query Parameters
+currently none  
+
+# Response
+Details about a specific free-floating car determined by `{carId}` as retrieved through GET /api/V1/Resources/CarSharing/Cars.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+model | String | car model
+name | String | car name
+power | String | 
+seatCount | Number | number of sits
+doorCount | Number | number of doors
+colour | String  | car colour
+properties | Array | List of properties: "ABS" etc.
+locationNote | String | 
+operatorURI | URI | operator URI
+fee | String | car costs per time unit
+
+GET /api/V1/Resources/CarSharing/Cars/{carId}
+< 200
+< Content-Type: application/json
+{
+    "actions": [
+        {
+            "name": "book",
+            "method": "POST",
+            "uri": "Resources/CarSharing/Cars/39117/Process?action=book"
+        }
+    ],
+    "id": 39117,
+    "description": "B-GO2424",
+    "type": "CarSharingStationCarDetails",
+    "uri": "Resources/CarSharing/Cars/39117/",
+    "location": {
+        "latitude": 52.51061,
+        "longitude": 13.37339,
+        "system": "WGS_84"
+    },
+    "provider": "Car2Go_Berlin",
+    "availability" : 100,
+    "operator": "Car2Go_Berlin",
+    "model": null,
+    "address": {
+        "citycode": null,
+        "city": null,
+        "street": "Bellevuestraße 3, 10785 Berlin",
+        "houseno": null,
+        "district": null,
+        "region": null,
+        "country": null
+    },
+    "licenseId": "B-GO2424",
+    "category": null,
+    "fuelType": "PETROL",
+    "imageLink": null,
+    "name": null,
+    "power": null,
+    "seatCount": null,
+    "doorCount": null,
+    "colour": null,
+    "properties": [],
+    "locationNote": null,
+    "operatorURI": null,
+    "fee": null
+}
+
+
+# General Description
+Get list of car sharing stations (for station-based car sharing).
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters 
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameter
+- `operatorId={id}`
+- `f_cars={"fuelType":"ELECTRICITY"}` can be used to filter ecars ("ELECTRICITY") or petrol cars ("PETROL")
+
+
+Examples: category of required car (e.g., FullSize), pickup/return station
+
+# Response 
+All car sharing stations specified by the query parameters, together with basic information and URI to acquire more details.
+All car sharing stations specified by the query parameters, together with basic information and URI to acquire more details.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | 
+id | Number | 
+description | String | Approximate location
+type | String | 
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | 
+availability | Double | Availability in percentage
+operator | String | 
+operatorURI | String | 
+operatorName | String | 
+address | Object | Street, city, etc.
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+GET /api/V1/Resources/CarSharing/Stations
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "driveNow",
+            "lastUpdateTime": "2014-04-28T12:15:19+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "car2Go",
+            "lastUpdateTime": "2014-04-28T12:15:25+0200",
+            "messages": []
+        },
+        {
+            "serviceAlias": "flinkster",
+            "lastUpdateTime": "2014-04-28T12:15:25+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Stations/55221/Process?action=book"
+                }
+            ],
+            "id": 55221,
+            "description": "Handwerkervereinshaus / Sophienstraße",
+            "type": "CarSharingStation",
+            "uri": "Resources/CarSharing/Stations/55221",
+            "location": {
+                "latitude": 52.52561167074207,
+                "longitude": 13.401126265525818,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "availability" : 100,
+            "operator": "FlinksterDB",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "FlinksterDB",
+            "address": {
+                "citycode": "10178",
+                "city": "Berlin",
+                "street": "Sophienstraße",
+                "houseno": "18",
+                "district": "Mitte",
+                "region": null,
+                "country": null
+            }
+        },
+        {
+            "actions": [
+                {
+                    "name": "book",
+                    "method": "POST",
+                    "uri": "Resources/CarSharing/Stations/55415/Process?action=book"
+                }
+            ],
+            "id": 55415,
+            "description": "Schumannstraße",
+            "type": "CarSharingStation",
+            "uri": "Resources/CarSharing/Stations/55415",
+            "location": {
+                "latitude": 52.523728447748866,
+                "longitude": 13.380703926086426,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "availability" : 100,
+            "operator": "FlinksterDB",
+            "phoneNo": null,
+            "operatorURI": null,
+            "operatorName": "FlinksterDB",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Schumannstraße",
+                "houseno": null,
+                "district": "Mitte",
+                "region": null,
+                "country": null
+            }
+        }
+    ]
+}
+
+
+# General Description
+Get details about a specific car sharing station.
+
+# Query Parameters
+
+- currently none
+
+# Response
+Details about a car sharing station determined by `{stationId}`. The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+actions | Array of objects | [ { "name": String, "method": String, "uri": String } ]
+id | String |
+description | String | Approximate location
+type | String |
+uri | String | 
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String |
+availability | Double | Availability in percentage
+operator | String | 
+phoneNo | String | 
+operatorURI | String | 
+operatorName | String | 
+address | Object | {"cityCode": String, "city": String, "street": String, "houseNo": String, "district": String, "region": String, "country": String}
+notes | String | 
+services | Array | 
+availableCars | Number | 
+
+
+GET /api/V1/Resources/CarSharing/Stations/{stationId}
+< 200
+< Content-Type: application/json
+{
+    "actions": [
+        {
+            "name": "book",
+            "method": "POST",
+            "uri": "Resources/CarSharing/Stations/1634/Process?action=book"
+        }
+    ],
+    "id": 1634,
+    "description": "Friedrichstr.",
+    "type": null,
+    "uri": "Resources/CarSharing/Stations/1634/",
+    "location": {
+        "latitude": 52.5083274841,
+        "longitude": 13.3902387619,
+        "system": "WGS_84"
+    },
+    "provider": "FlinksterDB",
+    "availability" : 100,
+    "operator": "FlinksterDB",
+    "phoneNo": null,
+    "operatorURI": null,
+    "operatorName": "FlinksterDB",
+    "address": {
+        "citycode": "10117",
+        "city": "Berlin",
+        "street": "Friedrichstr.",
+        "houseno": "50-55",
+        "district": null,
+        "region": null,
+        "country": null
+    },
+    "notes": [
+        "Öffnungszeiten:\nMo-Fr: 7.00 - 19.00\nSa: 9.00 - 14.00\nSo: 9.00 - 13.00 "
+    ],
+    "services": null,
+    "availableCars": 7
+}
+
+
+# General Description
+Get list of available cars at a specific car sharing station.
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters
+Optional time interval in the future:
+
+- `from={datetime1}`
+- `to={datetime2}`  
+
+# Response
+A list of available cars at a specific car sharing station determined by `{stationId}`.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array of objects | [ { "name": String, "method": String, "uri": String } ]
+id | String |
+description | String | 
+type | String | 
+url | String | 
+address | Object | {"cityCode": String, "city": String, "street": String, "houseNo": String}
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+licenceId | String | 
+category | String |
+provider | String |
+availability | Double | Availability in percentage
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+GET /api/V1/Resources/CarSharing/Stations/{stationId}/Cars
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "flinkster",
+            "lastUpdateTime": "2014-04-28T12:15:59+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55416,
+            "description": "Schumannstraße",
+            "type": "CarSharingStationCar",
+            "uri": "Resources/CarSharing/Stations/55415/Cars/55416",
+            "location": {
+                "latitude": 52.523728447748866,
+                "longitude": 13.380703926086426,
+                "system": "WGS_84"
+            },
+            "provider": "FlinksterDB",
+            "availability" : 100,
+            "operator": "FlinksterDB",
+            "model": null,
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Schumannstraße",
+                "houseno": null,
+                "district": "Mitte",
+                "region": null,
+                "country": null
+            },
+            "licenseId": "B-R 1262",
+            "category": null,
+            "fuelType": "DIESEL",
+            "fuelLevel": null,
+            "imageLink": "www.flinkster.de/common/gethashdata.php?uniquebid=b6544bc36ee0f6ead98cf824b489cb3d"
+        }
+    ]
+}
+
+
+# General Description
+Book a car offered as a free-floating car.
+
+# Request Path Parameters
+
+- `carId={String}, Resource Id of the car being booked`
+
+# Request Body
+The data structure of the request contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional 
+
+# Response
+A booking confirmation for the car. The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+POST /api/V1/Resources/CarSharing/Cars/{carId}/Process?action=book
+> Accept: application/json
+> Content-Type: application/json
+{ 
+    "operator": "flinkster",
+    "from": "",
+    "to": "",
+    "userId": "4711/10" 
+}
+< 201
+< Location: /api/V1/Process/4711
+< Content-Type: application/json
+{  
+    "confirmationId": "1012020020",
+    "comments": "Comments"
+}    
+
+# General Description
+Book a specific car available at a car sharing station by specifying the car id.
+
+# Request Path Parameters
+
+- `stationId={String}, Car sharing station id where the car is located`
+- `carId={String}, Resource Id of the car being booked`
+
+# Request Body
+The data structure of the request contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional 
+
+# Response
+A booking confirmation for the car. The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+POST /api/V1/Resources/CarSharing/Stations/{stationId}/Cars/{carId}/Process?action=book
+> Content-Type: application/json
+> Accept: application/json
+{ 
+    "operator": "car2go_berlin",
+    "from": null,
+    "to": null,
+    "userId": "4711/10" 
+}
+< 201
+< Content-Type: application/json
+{  
+    "confirmationId": "1012020020",
+    "comments": "Comments"
+}  
+  
+
+# General Description
+Book any car available at a car sharing station by specifying the car type.
+
+# Request Path Parameters
+
+- `stationId={String}, Car sharing station id where the car is located`
+
+# Request Body
+The data structure of the request contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional
+type | Enum value | Allowed values: TBD
+
+# Response
+A booking confirmation for the car. The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+POST /api/V1/Resources/CarSharing/Stations/{stationId}/Process?action=book
+> Content-Type: application/json
+> Accept: application/json
+{ 
+    "operator": "car2go_berlin",
+    "from": null,
+    "to": null,
+    "userId": "4711/10" 
+}
+< 201
+< Content-Type: application/json
+{  
+    "confirmationId": "1012020020",
+    "comments": "Comments"
+}
+
+
+
+
+-- 
+EV Charging Station 
+--
+
+# General Description
+Get list of EV Charging Stations.
+
+# Request Headers
+If-Modified-Since - [Optional] Request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+# Query Parameters 
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+List of all electric vehicle (EV) charging stations specified by query parameters (and body), 
+together with geo location, name, and a URI to acquire more details.
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | List of available actions on this resource
+id | Number | Internal charging station identification numberg
+description | String | Approximate location or parking garage operator
+type | String | ="EVChargingStation" 
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider |  String| Charging station operator (usually equals provider)
+availability | Double | Availability in percentage
+operator | String | Charging station provider (usually equals operator)
+address | Object | 
+plugTypes | Enum value | Type of the plug.
+power | Number |  
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
+
+GET /api/V1/Resources/EVCharging/Stations
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "vattenfall",
+            "lastUpdateTime": "2014-04-28T12:16:48+0200",
+            "messages": []
+        }
+    ],
+    "resources": [
+        {
+            "actions": [],
+            "id": 55208,
+            "description": "Conti",
+            "type": "EVChargingStation",
+            "uri": "Resources/EVCharging/Stations/55208",
+            "location": {
+                "latitude": 52.51474,
+                "longitude": 13.38639,
+                "system": "WGS_84"
+            },
+            "provider": "Vattenfall",
+            "availability" : 100,
+            "operator": "Vattenfall",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Glinkastr.",
+                "houseno": "38",
+                "district": null,
+                "region": null,
+                "country": null
+            }
+             "plugTypes": [
+                "Type2Outlet",
+                "TypeFSchuko"
+            ],
+            "power": {
+                "unit": "KiloWatt",
+                "value": 11040
+            }
+        }
+    ]
+}
+
+
+# General Description
+Get detail information for a specific EV Charging Station. 
+
+# Query Parameters
+
+- currently none
+
+# Response
+Details for the EV charging station specified by `{id}`.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+chargingStationType | String |  
+managedChargeable | Boolean |  
+owner | String |  
+plugTypes | Enum value | Type of the plug.
+power | Number |  
+voltage | Number |  
+chargingPoints |  |  
+properties |  |  
+units | EVChargingUnit | Details of EV Charging units
+
+
+GET /api/V1/Resources/EVCharging/Stations/{id}
+< 200
+< Content-Type: application/json
+{
+    "actions": [],
+    "id": 21848,
+    "description": "Charging Station RWE Effizienz",
+    "type": "EVChargingStationDetails",
+    "uri": "Resources/EVCharging/Stations/21848/",
+    "location": {
+        "latitude": 52.519231,
+        "longitude": 13.390489,
+        "system": "WGS_84"
+    },
+    "provider": "hubject",
+    "availability": 50,
+    "operator": "Hubject",
+    "address": {
+        "citycode": "10117",
+        "city": "Berlin",
+        "street": "Planckstr.",
+        "houseno": "4",
+        "district": null,
+        "region": "11",
+        "country": "DE"
+    },
+    "plugTypes": [
+        "Type2Outlet"
+    ],
+    "power": null,
+    "chargingStationType": null,
+    "managedChargeable": null,
+    "owner": null,
+    "voltage": null,
+    "properties": null,
+    "numberOfUnits": 2,
+    "availableUnits": 1,
+    "units": [
+        {
+            "description": "+49*809*010*150109",
+            "state": "FREE",
+            "plugType": "Type2Outlet"
+        },
+        {
+            "description": "+49*809*010*150108",
+            "state": "IN_USE",
+            "plugType": "Type2Outlet"
+        }
+    ]
+}
+
+
+
+
+--
+Traffic Info Level-of-Service. WMS
+--
+
+# General Description
+Get WMS PNG file for road traffic (Level of Service).
+
+# Query Parameters
+Define area of interest as box.
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameters
+- currently none
+
+### width
+- `width={w}`: width of map output in pixels (semantics according to WMS GetMap request).
+- the default value is width=250
+
+### height
+- `height={h}`: height of map output in pixels (semantics according to WMS GetMap request).
+- the default value is height=250
+  
+Behavior: additional parameters have to be passed to WMS server such as format=image/png.
+
+# Response
+A PNG content which dispays the current traffic situation.
+
+Please note: The accept-header of this request must be set to "image/png".
+GET /api/V1/Info/TrafficInfo
+> accept: image/png
+< 200
+< Content-Type: image/png
+{ "... this should be a PNG ..."
+}
+
+--
+Journey Planner
+--
+
+# General Description
+Get trip proposals with basic information for specified trip criteria. Note: the trip proposals can be multimodal or intermodal, depending on to which routing service the user is subscribed to.
+
+# Query Parameters 
+
+- `language={lang}` : de, en (currently not supported; de is the default)
+
+# Selection criteria 
+specified in the request body as described in the sample request 
+
+- origin: start point specified by a geo location 
+  (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
+- destination: start point specified by a geo location
+- either orgin or destination might specify a time
+- viaPoints: list of geo locations that the route should use
+- costFunction: list of cost factors (such as Distance, Duration, Price, Economy), each with a percentual weight 
+- trafficTypes: list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
+- routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
+- userId: user that requests a trip
+
+# Response
+List of trip proposals with basic information such as distance, duration and an URI for detailled information.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+url | URI | URI to request more details
+origin | Object | start point of the proposed trip
+destination | Object | endpoint of the proposed trip
+trafficTypes | Array | list of traffic types used in the proposed trip  
+description | String | list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
+costs | Array | list of costs for the proposed trip
+useBikeSharing | Boolean | use bike sharing services for routing [default: false]
+useCarSharing | Boolean | use car sharing services for routing [default: false]
+--- | --- | ---
+ownVehicles | Object | 
+--- | --- | ---
+trafficType | Enum | Own vehicle type - Car / Bike
+useParking | Boolean | Use parking for own vehicle 
+useParkAndRide | Boolean | Use parking and ride for own vehicle 
+
+POST /api/V1/TripProposals/IMR
+> Content-Type: application/json
+> Accept: application/json
+{
+  "origin": {
+    "location": {
+      "system": "WGS84",
+      "longitude": 13.074760101735592,
+      "latitude": 52.3933000574258
+    },
+    "time": "2014-03-27T14:53:06+0530"
+  },
+  "destination": {
+    "location": {
+      "system": "WGS84",
+      "longitude": 13.369544930756092,
+      "latitude": 52.52559208824942
+    },
+    "time": null
+  },
+  "viaPoints": [],
+  "costFunctions": [
+    {
+      "percentage": 100,
+      "costType": "Duration"
+    }
+  ],
+  "userId": "4711/10",
+  "trafficTypes": [
+    "Walk",
+    "Bike",
+    "Car",
+    "Metro",
+    "CityTrain",
+    "Bus"
+  ],
+  "routingConstraints": [],
+  "useBikeSharing": "false",
+ "useCarSharing": "true", 
+ "ownVehicles":[
+                {  "trafficType":"Car",
+                    "useParking":"true",
+                    "useParkAndRide":"true"
+                }
+            ]
+}
+< 200
+< Content-Type: application/json
+[
+    {
+        "url": "TripProposals//IMR/80812",
+        "origin": {
+            "location": {
+                "latitude": 52.39339065551758,
+                "longitude": 13.07505989074707,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T10:23:12+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.52581024169922,
+                "longitude": 13.369529724121094,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T11:04:12+0100"
+        },
+        "trafficTypes": [
+            "Car"
+        ],
+        "description": null,
+        "costs": {
+            "distance": {
+                "unit": "Meter",
+                "value": 35433
+            },
+            "duration": {
+                "unit": "Minute",
+                "value": 41
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 17.7165
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 5314.95
+            },
+            "ticketPrice": null
+        }
+    },
+    {
+        "url": "TripProposals/IMR/80813",
+        "origin": {
+            "location": {
+                "latitude": 52.393295,
+                "longitude": 13.074756,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T10:30:00+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.525589,
+                "longitude": 13.369539,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T11:21:00+0100"
+        },
+        "trafficTypes": [
+            "Walk",
+            "CityTrain"
+        ],
+        "description": null,
+        "costs": {
+            "distance": {
+                "unit": "Meter",
+                "value": 28266.81343723691
+            },
+            "duration": {
+                "unit": "Minute",
+                "value": 51
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 3.2
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 621.225709056449
+            },
+            "ticketPrice": {
+                "unit": "EuroCent",
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5750",
+                "arrivalZone": "5555"
+            }
+        }
+    },
+    {
+        "url": "TripProposals/IMR/80814",
+        "origin": {
+            "location": {
+                "latitude": 52.39339065551758,
+                "longitude": 13.07505989074707,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T10:23:10+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.5258041,
+                "longitude": 13.3695317,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T11:21:16+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk"
+        ],
+        "description": null,
+        "costs": {
+            "distance": {
+                "unit": "Meter",
+                "value": 37277
+            },
+            "duration": {
+                "unit": "Minute",
+                "value": 58.083333333333336
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 17.983
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 5394.900000000001
+            },
+            "ticketPrice": null
+        }
+    },
+    {
+        "url": "TripProposals/IMR/80815",
+        "origin": {
+            "location": {
+                "latitude": 52.39339065551758,
+                "longitude": 13.07505989074707,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T10:23:10+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.5258041,
+                "longitude": 13.3695317,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T11:22:39+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk"
+        ],
+        "description": null,
+        "costs": {
+            "distance": {
+                "unit": "Meter",
+                "value": 37278
+            },
+            "duration": {
+                "unit": "Minute",
+                "value": 59.46666666666667
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 17.939
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 5381.7
+            },
+            "ticketPrice": null
+        }
+    },
+    {
+        "url": "TripProposals/IMR/80816",
+        "origin": {
+            "location": {
+                "latitude": 52.39339065551758,
+                "longitude": 13.07505989074707,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T10:23:11+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.5258041,
+                "longitude": 13.3695317,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T11:24:07+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk"
+        ],
+        "description": null,
+        "costs": {
+            "distance": {
+                "unit": "Meter",
+                "value": 37361
+            },
+            "duration": {
+                "unit": "Minute",
+                "value": 60.916666666666664
+            },
+            "price": {
+                "unit": "Euro",
+                "value": 17.962
+            },
+            "emission": {
+                "unit": "Gram",
+                "value": 5388.6
+            },
+            "ticketPrice": null
+        }
+    }
+]
+
+
+# General Description
+Get details about a trip proposal. 
+
+# Query Parameters: 
+
+- `language={lang}` : de, en (currently not supported; de is the default)
+
+Each trip proposal consists of several segments, one segment for one transportation modality such as bike, car, train, etc. 
+There is also a separate segment if the traveler shall use different lines of the same transport modality, 
+for instance, first U5 from A to B and then U4 from B to C.
+
+Each segement has an origin and a destination with corresponding timestamps when to arrive and depart.
+A segment consists of a sequence of wayPoints and guidingPoints.
+A wayPoint describes an intermediate geo location useful for displaying the trip proposal in a map.
+A guidingPoint gives a traveler hints how to travel, e.g., whenever to change the road at a crossing. GuidingPoints are a subset of wayPoints
+
+# Response
+Details about a single trip proposal determined by {proposalId}.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes of a segment object:
+
+attribute | json data type | comments
+--- | --- | ---
+segmentId | URI | URI to request more details
+origin | Object | start point of the proposed trip. For car sharing segment we have "operatorId" and "unitId" and for CityTrain/RegioTrain segment we have "platform", "stationId" and "direction"
+destination | Object | endpoint of the proposed trip
+
+
+Please note:
+
+The trip proposals as returned by "GET /api/V1/TripProposals" are internally stored only for a certain time; afterward they expire and details are no longer available. 
+The current expiration time is 10 minutes.
+
+GET /api/V1/TripProposals/IMR/{proposalId}
+< 200
+< Content-Type: application/json
+{
+    "url": "TripProposals/21844/",
+    "segments": [
+        {
+            "segmentId": "1",
+            "description": "@52.52164199999999,13.411007000000039:@52.57783508300779,13.3144836425781",
+            "origin": {
+                "location": {
+                    "latitude": 52.52180099487305,
+                    "longitude": 13.411330223083496,
+                    "system": "WGS_84"
+                },
+                "address": null,
+                "time": "2014-06-28T14:04:02+0200"
+            },
+            "destination": {
+                "location": {
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.314399719238281,
+                    "system": "WGS_84"
+                },
+                "address": null,
+                "time": "2014-06-28T14:28:02+0200"
+            },
+            "trafficType": "Car",
+            "cost": {
+                "distance": {
+                    "unit": "Meter",
+                    "value": 10905
+                },
+                "duration": {
+                    "unit": "Minute",
+                    "value": 24.533333333333335
+                },
+                "price": {
+                    "unit": "Euro",
+                    "value": 4.9072499999999994
+                },
+                "emission": {
+                    "unit": "Gram",
+                    "value": 1635.75
+                },
+                "ticketPrice": null
+            },
+            "wayPoints": [
+                {
+                    "latitude": 52.52180099487305,
+                    "longitude": 13.411330223083496,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52207946777344,
+                    "longitude": 13.410940170288086,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52252960205078,
+                    "longitude": 13.410249710083008,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52259826660156,
+                    "longitude": 13.410090446472168,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52323913574219,
+                    "longitude": 13.411160469055176,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.523460388183594,
+                    "longitude": 13.411490440368652,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.524410247802734,
+                    "longitude": 13.412690162658691,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.525089263916016,
+                    "longitude": 13.413570404052734,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.526611328125,
+                    "longitude": 13.415470123291016,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52676010131836,
+                    "longitude": 13.415670394897461,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.527069091796875,
+                    "longitude": 13.415969848632812,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.527191162109375,
+                    "longitude": 13.415719985961914,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52745819091797,
+                    "longitude": 13.415060043334961,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52819061279297,
+                    "longitude": 13.412469863891602,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.528350830078125,
+                    "longitude": 13.412030220031738,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52854919433594,
+                    "longitude": 13.411230087280273,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52873992919922,
+                    "longitude": 13.41001033782959,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52878952026367,
+                    "longitude": 13.409740447998047,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52885818481445,
+                    "longitude": 13.409480094909668,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52886962890625,
+                    "longitude": 13.4093599319458,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52912139892578,
+                    "longitude": 13.40822982788086,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52928924560547,
+                    "longitude": 13.407270431518555,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.529579162597656,
+                    "longitude": 13.405449867248535,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52988052368164,
+                    "longitude": 13.403739929199219,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52989959716797,
+                    "longitude": 13.403400421142578,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52980041503906,
+                    "longitude": 13.401590347290039,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.529781341552734,
+                    "longitude": 13.401490211486816,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.52975845336914,
+                    "longitude": 13.401300430297852,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53007125854492,
+                    "longitude": 13.401000022888184,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.531681060791016,
+                    "longitude": 13.399620056152344,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53229904174805,
+                    "longitude": 13.399080276489258,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.532588958740234,
+                    "longitude": 13.398920059204102,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.536251068115234,
+                    "longitude": 13.39758014678955,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53641891479492,
+                    "longitude": 13.397560119628906,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53717041015625,
+                    "longitude": 13.396949768066406,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53813934326172,
+                    "longitude": 13.39622974395752,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53860092163086,
+                    "longitude": 13.3958101272583,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53916931152344,
+                    "longitude": 13.395380020141602,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.53955841064453,
+                    "longitude": 13.39507007598877,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.541141510009766,
+                    "longitude": 13.393850326538086,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54167175292969,
+                    "longitude": 13.393449783325195,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54228973388672,
+                    "longitude": 13.392970085144043,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54256057739258,
+                    "longitude": 13.392749786376953,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54690933227539,
+                    "longitude": 13.389419555664062,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54790115356445,
+                    "longitude": 13.388649940490723,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5482292175293,
+                    "longitude": 13.38838005065918,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54838180541992,
+                    "longitude": 13.388270378112793,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54869842529297,
+                    "longitude": 13.38794994354248,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54916000366211,
+                    "longitude": 13.38722038269043,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.54936981201172,
+                    "longitude": 13.386930465698242,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55004119873047,
+                    "longitude": 13.385780334472656,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55070114135742,
+                    "longitude": 13.384710311889648,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.551658630371094,
+                    "longitude": 13.383119583129883,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55192184448242,
+                    "longitude": 13.382539749145508,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.552181243896484,
+                    "longitude": 13.3818998336792,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.552398681640625,
+                    "longitude": 13.381279945373535,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55268859863281,
+                    "longitude": 13.380510330200195,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55287170410156,
+                    "longitude": 13.379839897155762,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55302810668945,
+                    "longitude": 13.378809928894043,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55310821533203,
+                    "longitude": 13.378430366516113,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55316925048828,
+                    "longitude": 13.378270149230957,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55324172973633,
+                    "longitude": 13.378129959106445,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55358123779297,
+                    "longitude": 13.377519607543945,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5537109375,
+                    "longitude": 13.377360343933105,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55400085449219,
+                    "longitude": 13.377059936523438,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55427169799805,
+                    "longitude": 13.376740455627441,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5561408996582,
+                    "longitude": 13.374640464782715,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.556339263916016,
+                    "longitude": 13.374380111694336,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.556861877441406,
+                    "longitude": 13.373760223388672,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55731964111328,
+                    "longitude": 13.373180389404297,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.557861328125,
+                    "longitude": 13.37246036529541,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.55812072753906,
+                    "longitude": 13.372139930725098,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.558189392089844,
+                    "longitude": 13.372039794921875,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5594482421875,
+                    "longitude": 13.370389938354492,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5601806640625,
+                    "longitude": 13.36948013305664,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.560569763183594,
+                    "longitude": 13.3689603805542,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56098175048828,
+                    "longitude": 13.368379592895508,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56258010864258,
+                    "longitude": 13.366310119628906,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56293869018555,
+                    "longitude": 13.365799903869629,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56298065185547,
+                    "longitude": 13.365679740905762,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56296157836914,
+                    "longitude": 13.365429878234863,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.562931060791016,
+                    "longitude": 13.365229606628418,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56293869018555,
+                    "longitude": 13.36454963684082,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56367874145508,
+                    "longitude": 13.364410400390625,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56412887573242,
+                    "longitude": 13.364270210266113,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56623077392578,
+                    "longitude": 13.363129615783691,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56726837158203,
+                    "longitude": 13.362589836120605,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56779098510742,
+                    "longitude": 13.362310409545898,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56863021850586,
+                    "longitude": 13.3618803024292,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56977081298828,
+                    "longitude": 13.3612699508667,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57062911987305,
+                    "longitude": 13.36083984375,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57229995727539,
+                    "longitude": 13.359970092773438,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.573158264160156,
+                    "longitude": 13.35949993133545,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5732307434082,
+                    "longitude": 13.359439849853516,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57334899902344,
+                    "longitude": 13.35923957824707,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57341003417969,
+                    "longitude": 13.35906982421875,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.573429107666016,
+                    "longitude": 13.358949661254883,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57339859008789,
+                    "longitude": 13.357379913330078,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57352828979492,
+                    "longitude": 13.355330467224121,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57378005981445,
+                    "longitude": 13.352100372314453,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57381057739258,
+                    "longitude": 13.351880073547363,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.573829650878906,
+                    "longitude": 13.351590156555176,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.573970794677734,
+                    "longitude": 13.350520133972168,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5743408203125,
+                    "longitude": 13.348150253295898,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57440185546875,
+                    "longitude": 13.347829818725586,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57442092895508,
+                    "longitude": 13.34766960144043,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57469177246094,
+                    "longitude": 13.345990180969238,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57489013671875,
+                    "longitude": 13.344670295715332,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575191497802734,
+                    "longitude": 13.342599868774414,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57535171508789,
+                    "longitude": 13.340889930725098,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57542037963867,
+                    "longitude": 13.339269638061523,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575439453125,
+                    "longitude": 13.338430404663086,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.5754508972168,
+                    "longitude": 13.335969924926758,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575469970703125,
+                    "longitude": 13.334819793701172,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575538635253906,
+                    "longitude": 13.332220077514648,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57561111450195,
+                    "longitude": 13.330249786376953,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57556915283203,
+                    "longitude": 13.330129623413086,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57556915283203,
+                    "longitude": 13.329480171203613,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575679779052734,
+                    "longitude": 13.32699966430664,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575679779052734,
+                    "longitude": 13.326889991760254,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57577896118164,
+                    "longitude": 13.324529647827148,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575801849365234,
+                    "longitude": 13.323929786682129,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575828552246094,
+                    "longitude": 13.323380470275879,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575828552246094,
+                    "longitude": 13.32328987121582,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.575870513916016,
+                    "longitude": 13.322600364685059,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57598876953125,
+                    "longitude": 13.319840431213379,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57609176635742,
+                    "longitude": 13.318900108337402,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57630157470703,
+                    "longitude": 13.317150115966797,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.576568603515625,
+                    "longitude": 13.315110206604004,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.577510833740234,
+                    "longitude": 13.315449714660645,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57767105102539,
+                    "longitude": 13.315520286560059,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57780075073242,
+                    "longitude": 13.315600395202637,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.577850341796875,
+                    "longitude": 13.315489768981934,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.315369606018066,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.578121185302734,
+                    "longitude": 13.314900398254395,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57817077636719,
+                    "longitude": 13.314820289611816,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57802963256836,
+                    "longitude": 13.314689636230469,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57793045043945,
+                    "longitude": 13.314519882202148,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.314399719238281,
+                    "system": "WGS_84"
+                }
+            ],
+            "guidingPoints": [
+                {
+                    "description": "Leave from  Alexanderplatz, Berlin",
+                    "location": {
+                        "location": {
+                            "latitude": 52.52180099487305,
+                            "longitude": 13.411330223083496,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 0
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 0
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": [
+                        {
+                            "text": "Unknown Road",
+                            "type": "WARNING"
+                        }
+                    ]
+                },
+                {
+                    "description": "Turn right onto  Karl-Liebknecht-Straße",
+                    "location": {
+                        "location": {
+                            "latitude": 52.52259826660156,
+                            "longitude": 13.410090446472168,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 121
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 44
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn left onto  Torstraße",
+                    "location": {
+                        "location": {
+                            "latitude": 52.52676010131836,
+                            "longitude": 13.415670394897461,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 713
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 142
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn right onto  Brunnenstraße",
+                    "location": {
+                        "location": {
+                            "latitude": 52.52975845336914,
+                            "longitude": 13.401300430297852,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 1805
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 302
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn right onto B96 Markstraße",
+                    "location": {
+                        "location": {
+                            "latitude": 52.56296157836914,
+                            "longitude": 13.365429878234863,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 6349
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 888
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn right onto  Eichborndamm",
+                    "location": {
+                        "location": {
+                            "latitude": 52.576568603515625,
+                            "longitude": 13.315110206604004,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 10665
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1400
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn left onto  Miraustraße",
+                    "location": {
+                        "location": {
+                            "latitude": 52.57780075073242,
+                            "longitude": 13.315600395202637,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 10801
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1426
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn left onto  Breitenbachstraße",
+                    "location": {
+                        "location": {
+                            "latitude": 52.57817077636719,
+                            "longitude": 13.314820289611816,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 10865
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1454
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Arrive at  Breitenbachstraße, Borsigwalde",
+                    "location": {
+                        "location": {
+                            "latitude": 52.57788848876953,
+                            "longitude": 13.314399719238281,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 10905
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1472
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                }
+            ]
+        },
+        {
+            "segmentId": "2",
+            "description": "parking part",
+            "origin": {
+                "location": {
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.314399719238281,
+                    "system": "WGS_84"
+                },
+                "address": "P+R Eichborndamm (S)",
+                "time": "2014-06-28T14:28:02+0200",
+                "operatorId": "PR",
+                "unitId": "21846"
+            },
+            "destination": {
+                "location": {
+                    "latitude": 52.57788848876953,
+                    "longitude": 13.314399719238281,
+                    "system": "WGS_84"
+                },
+                "address": null,
+                "time": "2014-06-28T14:28:02+0200"
+            },
+            "trafficType": "Other",
+            "cost": {
+                "distance": {
+                    "unit": "Meter",
+                    "value": 0
+                },
+                "duration": {
+                    "unit": "Minute",
+                    "value": 0
+                },
+                "price": {
+                    "unit": "Euro",
+                    "value": 0
+                },
+                "emission": {
+                    "unit": "Gram",
+                    "value": 0
+                },
+                "ticketPrice": null
+            },
+            "wayPoints": [],
+            "guidingPoints": [
+                {
+                    "description": "P+R Eichborndamm (S)",
+                    "location": {
+                        "location": {
+                            "latitude": 52.57788848876953,
+                            "longitude": 13.314399719238281,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": "2014-06-28T14:28:02+0200"
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 0
+                        },
+                        "duration": {
+                            "unit": "Minute",
+                            "value": 0
+                        },
+                        "price": {
+                            "unit": "Euro",
+                            "value": 0
+                        },
+                        "emission": {
+                            "unit": "Gram",
+                            "value": 0
+                        },
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                }
+            ]
+        },
+        {
+            "segmentId": "3",
+            "description": null,
+            "origin": {
+                "location": {
+                    "latitude": 52.5778392,
+                    "longitude": 13.3144837,
+                    "system": "WGS_84"
+                },
+                "address": "Breitenbachstraße 13, 13509 Berlin, Germany",
+                "time": "2014-06-28T14:28:02+0200",
+                "platform": null,
+                "stationId": null,
+                "direction": null
+            },
+            "destination": {
+                "location": {
+                    "latitude": 52.5635387,
+                    "longitude": 13.3194514,
+                    "system": "WGS_84"
+                },
+                "address": "Meteorstraße 40a, 13405 Berlin, Germany",
+                "time": "2014-06-28T14:54:51+0200",
+                "platform": null,
+                "stationId": null,
+                "direction": null
+            },
+            "trafficType": "Walk",
+            "cost": {
+                "distance": {
+                    "unit": "Meter",
+                    "value": 2169
+                },
+                "duration": {
+                    "unit": "Minute",
+                    "value": 26.816666666666666
+                },
+                "price": {
+                    "unit": "Euro",
+                    "value": 0
+                },
+                "emission": {
+                    "unit": "Gram",
+                    "value": 0
+                },
+                "ticketPrice": null
+            },
+            "wayPoints": [
+                {
+                    "latitude": 52.57784,
+                    "longitude": 13.31448,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57783,
+                    "longitude": 13.31523,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57788,
+                    "longitude": 13.3153,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57777,
+                    "longitude": 13.31551,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57765,
+                    "longitude": 13.31545,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57658,
+                    "longitude": 13.3151,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.57142,
+                    "longitude": 13.31322,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56963,
+                    "longitude": 13.31254,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56798,
+                    "longitude": 13.31196,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56788,
+                    "longitude": 13.31192,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56786,
+                    "longitude": 13.31205,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56776,
+                    "longitude": 13.31264,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56727,
+                    "longitude": 13.31466,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56685,
+                    "longitude": 13.31642,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56661,
+                    "longitude": 13.3174,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56652,
+                    "longitude": 13.31732,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56573,
+                    "longitude": 13.31678,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56536,
+                    "longitude": 13.31645,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56435,
+                    "longitude": 13.31553,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56428,
+                    "longitude": 13.31553,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56422,
+                    "longitude": 13.31559,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56419,
+                    "longitude": 13.3157,
+                    "system": "WGS_84"
+                },
+                {
+                    "latitude": 52.56354,
+                    "longitude": 13.31945,
+                    "system": "WGS_84"
+                }
+            ],
+            "guidingPoints": [
+                {
+                    "description": "Head <b>east</b> toward <b>Antonienstraße</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5778392,
+                            "longitude": 13.3144837,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 0
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 0
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>left</b> onto <b>Antonienstraße</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5778331,
+                            "longitude": 13.3152393,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 51
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 34
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>right</b> onto <b>Miraustraße</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5778815,
+                            "longitude": 13.3152959,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 58
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 39
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>right</b> onto <b>Eichborndamm</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5777704,
+                            "longitude": 13.3155112,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 77
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 58
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>left</b> onto <b>Scharnweberstraße</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5678802,
+                            "longitude": 13.3119237,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 1203
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 892
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Turn <b>right</b> onto <b>Uranusweg</b>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5666126,
+                            "longitude": 13.3174002,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 1599
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1185
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "<b>Uranusweg</b> turns <b>left</b> and becomes <b>Meteorstraße</b><div style=\"font-size:0.9em\">Destination will be on the right</div>",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5642758,
+                            "longitude": 13.3155262,
+                            "system": "WGS_84"
+                        },
+                        "address": null,
+                        "time": null
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 1889
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1406
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                },
+                {
+                    "description": "Meteorstraße 40a, 13405 Berlin, Germany",
+                    "location": {
+                        "location": {
+                            "latitude": 52.5635387,
+                            "longitude": 13.3194514,
+                            "system": "WGS_84"
+                        },
+                        "address": "Meteorstraße 40a, 13405 Berlin, Germany",
+                        "time": "2014-06-28T14:54:51+0200"
+                    },
+                    "cost": {
+                        "distance": {
+                            "unit": "Meter",
+                            "value": 2169
+                        },
+                        "duration": {
+                            "unit": "Second",
+                            "value": 1609
+                        },
+                        "price": null,
+                        "emission": null,
+                        "ticketPrice": null
+                    },
+                    "operator": null,
+                    "pointId": null,
+                    "comment": []
+                }
+            ]
+        }
+    ]
+}
+
+
+# General Description
+Get trip information with Car/Walk routing constraints (min/max values).
+
+# Selection criteria 
+Specified in the request body as described in the sample request 
+
+- origin: start point specified by a geo location 
+  (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
+- destination: start point specified by a geo location
+- either orgin or destination might specify a time
+- viaPoints: list of geo locations that the route should use
+- costFunction: list of cost factors (such as Distance, Duration, Price, Economy), each with a percentual weight 
+- trafficTypes: list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
+- routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
+- userId: user that requests a trip
+
+# Response
+List of trip proposals with basic information such as distance, duration and an URI for details.
+
+POST /api/V1/TripProposals/IMR
+> Content-Type: application/json
+> Accept: application/json
+{
+  "origin": {
+    "location": {
+      "longitude": 13.072690999999963,
+      "latitude": 52.3941887,
+      "system": "WGS84"
+    },
+    "time": "2014-03-27T12:04:02UTC+05:30"
+  },
+  "destination": {
+    "location": {
+      "longitude": 13.319420000000036,
+      "latitude": 52.56347100000001,
+      "system": "WGS84"
+    },
+    "time": null
+  },
+  "viaPoints": [],
+  "costFunctions": [
+    {
+      "costType": "Duration",
+      "percentage": 100
+    }
+  ],
+  "userId": "4711/10",
+  "trafficTypes": [
+    "Walk",
+    "Bike",
+    "Car",
+    "Metro",
+    "CityTrain",
+    "Bus"
+  ],
+  "routingConstraints": [
+    {
+      "routingConstraintType": "Distance",
+      "trafficType": "Walk",
+      "max": {
+        "value": "700",
+        "unit": "Meter"
+      }
+    },
+    {
+      "routingConstraintType": "Distance",
+      "trafficType": "Car",
+      "max": {
+        "value": "2000",
+        "unit": "Meter"
+      }
+    }
+  ]
+}
+< 200
+< Content-Type: application/json
+[
+    {
+        "url": "TripProposals/IMR/80843",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563469,
+                "longitude": 13.319415,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:53:00+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk",
+            "CityTrain",
+            "Bus"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 6202
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": {
+                "unit": "EuroCent",
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5851",
+                "arrivalZone": "5656"
+            }
+        }
+    },
+    {
+        "url": "TripProposals/IMR/80844",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563589,
+                "longitude": 13.319065,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:48:09+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Bike"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 5947.563361271776
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": null
+        }
+    },
+    {
+        "url": "TripProposals/IMR/80845",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563469,
+                "longitude": 13.319415,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:22:00+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk",
+            "CityTrain",
+            "Bus"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 4342
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": {
+                "unit": "EuroCent",
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5851",
+                "arrivalZone": "5656"
+            }
+        }
+    },
+    {
+        "url": "TripProposals/IMR/80846",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563469,
+                "longitude": 13.319415,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:16:00+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk",
+            "CityTrain",
+            "Metro"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 3982
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": {
+                "unit": "EuroCent",
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5851",
+                "arrivalZone": "5656"
+            }
+        }
+    },
+    {
+        "url": "TripProposals/IMR/80847",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563469,
+                "longitude": 13.319415,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:35:00+0100"
+        },
+        "trafficTypes": [
+            "Car",
+            "Walk",
+            "CityTrain",
+            "Metro"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 5122
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": {
+                "unit": "EuroCent",
+                "value": 320,
+                "operatorId": "VBB",
+                "ticketId": "00101",
+                "tariffLevel": "B3",
+                "departureZone": "5851",
+                "arrivalZone": "5656"
+            }
+        }
+    }
+]
+
+
+# General Description
+Get trip information with Car Journey Planner (min/max values).
+
+# Selection criteria 
+Specified in the request body as described in the sample request 
+
+- origin: start point specified by a geo location 
+  (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
+- destination: start point specified by a geo location
+- either orgin or destination might specify a time
+- viaPoints: list of geo locations that the route should use
+- costFunction: list of cost factors (such as Distance, Duration, Price, Economy), each with a percentual weight 
+- routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
+- userId: user that requests a trip
+
+# Response
+List of trip proposals with basic information such as distance, duration and an URI for details.
+
+POST /api/V1/TripProposals/CarRouter
+> Content-Type: application/json
+> Accept: application/json
+{
+  "origin": {
+    "location": {
+      "longitude": 13.072690999999963,
+      "latitude": 52.3941887,
+      "system": "WGS84"
+    },
+    "time": "2014-03-27T12:04:02UTC+05:30"
+  },
+  "destination": {
+    "location": {
+      "longitude": 13.319420000000036,
+      "latitude": 52.56347100000001,
+      "system": "WGS84"
+    },
+    "time": null
+  },
+  "viaPoints": [],
+  "costFunctions": [],
+  "userId": "4711/10",
+  "routingConstraints": []
+}
+< 200
+< Content-Type: application/json
+[
+    {
+        "url": "TripProposals/CarRouter/80844",
+        "origin": {
+            "location": {
+                "latitude": 52.39419937133789,
+                "longitude": 13.07367992401123,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T13:04:40+0100"
+        },
+        "destination": {
+            "location": {
+                "latitude": 52.563589,
+                "longitude": 13.319065,
+                "system": "WGS_84"
+            },
+            "address": null,
+            "time": "2014-03-27T14:48:09+0100"
+        },
+        "trafficTypes": [
+            "Car"
+        ],
+        "description": null,
+        "costs": {
+            "distance": null,
+            "duration": {
+                "unit": "Second",
+                "value": 5947.563361271776
+            },
+            "price": null,
+            "emission": null,
+            "ticketPrice": null
+        }
+    }
+]
+
+
+--
+WMS
+--
+
+# General Description
+Get WMS PNG file for several service categories.
+
+# Query Parameters
+Define area of interest as a bounding box and with further optional parameters.
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+## optional parameters
+
+### service names
+- `serviceNames={categories}`: comma-separated list of service categories (currently offered as WMS layers by VMZ), e.g. PublicTransport, Parking
+
+### width
+- `width={w}`: width of map output in pixels (semantics according to WMS GetMap request)
+- the default value is width=250
+  
+### heigth
+- `height={h}`: height of map output in pixels (semantics according to WMS GetMap request)
+- the default value is height=250
+ 
+# Response
+PNG file with requested service categories.
+
+Please note: The accept-header of this request must be set to "image/png"
+GET /api/V1/Resources?system={s}&left_lower_lng={min_lng}&left_lower_lat={min_lat}&right_upper_lng={max_lng}&right_upper_lat={max_lat}&width={w}&heigth={h}&serviceNames={categories}
+> accept: image/png
+< 200
+< Content-Type: image/png
+{   "... this should be a PNG ..."
+}
+
+--
+Partners
+Registered IMP Partners
+--
+
+Request for new Partner (starts "New Partner" Process).
+POST /api/V1/Partners
+> Content-Type: application/json
+> Accept: application/json
+{ "companyName":"ContiPark", roles": [ "ServiceProvider" ]}
+< 201
+< Content-Type: application/json
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: POST, GET, UPDATE, DELETE, OPTIONS
+< Access-Control-Allow-Headers: content-type, x-http-method-override, x-requested-with
+{ "name":"Partner 1" }
+
+Show details of specified Partner.
+GET /api/V1/Partners/{PartnerId}
+< 200
+< Content-Type: application/json
+{ "status": "requested", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] }
+
+Request update of Partner details (starts "Update Partner" Process) [UC PM-1].
+PUT /Partners/{PartnerId}
+> Content-Type: application/json
+> Accept: application/json
+{ "companyName":"Partner 1 new" }
+< 200
+< Content-Type: application/json
+{ "status": "requested", "url": "/Partners/1", "companyName":"Partner 1 new", "roles": [ "ServiceProvider" ] }
+
+Request deletion of specified Partner (starts "Delete Partner" Process) [UC PM-1].
+DELETE /Partners/{PartnerId}
+< 204
+
+List all registered Partners (only for Admin).
+GET /api/V1/Partners
+< 200
+< Content-Type: application/json
+{ "items": [
+    { "status": "registered", "url": "/Partners/1", "companyName":"Partner 1", "roles": [ "ServiceProvider" ] },
+    { "status": "registered", "url": "/Partners/2", "companyName":"Partner 2", "roles": [ "ServiceProvider" ] },
+    { "status": "registered", "url": "/Partners/3", "companyName":"Partner 3", "roles": [ "MobilityProvider" ] }
+] }
+
+Generate user token (starts "User Token Generation" Process).
+
+Query Parameters
+
+- `action={register}`: Must be "register" to start token generation
+POST /api/V1/Partners/User/Process
+> Content-Type: application/json
+> Accept: application/json
+< 201
+< Content-Type: application/json
+{
+    "id": {id},
+    "partnerId": {partnerId},
+    "token": "587c8e09-cd63-48d2-b889-b6903221e8b4"
+}
+
+Request user transactions.
+
+Query Parameters (optional - if date range not provided then results are fetched for last one month)
+ 
+- `startDate={fromDate}`
+- `endDate={toDate}`
+GET /api/V1/Partners/User/Transactions
+> Content-Type: application/json
+> Accept: application/json
+> userToken: {userToken}
+< 200
+< Content-Type: application/json
+[
+    {
+        "serviceCategory": "Parking",
+        "serviceType": "consumption",
+        "serviceDescription": "vmzParking : consumption",
+        "unit": "EUR",
+        "value": 0,
+        "startTime": "2014-01-07T12:38:39+0530",
+        "endTime": "2014-01-07T12:38:39+0530"
+    }
+]
+
+To be described
+GET /Partners/verify?{verificationHash}
+< 200
+
+
+--
+ServiceOfferings per Partner
+--
+
+Request registration of new Service for Partner (starts "New Service" Process) [UC PM-3].
+POST /api/V1/Partners/{PartnerId}/ServiceOfferings
+> Content-Type: application/json
+> Accept: application/json
+{ "companyName":"Parking / Partner 1", "url": "..." }
+< 201
+< Content-Type: application/json
+< Location: /Partners/1/Service/1
+{ "status": "requested", "url": "/Partners/1/ServiceOfferings/1", "companyName":"Parking / Partner 1" }
+
+Request deletion of specified Service (starts "Delete Service" Process) [UC PM-3].
+DELETE /V1/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+< 204
+
+Show details of specified Service.
+GET /V1/Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+< 200
+< Content-Type: application/json
+{ "offeringStatus": "requested", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" }
+
+Show availability of specified Service [IMP-222].
+GET /V1/Partners/{PartnerId}/ServiceOfferings/{ServiceId}/Availability?from={from_time}&to={to_time}
+< 200
+< Content-Type: application/json
+{ "offeringStatus": "available", "url": "/Partners/1/ServiceOfferings/1/Availability" }
+
+Request update of Service details (starts "Update Service" Process)  [UC PM-3].
+PUT /Partners/{PartnerId}/ServiceOfferings/{ServiceId}
+> Content-Type: application/json
+> Accept: application/json
+{ "name":"Parking / Partner 1 new" }
+< 200
+< Content-Type: application/json
+{ "offeringStatus": "requested", "type": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1 new" }
+
+--
+ServiceOfferings for all Partners
+--
+
+List all offered Services.
+GET /api/V1/ServiceOfferings
+< 200
+< Content-Type: application/json
+{ "items": [
+    { "offeringStatus": "provided", "type": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" },
+    { "offeringStatus": "provided", "type": "Car Rental", "url": "/Partners/2/ServiceOfferings/1", "name":"Car Rental / Partner 2" }
+] }
+
+List all offered Services of a specified type.
+GET /api/V1/ServiceOfferings?category=Parking
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "offeringStatus": "provided", "category": "Parking", "url": "/Partners/1/ServiceOfferings/1", "name":"Parking / Partner 1" }
+] }
+
+
+--
+Service Subscriptions
+--
+
+List all Subscriptions for specified Partner (requested by MobilityProvider).
+GET /api/V1/Partners/{PartnerId}/ServiceSubscriptions
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
+] }
+
+MobilityProvider subscribes to ServiceOffering
+POST /api/V1/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+> Content-Type: application/json
+> Accept: application/json
+{ "partnerId" : "1" }
+< 201
+< Content-Type: application/json
+< Location: /ServiceOfferings/1/ServiceSubscriptions/4711
+{ "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
+
+List all ServiceSubscriptions for a ServiceOffering (requested by ServiceProvider)
+GET /api/V1/ServiceOfferings/{ServiceId}/ServiceSubscriptions
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "status": "pending", "url": "/ServiceOfferings/1/ServiceSubscriptions/4711" }
+] }
+
+Unsubscribe Service
+DELETE /api/V1/ServiceOfferings/1/ServiceSubscriptions/4711
+< 204
+
+--
+Service Categories
+--
+
+List all available Service Categories
+GET /api/V1/ServiceCategories
+< 200
+< Content-Type: application/json
+{ "items": [
+        { "name": "Parking", "url": "/ServiceCategories/Parking" , "displayText":"Store Parking" ,"resources": "/Resources/Parking" }
+] }
+
+
+--
+--
+
+Options (for CORS, only for mock).
+OPTIONS /api/V1/Partners
+< 200
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Methods: POST, GET, PUT, UPDATE, DELETE, OPTIONS
+< Access-Control-Allow-Headers: content-type, x-http-method-override, x-requested-with
+
+--
+Taxi
+--
+
+
+# General Description
+Get available taxis in a specified area.
+
+# Query Parameters
+Define area of interest as circle or box.
+
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+List of available taxis with basic information.
+
+
+GET /api/V1/Resources/TaxiService/Taxis
+< 200
+< Content-Type: application/json
+{
+    "metaData": [
+        {
+            "serviceAlias": "vattenfall",
+            "lastUpdateTime": "2014-04-28T12:16:48+0200",
+            "messages": []
+        }
+    ],
+"resources":[
+    { 
+        "id": 5120, 
+        "location": {"latitude":52.5244,  "longitude":13.2541, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-TA 4820" 
+    },
+    { 
+        "id": 5393, 
+        "location": {"latitude":52.58421, "longitude":13.36627, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-GA 4518" 
+    },
+    { 
+        "id": 4911, 
+        "location": {"latitude":52.5206,  "longitude":13.38284, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-TA 4270" 
+    },
+    { 
+        "id": 5357, 
+        "location": {"latitude":52.55726, "longitude":13.52817, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-I 6606" 
+    },
+    { 
+        "id": 5006, 
+        "location": {"latitude":52.53803, "longitude":13.31234, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-T 4100" 
+    },
+    { 
+        "id": 5109, 
+        "location": {"latitude":52.54481, "longitude":13.40668, "system":"WGS_84" }, 
+        "status":"Available", 
+        "licenceId":"B-JW 448" 
+    }
+]
+}
+
+# General Description
+Get estimated fare for trips from origin to destination.
+
+# Query Parameters 
+Either of both variants:
+
+## origin and destination
+`origin_lat={lat}&origin_lng={lng}&dest_lat={lat}&dest_lng={lng}`
+
+## origin and distance from origin
+`origin_lat={lat}&origin_lng={lng}&radius={r}`
+
+Further conditions might specify: number of passengers, extra luggage, start time, ...
+
+# Response
+fare information for the specified trip.
+
+GET /api/V1/Info/TaxiService/Fares
+< 200
+< Content-Type: application/json
+{
+    "fareQuality": 1.0,
+    "startTime": "2013-07-09T08:09:17",
+    "arrivalTime": { "value": 360, "unit": "sec"},
+    "totalTime":   { "value": 660, "unit": "sec"},
+    "totalDistance": { "value": 5000, "unit": "m" },
+    "costs": { 
+        "flagFall": { "value":300, "currency":"EuroCent"},
+        "total":    { "value":960, "currency":"EuroCent"}, 
+        "distance": { "value":660, "currency":"EuroCent"}, 
+        "other":    { },
+        "passengers": [
+           { "value":0,   "currency":"EuroCent" },
+           { "value":0,   "currency":"EuroCent" },
+           { "value":0,   "currency":"EuroCent" },
+           { "value":0,   "currency":"EuroCent" },
+           { "value":150, "currency":"EuroCent" },
+           { "value":300, "currency":"EuroCent" },
+           { "value":450, "currency":"EuroCent" },
+           { "value":600, "currency":"EuroCent" }
+        ]
+    }
+    "services": {
+        "bookingAvailable": true,
+        "paymentAvailable": false,
+        "privateHireVehicleAvailable": true,
+        "taxiSharing": false,
+        "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
+    }      
+}
+
+
+# General Description
+
+Book a Taxi: The taxi ride is specified by providing the starting point (address and/or geo location) and the destination.
+This means that no specific, previously selected taxi, is booked.
+
+# Query Parameters
+
+- `action={Book}`: Must be "Book" to perform a booking
+
+Input in request body: 
+
+- operator: name, userId and password (for authentication)
+- origin of the taxi ride and optional start time
+- destination of the taxi ride
+- further parameters might later detail the request by specifying the number of passengers, availability of child seats, extra luggage etc.
+
+# Failures
+
+- booking is not possible: response body explains the reason why
+
+# Output
+- the estimated costs, the taxi's licence id, and a booking id are returned; the latter can be used to cancel the booking.
+
+Please note: 
+
+- Since data about the traveler is usually requested by the taxi SP, we assume that the end-user (or the mobility provider) himself is responsible to register at the service provider.
+- We currently require one operator in the input body.
+
+POST /api/V1/Resources/TaxiService/Taxis/Processes?action=Book
+> Accept: application/json
+> Content-Type: application/json
+> userToken: {userToken}
+{
+    "operator": {
+        "name": "BetterTaxi",
+        "userId": "MP1_1",
+        "password": "TopSecret!"
+    },
+    "origin" : {
+        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+        "time": "2013-05-01T12:00:00" 
+    },
+    "destination" : {
+        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+    }
+}
+< 201
+< Location: /api/V1/Process/4711
+< Content-Type: application/json
+{
+    "processId" : 123,
+    "confirmation" : {
+        "confirmationId" : 456,
+        "featureType": "BOOKING"
+    },
+    "origin" : {
+        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+        "time": "2013-05-01 12:00:00" 
+    },
+    "destination" : {
+        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+    },
+    "operatorId": "BetterTaxi",
+    "licenceId": "B-OB 007",
+    "arrivalTime": "2013-05-01T12:05:00",
+    "services": {
+        "bookingAvailable": true,
+        "paymentAvailable": false,
+        "privateHireVehicleAvailable": true,
+        "taxiSharing": false,
+        "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
+    },
+    "actions": [
+        {
+            "name": "Cancel",
+            "method": "PUT",
+            "uri": "/api/V1/Processes/123?action=Cancel"
+        }
+    ]
+}
+
+
+# General Descrition 
+Cancel a booking for a taxi that has been booked before with a booking id 4711.
+
+# Query Parameters
+
+- `action={Cancel}`: Must be "Cancel" for performing a booking
+
+Input in request body: 
+
+- userId and password (for authentication)
+
+# Failures
+
+- cancelation is not possible: the response body explains the reason why.
+
+# Output
+information about the originally planned taxi ride and the cancelation fee
+PUT /api/V1/Process/123?action=Cancel
+> Accept: application/json
+> Content-Type: application/json
+> userToken: {userToken}
+{ 
+    "operator": { 
+        "name": "BetterTaxi", 
+        "userId": "MP1_1",
+        "password": "TopSecret!"
+    }
+}
+< 201
+< Location: /api/V1/Process/123
+< Content-Type: application/json
+{
+    "userId": "MP1_1",
+    "ride": { 
+        "origin" : {
+            "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+            "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+            "time": "2013-05-01 12:00:00" 
+        },
+        "destination" : {
+            "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+        }
+    },
+    "confirmation": {
+        "featureType": "CANCELATION",
+        "confirmationId": "17",
+        "fee": { "value": 0, "currency": "EUR" }
+    },
+    "actions": [ ]
+}
+
+
+
+-- 
+Incidents / Traffic Info
+--
+
+# General Description
+Get all recent general incidents (incidents that affect public and individual transport) in a specific area.
+
+# Query Parameters
+Define area of interest as circle or box.
+ 
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response
+List of traffic information in the specified geo location specified by query parameters.
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+category | Enum | {"Roadworks", "Blockade", "Indefinition", "Congestion"} are the categories for the incidents with type "IncidentIndividualTransport", {"Construction", "Imbalance", "Diversion", "RailReplacement"} are the categories for incidents with type "IncidentPublicTransport"
+message | String | 
+timePeriod | Object | time period of the incident
+coordinates | Object | coordinates of the incident
+reason | String | reason description
+reasonShort | String | reason description
+consequence | String | consequense description
+consequenceShort | String | consequense description
+location | String | location as String
+source | String | {= "PT", "INKO", etc.}
+affectedTrips | Array | list of affected trips
+net | NetType  | 
+description | String | description of an incident information
+type | String | There are 2 types of incidents: Incidents with the type "IncidentIndividualTransport" affect individual transport (car, bycicle), incidents with the type "IncidentPublicTransport" affect public transport (bus, tram, etc.)
+uri | URI | URI
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | Enum | {"News", etc.}
+
+
+GET /api/V1/Info/Incidents
+< 200
+< Content-Type: application/json
+[   {
+        "category": "Other",
+        "message": "Disruption",
+        "timePeriod": {
+            "from": "2013-12-15T23:00:00+0100",
+            "to": null
+        },
+        "coordinates": [
+            {
+                "latitude": 52.51736111111111,
+                "longitude": 13.385627222222222,
+                "system": "WGS_84"
+            }
+        ],
+        "reason": "Sperrung wegen Bauarbeiten der BVG",
+        "reasonShort": "Sperrung wegen Bauarbeiten der BVG",
+        "consequence": "Die Linie wird in Fahrtrichtung U Alt-Mariendorf über Dorotheenstraße, Neustädtische Kirchstraße, Glinkastraße und Französische Straße umgeleitet. Die Haltestelle Unter den Linden/Friedrichstraße wird nicht bedient. Dafür ist in der Neustädtischen Kirchstraße vor Unter den Linden eine Ersatzhaltestelle eingerichtet.",
+        "consequenceShort": "Bauarbeiten, Umleitung",
+        "location": null,
+        "source": "PT",
+        "affectedTrips": null,
+        "net": [],
+        "description": "Umleitung / geänderte Haltestellenbedienung",
+        "type": "PublicTransport",
+        "uri": null,
+        "provider": "News"
+    },
+    {
+        "category": "Blockade",
+        "message": "Closed Road",
+        "timePeriod": {
+            "from": "2012-11-09T12:00:00+0100",
+            "to": "2014-08-31T17:00:59+0200"
+        },
+        "coordinates": [
+            {
+                "latitude": 52.51774,
+                "longitude": 13.38868,
+                "system": "WGS_84"
+            }
+        ],
+        "reason": null,
+        "reasonShort": null,
+        "consequence": null,
+        "consequenceShort": null,
+        "location": "towards Unter den Linden at crossing Unter den Linden",
+        "source": "INKO",
+        "affectedTrips": null,
+        "net": [],
+        "description": "Roadworks carriageway reduced from 2 to 1 lane traffic, congestion has to be expected road closed direction closed",
+        "type": "IndividualTransport",
+        "uri": null,
+        "provider": "News"
+    },
+    {
+        "category": "Indefinition",
+        "message": "Other",
+        "timePeriod": {
+            "from": "2014-06-20T13:00:00+0200",
+            "to": "2014-06-21T11:00:00+0200"
+        },
+        "coordinates": [
+            {
+                "latitude": 52.51704,
+                "longitude": 13.38878,
+                "system": "WGS_84"
+            }
+        ],
+        "reason": null,
+        "reasonShort": null,
+        "consequence": null,
+        "consequenceShort": null,
+        "location": "in both directions im Kreuzungsbereich",
+        "source": "IM",
+        "affectedTrips": null,
+        "net": [],
+        "description": "roadworks road closed",
+        "type": "IndividualTransport",
+        "uri": null,
+        "provider": "News"
+    }
+]
+
+# General Description
+Get recent general incidents that affect individual transport only in a specific area.
+
+# Query Parameters
+Define area of interest as circle or box.
+ 
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of traffic information in the specified geo location specified by query parameters.
+
+GET /api/V1/Info/Incidents/IndividualTransport
+< 200
+< Content-Type: application/json
+[    {
+        "description": "Roadworks carriageway reduced from 2 to 1 lane traffic, congestion has to be expected road closed",
+        "type": "IncidentIndividualTransport",
+        "uri": null,
+        "provider": "News",
+        "category": "Blockade",
+        "message": "Closed Road",
+        "timePeriod": {
+            "from": "2012-11-09T12:00:00MEZ",
+            "to": "2013-12-31T17:00:59MEZ"
+        },
+        "coordinates": [
+            {
+                "latitude": 52.51774,
+                "longitude": 13.38868,
+                "system": "WGS_84"
+            }
+        ],
+        "reason": null,
+        "reasonShort": null,
+        "consequence": null,
+        "consequenceShort": null,
+        "location": "towards Unter den Linden at crossing Unter den Linden",
+        "source": "INKO",
+        "affectedTrips": null,
+        "net": [],
+        "roadName": "Friedrichstr. (Mitte)"
+    }
+]
+
+
+# General Description
+Get recent general incidents that affect public transport only in a specific area.
+
+# Query Parameters
+Define area of interest as circle or box.
+ 
+## circle
+`lat={lat}&lng={lng}&radius={r}`
+
+## box
+`left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng}`
+
+# Response 
+List of traffic data in the specified geo location specified by query parameters.
+
+GET /api/V1/Info/Incidents/PublicTransport
+< 200
+< Content-Type: application/json
+[   {
+        "description": "Umleitung / geänderte Haltestellenbedienung",
+        "type": "IncidentPublicTransport",
+        "uri": null,
+        "provider": "News",
+        "category": "Other",
+        "message": "Disruption",
+        "timePeriod": {
+            "from": "2013-01-21T05:00:00MEZ",
+            "to": null
+        },
+        "coordinates": [
+            {
+                "latitude": 52.51748527777778,
+                "longitude": 13.388815833333332,
+                "system": "WGS_84"
+            }
+        ],
+        "reason": "Sperrung wegen Bauarbeiten der BVG",
+        "reasonShort": "Sperrung wegen Bauarbeiten der BVG",
+        "consequence": "Die Linie muss von der Fischerinsel über Gertraudenstr., Leipziger Str., Mauerstr., Glinkastr., Neustädtische Kirchstr. und Dorotheenstr. zur Friedrichstr. bzw. entgegengesetzt umgeleitet werden. Die Haltestellen Neumannsgasse, Werderscher Markt, U Französische Str. und Unter den Linden/Friedrichstr. werden nicht bedient. Die auf dem Umleitungsweg befindlichen Haltestellen werden angefahren.",
+        "consequenceShort": "Bauarbeiten, Umleitung",
+        "location": null,
+        "source": "PT",
+        "affectedTrips": null,
+        "net": [],
+        "direction": "Beide",
+        "firstStop": "Fischerinsel",
+        "lastStop": "S+U Friedrichstr.",
+        "lineName": {
+            "name": "147",
+            "trafficType": "Bus"
+        }
+    }
+]
+
+
+-- 
+Reporting
+--
+
+# General Description
+Get service usage statistics for specified date range.
+
+# Query Parameters
+ 
+- `startDate={fromDate}`
+- `endDate={toDate}`
+ 
+# Response
+List of service with usage statistics.
+GET /api/V1/Reporting/serviceUsageStatistics
+< 200
+< Content-Type: application/json
+[   
+    {
+        "id": null,
+        "featureType": "LIST",
+        "serviceCategory": "PUBLIC_TRANSPORT",
+        "mobilityProvider": "MP1",
+        "serviceProvider": "IMP",
+        "numberOfCalls": 1,
+        "serviceAlias": "Offline Stations",
+        "time": null
+    }
+]
+
+
+# General Description
+Get service performance statistics for specified date range.
+
+# Query Parameters
+ 
+- `startDate={fromDate}`
+- `endDate={toDate}`
+ 
+# Response
+List of service with performance statistics.
+GET /api/V1/Reporting/servicePerformanceStatistics
+< 200
+< Content-Type: application/json
+[   
+    {
+        "id": null,
+        "serviceName": "bettertaxi_booking",
+        "responseCode": "200",
+        "avgResponseTime": 14.3333333333,
+        "maxResponseTime": 41.0,
+        "serviceProvider": "BetterTaxi"
+    }
+]
+
+
+-- 
+Dummy. Please do not delete.
+--
+
