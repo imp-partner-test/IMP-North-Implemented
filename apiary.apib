@@ -303,7 +303,336 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
                     "modFlag": "Deleted"
                 }
                 ]
-            }        
+            } 
+
+## List of All Car Sharing Locations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/All] 
+
+This collection contains list of all available car sharing locations (both free-floating cars and/or car stations) 
+with basic information and a URI to acquire more details.
+In case of station-based cars, only the URI of the Car Sharing station is returned; in case of free-floating cars, the URI to the car itself.
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources
+--- | --- | ---
+actions | Array | 
+id | Number | 
+description | String | License ID or approximate location
+type | String | 
+uri | URI | URI
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | 
+availability | Double | Availability in percentage
+operator | String | 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request
+
+### Getting all car sharing locations [GET]
+@testable
+
++ Request
+
+    + Headers
+        
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+
++ Response 200 (application/json)
+    
+    + Body
+    
+            {
+              "metaData": [
+                {
+                  "serviceAlias": "flinkster",
+                  "lastUpdateTime": "2014-07-25T11:30:33+0530",
+                  "messages": [
+                    
+                  ]
+                },
+                {
+                  "serviceAlias": "car2Go",
+                  "lastUpdateTime": "2014-07-25T11:30:28+0530",
+                  "messages": [
+                    
+                  ]
+                },
+                {
+                  "serviceAlias": "driveNow",
+                  "lastUpdateTime": "2014-07-25T11:30:30+0530",
+                  "messages": [
+                    
+                  ]
+                },
+                {
+                  "serviceAlias": "citeeCar",
+                  "lastUpdateTime": "2014-07-25T11:30:34+0530",
+                  "messages": [
+                    
+                  ]
+                },
+                {
+                  "serviceAlias": "multiCity",
+                  "lastUpdateTime": "2014-07-25T11:30:36+0530",
+                  "messages": [
+                    
+                  ]
+                }
+              ],
+              "resources": [
+                {
+                  "actions": [
+                    {
+                      "name": "book",
+                      "method": "POST",
+                      "uri": "Resources/CarSharing/Stations/7695/Process?action=book"
+                    }
+                  ],
+                  "id": 7695,
+                  "description": "U-Bahnhof Senefelder Platz",
+                  "type": "Stations",
+                  "uri": "Resources/CarSharing/Stations/7695",
+                  "location": {
+                    "latitude": 52.53166159018624,
+                    "longitude": 13.412632271647453,
+                    "system": "WGS_84"
+                  },
+                  "provider": "flinkster",
+                  "availability": 0,
+                  "operator": "FlinksterDB"
+                },
+                {
+                  "actions": [
+                    {
+                      "name": "book",
+                      "method": "POST",
+                      "uri": "Resources/CarSharing/Stations/7683/Process?action=book"
+                    }
+                  ],
+                  "id": 7683,
+                  "description": "U-Bahnhof Hermannplatz",
+                  "type": "Stations",
+                  "uri": "Resources/CarSharing/Stations/7683",
+                  "location": {
+                    "latitude": 52.48663380523992,
+                    "longitude": 13.422980234026909,
+                    "system": "WGS_84"
+                  },
+                  "provider": "flinkster",
+                  "availability": 0,
+                  "operator": "FlinksterDB"
+                },
+                {
+                  "actions": [
+                    {
+                      "name": "book",
+                      "method": "POST",
+                      "uri": "Resources/CarSharing/Cars/7884/Process?action=book"
+                    }
+                  ],
+                  "id": 7884,
+                  "description": "B-GO2879",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/7884",
+                  "location": {
+                    "latitude": 52.4701,
+                    "longitude": 13.42044,
+                    "system": "WGS_84"
+                  },
+                  "provider": "car2Go",
+                  "availability": 100,
+                  "operator": "Car2Go_Berlin"
+                },
+                {
+                  "actions": [
+                    {
+                      "name": "book",
+                      "method": "POST",
+                      "uri": "Resources/CarSharing/Cars/7885/Process?action=book"
+                    }
+                  ],
+                  "id": 7885,
+                  "description": "B-GO2653",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/7885",
+                  "location": {
+                    "latitude": 52.52848,
+                    "longitude": 13.19156,
+                    "system": "WGS_84"
+                  },
+                  "provider": "car2Go",
+                  "availability": 100,
+                  "operator": "Car2Go_Berlin"
+                },
+                {
+                  "actions": [
+                    {
+                      "name": "book",
+                      "method": "POST",
+                      "uri": "Resources/CarSharing/Cars/8816/Process?action=book"
+                    }
+                  ],
+                  "id": 8816,
+                  "description": "Romeo",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/8816",
+                  "location": {
+                    "latitude": 52.513024,
+                    "longitude": 13.327073,
+                    "system": "WGS_84"
+                  },
+                  "provider": "driveNow",
+                  "availability": 100,
+                  "operator": "DriveNow"
+                },
+                {
+                  "actions": [
+                    {
+                      "name": "book",
+                      "method": "POST",
+                      "uri": "Resources/CarSharing/Cars/8817/Process?action=book"
+                    }
+                  ],
+                  "id": 8817,
+                  "description": "Kingsley",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/8817",
+                  "location": {
+                    "latitude": 52.500411,
+                    "longitude": 13.374263,
+                    "system": "WGS_84"
+                  },
+                  "provider": "driveNow",
+                  "availability": 100,
+                  "operator": "DriveNow"
+                },
+                {
+                  "actions": [
+                    {
+                      "name": "book",
+                      "method": "POST",
+                      "uri": "Resources/CarSharing/Cars/8818/Process?action=book"
+                    }
+                  ],
+                  "id": 8818,
+                  "description": "Inness",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/8818",
+                  "location": {
+                    "latitude": 52.502916,
+                    "longitude": 13.479554,
+                    "system": "WGS_84"
+                  },
+                  "provider": "driveNow",
+                  "availability": 100,
+                  "operator": "DriveNow"
+                },
+                {
+                  "actions": [
+                    
+                  ],
+                  "id": 9323,
+                  "description": "B-CC 4162",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/9323",
+                  "location": {
+                    "latitude": 52.50404000000001,
+                    "longitude": 13.47005,
+                    "system": "WGS_84"
+                  },
+                  "provider": "citeeCar",
+                  "availability": null,
+                  "operator": "CiteeCar"
+                },
+                {
+                  "actions": [
+                    
+                  ],
+                  "id": 9324,
+                  "description": "B-CC 1541",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/9324",
+                  "location": {
+                    "latitude": 52.565338134765625,
+                    "longitude": 13.420881271362305,
+                    "system": "WGS_84"
+                  },
+                  "provider": "citeeCar",
+                  "availability": null,
+                  "operator": "CiteeCar"
+                },
+                {
+                  "actions": [
+                    
+                  ],
+                  "id": 9325,
+                  "description": "B-CC 3392",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/9325",
+                  "location": {
+                    "latitude": 52.521278381347656,
+                    "longitude": 13.419211387634277,
+                    "system": "WGS_84"
+                  },
+                  "provider": "citeeCar",
+                  "availability": null,
+                  "operator": "CiteeCar"
+                },
+                {
+                  "actions": [
+                    
+                  ],
+                  "id": 9467,
+                  "description": "151601",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/9467",
+                  "location": {
+                    "latitude": 52.5275867,
+                    "longitude": 13.4586233,
+                    "system": "WGS_84"
+                  },
+                  "provider": "multiCity",
+                  "availability": 100,
+                  "operator": "Multicity"
+                },
+                {
+                  "actions": [
+                    
+                  ],
+                  "id": 9468,
+                  "description": "150554",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/9468",
+                  "location": {
+                    "latitude": 52.5312183,
+                    "longitude": 13.3188283,
+                    "system": "WGS_84"
+                  },
+                  "provider": "multiCity",
+                  "availability": 100,
+                  "operator": "Multicity"
+                },
+                {
+                  "actions": [
+                    
+                  ],
+                  "id": 9469,
+                  "description": "114075",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/9469",
+                  "location": {
+                    "latitude": 52.4811767,
+                    "longitude": 13.3154033,
+                    "system": "WGS_84"
+                  },
+                  "provider": "multiCity",
+                  "availability": 100,
+                  "operator": "Multicity"
+                }
+              ]
+            }
 
 ## List of free-floating Cars with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/Cars?lat={lat}&lng={lng}&radius={radius}&f_cars={fuelTypeJson}]
 
