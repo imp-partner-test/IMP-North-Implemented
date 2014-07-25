@@ -1489,6 +1489,88 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
             ]
         }
 
+## List of All EV Charging Stations with Basic Info [/imp-endpoint/api/V1/Resources/EVCharging/Stations/All]
+This collection contains a list of all electric vehicle (EV) charging stations.
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | List of available actions on this resource
+id | Number | Internal charging station identification numberg
+description | String | Approximate location or parking garage operator
+type | String | ="EVChargingStation" 
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider |  String| Charging station operator (usually equals provider)
+availability | Double | Availability in percentage
+operator | String | Charging station provider (usually equals operator)
+address | Object | 
+plugTypes | Enum value | Type of the plug.
+power | Number |  
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
+
+### Getting EV charging stations [GET]
+@testable
+
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+        
++ Response 200 (application/json)
+    
+        {
+            "metaData": [
+                {
+                    "serviceAlias": "vattenfall",
+                    "lastUpdateTime": "2014-07-10T12:06:09+0200",
+                    "messages": []
+                }
+            ],
+            "resources": [
+                {
+                    "actions": [],
+                    "id": 268355,
+                    "description": "Conti",
+                    "type": "EVChargingStation",
+                    "uri": "Resources/EVCharging/Stations/268355",
+                    "location": {
+                        "latitude": 52.51474,
+                        "longitude": 13.38639,
+                        "system": "WGS_84"
+                    },
+                    "provider": "vattenfall",
+                    "availability": 0,
+                    "operator": "Vattenfall",
+                    "modFlag": "Relocated",
+                    "address": {
+                        "citycode": "10117",
+                        "city": "Berlin",
+                        "street": "Glinkastr.",
+                        "houseno": "38",
+                        "district": null,
+                        "region": null,
+                        "country": null
+                    },
+                    "plugTypes": [
+                        "Type2Outlet",
+                        "TypeFSchuko"
+                    ],
+                    "power": {
+                        "unit": "KiloWatt",
+                        "value": 11040
+                    }
+                }
+            ]
+        }
+
 ## EV Charging Station with Detailed Info [/imp-endpoint/api/V1/Resources/EVCharging/Stations/{stationId}]
 
 A single charging station object with Detailed Information. 
