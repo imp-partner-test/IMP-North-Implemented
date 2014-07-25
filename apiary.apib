@@ -4775,6 +4775,35 @@ The If-Modified-Since (optional) can be set to a specific date-time in order to 
               "resources": []
         }
 
+## List of All available Taxis with Basic Info [/imp-endpoint/api/V1/Resources/TaxiService/Taxis/All] 
+
+This collection contains list of taxis.
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+### Get taxis in a specific area [GET]
+@testable
+
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+
++ Response 200 (application/json)
+
+        {
+            "metaData": [
+                {
+                  "serviceAlias": "bettertaxi",
+                  "lastUpdateTime": null,
+                  "messages": []
+                }
+            ],
+              "resources": []
+        }        
+        
+
 ## Fare for the specified trip [/imp-endpoint/api/V1/Resources/TaxiService/Fares?origin_lat={lat}&origin_lng={lng}&radius={radius}] 
 
 This response contains estimated fare for trips from origin and distanse from origin.
