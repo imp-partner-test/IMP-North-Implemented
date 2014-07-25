@@ -148,7 +148,127 @@ Parts of the data structure might be omitted if the information is not available
                 }
             ]
         }
+        
+## All Bike Sharing Stations [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/All]    
+This collection contains a list of all bike sharing stations (for station-based bike sharing)
 
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure of the response contains the following attributes: 
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | Available actions
+id | Number | Internal bike sharing station identification number
+description | String | Approximate location
+type | String | Type of bike sharing station
+uri | URI | URI to request more details.
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | service provider
+availability | Double | Availability in percentage
+operator | String | resource operator
+phoneNo | String | 
+operatorURI | String |
+operatorName | String | 
+address | Object | 
+numberOfBikes | Number | 
+numberOfFreeBikes | Number | 
+services | Array | 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
+
+Parts of the data structure might be omitted if the information is not available. 
+    
+### Getting bikes [GET]
+@testable
+
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+        
++ Response 200 (application/json)
+
+        {
+            "metaData": [
+                {
+                    "serviceAlias": "callabike",
+                    "lastUpdateTime": "2014-07-10T14:23:11+0200",
+                    "messages": []
+                },
+                {
+                    "serviceAlias": "nextbike",
+                    "lastUpdateTime": "2014-07-10T14:11:02+0200",
+                    "messages": []
+                }
+            ],
+            "resources": [
+                {
+                    "actions": [
+                        {
+                            "name": "book",
+                            "method": "POST",
+                            "uri": "Resources/BikeSharing/Stations/270210/Process?action=book"
+                        }
+                    ],
+                    "id": 270210,
+                    "description": "S+U-Bhf. Friedrichstraße",
+                    "type": "BikeSharingStation",
+                    "uri": "Resources/BikeSharing/Stations/270210",
+                    "location": {
+                        "latitude": 52.519676208496094,
+                        "longitude": 13.385995864868164,
+                        "system": "WGS_84"
+                    },
+                    "provider": "callabike",
+                    "availability": 100,
+                    "operator": "CallABike",
+                    "modFlag": "Modified",
+                    "phoneNo": null,
+                    "operatorURI": null,
+                    "operatorName": "CallABike",
+                    "address": null,
+                    "numberOfBikes": 16,
+                    "numberOfFreeBikes": 16,
+                    "services": null
+                },
+                {
+                    "actions": [
+                        {
+                            "name": "book",
+                            "method": "POST",
+                            "uri": "Resources/BikeSharing/Stations/270258/Process?action=book"
+                        }
+                    ],
+                    "id": 270258,
+                    "description": "Tucholskystraße / Torstraße",
+                    "type": "BikeSharingStation",
+                    "uri": "Resources/BikeSharing/Stations/270258",
+                    "location": {
+                        "latitude": 52.52822494506836,
+                        "longitude": 13.392618179321289,
+                        "system": "WGS_84"
+                    },
+                    "provider": "callabike",
+                    "availability": 43.75,
+                    "operator": "CallABike",
+                    "modFlag": "Modified",
+                    "phoneNo": null,
+                    "operatorURI": null,
+                    "operatorName": "CallABike",
+                    "address": null,
+                    "numberOfBikes": 16,
+                    "numberOfFreeBikes": 7,
+                    "services": null
+                }
+            ]
+        }
+        
 ## Book a bike available at a bike sharing station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{id}/Process?action=book]
 
 The data structure of the request contains the following attributes:
