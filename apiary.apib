@@ -3992,6 +3992,113 @@ Parts of the data structure might be omitted if the information is not available
                 }
             ]
         }
+        
+## All Parking Garages with Basic Info [/imp-endpoint/api/V1/Resources/Parking/Garages/All]    
+This collection contains a list of all parking garages. 
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | List of available actions on this resource (book, cancel, etc.)
+id | Number | Internal parking garage identification number
+description | String | Approximate location
+type | String | (="ParkingGarage")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
+provider | String | Parking service provider (usually equals operator)
+availability | Double | Availability in percentage
+operator | String | Parking space operator (usually equals provider)
+totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
+lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Sinceodified-Since header is passed in the request 
+
+Parts of the data structure might be omitted if the information is not available. 
+    
+### Getting parking garages [GET]
+@testable
+
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+        
++ Response 200 (application/json)   
+
+        {
+            "metaData": [
+                {
+                    "serviceAlias": "vmzParking",
+                    "lastUpdateTime": "2014-07-10T11:11:04+0200",
+                    "messages": []
+                }
+            ],
+            "resources": [
+                {
+                    "actions": [
+                        {
+                            "name": "consume",
+                            "method": "POST",
+                            "uri": "Resources/Parking/Garages/270113/Process?action=consume"
+                        }
+                    ],
+                    "id": 270113,
+                    "description": "Mitte, Parkhaus Dorotheenstraße",
+                    "type": "ParkingGarage",
+                    "uri": "Resources/Parking/Garages/270113",
+                    "location": {
+                        "latitude": 52.51908,
+                        "longitude": 13.39094,
+                        "system": "WGS_84"
+                    },
+                    "provider": "vmzParking",
+                    "availability": null,
+                    "operator": "Parkinglot",
+                    "totalnumber": {
+                        "others": 495,
+                        "handicappedOnly": 0,
+                        "womenOnly": 0
+                    },
+                    "lottype": "Tiefgarage"
+                },
+                {
+                    "actions": [
+                        {
+                            "name": "consume",
+                            "method": "POST",
+                            "uri": "Resources/Parking/Garages/270134/Process?action=consume"
+                        }
+                    ],
+                    "id": 270134,
+                    "description": "Mitte, An der Friedrichswerderschen Kirche",
+                    "type": "ParkingGarage",
+                    "uri": "Resources/Parking/Garages/270134",
+                    "location": {
+                        "latitude": 52.515930000000004,
+                        "longitude": 13.39694,
+                        "system": "WGS_84"
+                    },
+                    "provider": "vmzParking",
+                    "availability": null,
+                    "operator": "Parkinglot",
+                    "totalnumber": {
+                        "others": 75,
+                        "handicappedOnly": 0,
+                        "womenOnly": 0
+                    },
+                    "lottype": "Parkplatz"
+                }
+            ]
+        }
+        
 
 ## Parking Garage with Detailed Info [/imp-endpoint/api/V1/Resources/Parking/Garages/{id}]
 
