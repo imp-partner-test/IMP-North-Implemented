@@ -4172,6 +4172,90 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 + Response 200
 
     [List of Public Transport Stations with Basic Info][]
+    
+    
+## List of All Public Transport Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/Stations/All] 
+
+This collection contains list stations (U-Bahn/S-Bahn/train/bus/tram)
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+availability | Double | Availability in percentage
+operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
++ Model (application/json)
+
+    + Body
+    
+            {
+                "metaData": [
+                    {
+                        "serviceAlias": "vmzStation",
+                        "lastUpdateTime": "2014-07-11T12:08:22+0200",
+                        "messages": []
+                    }
+                ],
+                "resources": [
+                    {
+                        "actions": [],
+                        "id": 306016,
+                        "description": "Berlin, Jüdisches Museum",
+                        "type": "PublicTransportStation",
+                        "uri": "Resources/PublicTransport/Stations/306016",
+                        "location": {
+                            "latitude": 52.503543,
+                            "longitude": 13.395639,
+                            "system": "WGS_84"
+                        },
+                        "provider": "vmzStation",
+                        "availability": 100,
+                        "operator": "VBBStation",
+                        "modFlag": "Relocated"
+                    },
+                    {
+                        "actions": [],
+                        "id": 306017,
+                        "description": "Berlin, Kommandantenstr.",
+                        "type": "PublicTransportStation",
+                        "uri": "Resources/PublicTransport/Stations/306017",
+                        "location": {
+                            "latitude": 52.507675,
+                            "longitude": 13.40418,
+                            "system": "WGS_84"
+                        },
+                        "provider": "vmzStation",
+                        "availability": 100,
+                        "operator": "VBBStation",
+                        "modFlag": "Relocated"
+                    }
+                ]
+            }
+
+
+### Getting all stations [GET]
+@testable
+
++ Request
+
+    + Headers
+        
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
+
++ Response 200
+
+    [List of Public Transport Stations with Basic Info][]
 
 
 ## List of Bus/Tram Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/BusStations?lat={lat}&lng={lng}&radius={radius}] 
