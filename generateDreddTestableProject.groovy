@@ -10,9 +10,10 @@ println ("generating dredd testable project: " + projName)
 println ("************************************")
   
 // 1. the base apiary
-def baseFolder = "IMP-North-Implemented"
+//def baseFolder = "IMP-North-Implemented"
 //def apiBaseFileName = "apiaryOrig.apib"					// local
-def apiBaseFileName = baseFolder + "/apiary.apib" 					// on Jenkins
+//def apiBaseFileName = baseFolder + "/apiary.apib"
+def apiBaseFileName = "apiary.apib"
 println "the base file name: " + apiBaseFileName
 def fileText = new File(apiBaseFileName).getText()		
 
