@@ -1,0 +1,175 @@
+{
+  "Projects": [
+    {
+      "Project": "OMB-virtualcity",
+      "Title": "OMB: virtualcitySYSTEMS GmbH",
+      "Chapters": [
+        "Introduction",	
+	"Bike Sharing",
+	"Car Sharing",
+	"Parking Garages",
+        "EV Charging Station"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-parku",
+      "Title": "OMB: ParkU",
+      "Chapters": [
+        "Introduction",	
+	"Bike Sharing",
+	"Car Sharing",
+	"Parking Garages",
+        "EV Charging Station",
+	"Public Transportation",
+	"Journey Planner. Car Router",
+	"Journey Planner. IMR",
+	"Incidents / Traffic Info",
+	"WMS",
+	"Handy Ticket",
+	"Taxi"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-bmw",
+      "Title": "OMB: BMW",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages",
+	"Public Transportation"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-bosch",
+      "Title": "OMB: BOSCH",
+      "Chapters": [
+        "Introduction",
+	"Public Transportation",
+	"Incidents / Traffic Info",
+	"WMS",
+	"Bike Sharing",
+	"Car Sharing",
+	"Parking Garages"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-comove",
+      "Title": "OMB: comove",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages",
+        "Incidents / Traffic Info",
+        "WMS",
+        "Bike Sharing",
+        "Car Sharing"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-daimler",
+      "Title": "OMB: Daimler",
+      "Chapters": [
+        "Introduction",
+        "Journey Planner. Car Router",
+	"Journey Planner. IMR",
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-tom-jell",
+      "Title": "OMB: Tom Jell",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages",
+        "Incidents / Traffic Info",
+        "WMS",
+        "Bike Sharing",
+        "Car Sharing"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-verkehrsmittelvergleich",
+      "Title": "OMB: Verkehrsmittelvergleich",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages",
+        "Incidents / Traffic Info",
+        "WMS",
+        "Bike Sharing",
+        "Car Sharing"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-volkswagen",
+      "Title": "OMB: Volkswagen",
+      "Chapters": [
+        "Introduction",
+        "Parking Garages",
+        "Incidents / Traffic Info",
+        "WMS",
+        "Bike Sharing",
+        "Car Sharing"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "IMP-RSH",
+      "Title": "IMP: RSH",
+      "Chapters": [
+        "Introduction",
+	"Handy Ticket",
+	"Parking Garages",
+	"Public Transportation",
+	"Bike Sharing",
+	"Car Sharing",
+	"EV Charging Station",
+	"WMS",
+	"Partners",
+	"ServiceOfferings per Partner",
+	"ServiceOfferings for all Partners",
+	"Service Subscriptions",
+	"Service Categories",
+	"Taxi",
+	"Journey Planner. Car Router",
+	"Journey Planner. IMR",
+	"Incidents / Traffic Info",
+	"Reporting"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-hacon",
+      "Title": "OMB: HaCon",
+      "Chapters": [
+        "Introduction",	
+	"Bike Sharing",
+	"Car Sharing",
+	"Parking Garages",
+        "Journey Planner. Car Router",
+	"Journey Planner. IMR"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    },
+    {
+      "Project": "OMB-cityintel",
+      "Title": "OMB: City Intelligence Platform",
+      "Chapters": [
+        "Introduction",	
+	"Bike Sharing",
+	"Car Sharing",
+	"Parking Garages",
+        "EV Charging Station",
+	"Public Transportation",
+	"Journey Planner. IMR",
+	"Incidents / Traffic Info",
+	"WMS"
+      ],
+      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
+    }
+  ]
+}
