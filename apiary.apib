@@ -2133,8 +2133,8 @@ attribute | json data type | comments
 url | URI | URI to request more details
 origin | Object | start point of the proposed trip
 destination | Object | endpoint of the proposed trip
-trafficTypes | Array | list of traffic types used in the proposed trip  
-description | String | list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
+trafficTypes | Array | list of traffic types used in the proposed trip. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn 
+description | String | 
 costs | Array | list of costs for the proposed trip
 useBikeSharing | Boolean | use bike sharing services for routing [default: false]
 useCarSharing | Boolean | use car sharing services for routing [default: false]
@@ -2259,8 +2259,8 @@ origin: start point specified by a geo location. (addresses can be converted int
 destination: start point specified by a geo location
 either orgin or destination might specify a time
 viaPoints: list of geo locations that the route should use
-costFunction: list of cost factors (such as Distance, Duration, Price, Economy), each with a percentual weight 
-trafficTypes: list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
+costFunction: list of cost factors (such as Distance, Duration, Price, Emission), each with a percentual weight 
+trafficTypes: list of traffic types. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn
 routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
 userId: user that requests a trip
 
@@ -3866,8 +3866,8 @@ attribute | json data type | comments
 url | URI | URI to request more details
 origin | Object | start point of the proposed trip
 destination | Object | endpoint of the proposed trip
-trafficTypes | Array | list of traffic types used in the proposed trip  
-description | String | list of either of Walk, Bike, Car, Taxi, Metro, CityTrain, Train, Bus, Tram, RegioTrain, Ferry, Other
+trafficTypes | Array | list of traffic types used in the proposed trip. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn  
+description | String | 
 costs | Array | list of costs for the proposed trip
 useBikeSharing | Boolean | use bike sharing services for routing [default: false]
 useCarSharing | Boolean | use car sharing services for routing [default: false]
@@ -3930,7 +3930,7 @@ origin: start point specified by a geo location (addresses can be converted into
 destination: start point specified by a geo location
 either orgin or destination might specify a time
 viaPoints: list of geo locations that the route should use
-costFunction: list of cost factors (such as Distance, Duration, Price, Economy), each with a percentual weight 
+costFunction: list of cost factors (such as Distance, Duration, Price, Emission), each with a percentual weight 
 routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
 userId: user that requests a trip
 
