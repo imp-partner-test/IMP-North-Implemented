@@ -2133,7 +2133,7 @@ attribute | json data type | comments
 url | URI | URI to request more details
 origin | Object | start point of the proposed trip
 destination | Object | endpoint of the proposed trip
-trafficTypes | Array | list of traffic types used in the proposed trip. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn 
+trafficTypes | Array | list of traffic types used in the proposed trip. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking
 description | String | 
 costs | Array | list of costs for the proposed trip
 useBikeSharing | Boolean | use bike sharing services for routing [default: false]
@@ -2260,7 +2260,7 @@ destination: start point specified by a geo location
 either orgin or destination might specify a time
 viaPoints: list of geo locations that the route should use
 costFunction: list of cost factors (such as Distance, Duration, Price, Emission), each with a percentual weight 
-trafficTypes: list of traffic types. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn
+trafficTypes: list of traffic types. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking
 routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
 userId: user that requests a trip
 
@@ -3866,7 +3866,7 @@ attribute | json data type | comments
 url | URI | URI to request more details
 origin | Object | start point of the proposed trip
 destination | Object | endpoint of the proposed trip
-trafficTypes | Array | list of traffic types used in the proposed trip. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn  
+trafficTypes | Array | list of traffic types used in the proposed trip. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking  
 description | String | 
 costs | Array | list of costs for the proposed trip
 useBikeSharing | Boolean | use bike sharing services for routing [default: false]
