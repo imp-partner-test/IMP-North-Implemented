@@ -1,5 +1,5 @@
 #!/bin/sh 
-git clone https://github.com/imp-partner-test/IMP-North-Implemented.git
+#git clone https://github.com/imp-partner-test/IMP-North-Implemented.git
 git clone https://github.com/imp-partner-test/IMP-North-Implemented-DreddTestable.git
 git clone https://github.com/imp-partner-test/IMP-RSH.git
 git clone https://github.com/imp-partner-test/IMP-North-Ideas.git
