@@ -7,7 +7,7 @@ This is API in a new format 1A
 
 # Readme before making any changes 
 
-Please keep the groovy generating script in synch with this documentation. Read more on Wiki: https://confluence.imp.mobilitaetsdienste.de/display/IMP/Apiary.
+Please keep the groovy generating script in synch with this documentation. Read more on Wiki: https://confluence.imp.mobilitaetsdienste.de/display/IMP/Apiary. 
 
 *update the goovy script if you change names of any chapter* 
 *chapter names can not contain special characters "(", ")", "\", etc. which have a meaning in regular expressions*
@@ -1986,6 +1986,99 @@ provider | Enum | {"News", etc.}
 + Response 200
 
     [List of Incidents][]
+    
+## List of All Incidents [/imp-endpoint/api/V1/Info/Incidents/All] 
+
+This collection contains list of recent general incidents (incidents that affect public AND individual transport). 
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+category | Enum | {"Roadworks", "Blockade", "Indefinition", "Congestion"} are the categories for the incidents with type "IncidentIndividualTransport", {"Construction", "Imbalance", "Diversion", "RailReplacement"} are the categories for incidents with type "IncidentPublicTransport"
+message | String | 
+timePeriod | Object | time period of the incident
+coordinates | Object | coordinates of the incident
+reason | String | reason description
+reasonShort | String | reason description
+consequence | String | consequense description
+consequenceShort | String | consequense description
+location | String | location as String
+source | String | {= "PT", "INKO", etc.}
+affectedTrips | Array | list of affected trips
+net | NetType  | 
+description | String | description of an incident information
+type | String | There are 2 types of incidents: Incidents with the type "IncidentIndividualTransport" affect individual transport (car, bycicle), incidents with the type "IncidentPublicTransport" affect public transport (bus, tram, etc.)
+uri | URI | URI
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | Enum | {"News", etc.}
+
++ Model (application/json)
+
+    + Body
+    
+            [
+                {
+                    "category": "Blockade",
+                    "message": "Closed Road",
+                    "timePeriod": {
+                        "from": "2012-11-09T12:00:00+0100",
+                        "to": "2014-08-31T17:00:59+0200"
+                    },
+                    "reason": null,
+                    "reasonShort": null,
+                    "consequence": null,
+                    "consequenceShort": null,
+                    "location": {
+                        "latitude": 52.51774,
+                        "longitude": 13.38868,
+                        "system": "WGS_84"
+                    },
+                    "source": "INKO",
+                    "affectedTrips": null,
+                    "net": [],
+                    "description": "Roadworks carriageway reduced from 2 to 1 lane traffic, congestion has to be expected road closed direction closed",
+                    "type": "IndividualTransport",
+                    "uri": null,
+                    "provider": "vmz_trafficinfo",
+                    "operator": "News",
+                    "externalResourceId": "INKO_113388"
+                },
+                {
+                    "category": "Roadworks",
+                    "message": "Road Work",
+                    "timePeriod": {
+                        "from": "2012-04-11T09:00:00+0200",
+                        "to": "2016-05-15T17:00:59+0200"
+                    },
+                    "reason": null,
+                    "reasonShort": null,
+                    "consequence": null,
+                    "consequenceShort": null,
+                    "location": {
+                        "latitude": 52.51753,
+                        "longitude": 13.39682,
+                        "system": "WGS_84"
+                    },
+                    "source": "INKO",
+                    "affectedTrips": null,
+                    "net": [],
+                    "description": "Roadworks, new road layout, carriageway reduced to one lane",
+                    "type": "IndividualTransport",
+                    "uri": null,
+                    "provider": "vmz_trafficinfo",
+                    "operator": "News",
+                    "externalResourceId": "INKO_113041"
+                }
+            ]
+
+
+### Getting all incidents [GET]
+@testable
+
++ Response 200
+
+    [List of Incidents][]
+    
     
     
 ## List of individual transport Incidents [/imp-endpoint/api/V1/Info/Incidents/IndividualTransport?lat={lat}&lng={lng}&radius={radius}] 
