@@ -9,7 +9,8 @@ def ctl = slurper.parseText(ctlJson)
 
 println ("generating apiary projects")
 
-def baseFolder = "IMP-North-Implemented/"
+//def baseFolder = "IMP-North-Implemented/"
+def baseFolder = ""
 def baseApiFileText = new File(baseFolder + "apiary.apib").getText() // the base apib file
 
 ctl.Projects.each{ 
