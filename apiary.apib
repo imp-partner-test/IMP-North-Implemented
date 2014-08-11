@@ -194,78 +194,66 @@ Parts of the data structure might be omitted if the information is not available
 + Response 200 (application/json)
 
         {
-            "metaData": [
+          "metaData": [
+            {
+              "serviceAlias": "callabike",
+              "lastUpdateTime": "2014-08-11T13:38:33+0200",
+              "messages": [
+                
+              ]
+            },
+            {
+              "serviceAlias": "nextbike",
+              "lastUpdateTime": "2014-08-11T13:38:36+0200",
+              "messages": [
+                
+              ]
+            }
+          ],
+          "resources": [
+            {
+              "actions": [
                 {
-                    "serviceAlias": "callabike",
-                    "lastUpdateTime": "2014-07-10T14:23:11+0200",
-                    "messages": []
-                },
-                {
-                    "serviceAlias": "nextbike",
-                    "lastUpdateTime": "2014-07-10T14:11:02+0200",
-                    "messages": []
+                  "name": "book",
+                  "method": "POST",
+                  "uri": "Resources/BikeSharing/BikeSharingStation/47059/Process?action=book"
                 }
-            ],
-            "resources": [
+              ],
+              "id": 47059,
+              "description": "Ernst-Reuter-Platz / Marchstraße",
+              "type": "BikeSharingStation",
+              "uri": "Resources/BikeSharing/BikeSharingStation/47059",
+              "location": {
+                "latitude": 52.51343536376953,
+                "longitude": 13.32278823852539,
+                "system": "WGS_84"
+              },
+              "provider": "callabike",
+              "availability": 62.5,
+              "operator": "CallABike"
+            },
+            {
+              "actions": [
                 {
-                    "actions": [
-                        {
-                            "name": "book",
-                            "method": "POST",
-                            "uri": "Resources/BikeSharing/Stations/270210/Process?action=book"
-                        }
-                    ],
-                    "id": 270210,
-                    "description": "S+U-Bhf. Friedrichstraße",
-                    "type": "BikeSharingStation",
-                    "uri": "Resources/BikeSharing/Stations/270210",
-                    "location": {
-                        "latitude": 52.519676208496094,
-                        "longitude": 13.385995864868164,
-                        "system": "WGS_84"
-                    },
-                    "provider": "callabike",
-                    "availability": 100,
-                    "operator": "CallABike",
-                    "modFlag": "Modified",
-                    "phoneNo": null,
-                    "operatorURI": null,
-                    "operatorName": "CallABike",
-                    "address": null,
-                    "numberOfBikes": 16,
-                    "numberOfFreeBikes": 16,
-                    "services": null
-                },
-                {
-                    "actions": [
-                        {
-                            "name": "book",
-                            "method": "POST",
-                            "uri": "Resources/BikeSharing/Stations/270258/Process?action=book"
-                        }
-                    ],
-                    "id": 270258,
-                    "description": "Tucholskystraße / Torstraße",
-                    "type": "BikeSharingStation",
-                    "uri": "Resources/BikeSharing/Stations/270258",
-                    "location": {
-                        "latitude": 52.52822494506836,
-                        "longitude": 13.392618179321289,
-                        "system": "WGS_84"
-                    },
-                    "provider": "callabike",
-                    "availability": 43.75,
-                    "operator": "CallABike",
-                    "modFlag": "Modified",
-                    "phoneNo": null,
-                    "operatorURI": null,
-                    "operatorName": "CallABike",
-                    "address": null,
-                    "numberOfBikes": 16,
-                    "numberOfFreeBikes": 7,
-                    "services": null
+                  "name": "book",
+                  "method": "POST",
+                  "uri": "Resources/BikeSharing/BikeSharingStation/47072/Process?action=book"
                 }
-            ]
+              ],
+              "id": 47072,
+              "description": "Wilmersdorfer Straße / Goethestraße",
+              "type": "BikeSharingStation",
+              "uri": "Resources/BikeSharing/BikeSharingStation/47072",
+              "location": {
+                "latitude": 52.5088996887207,
+                "longitude": 13.306029319763184,
+                "system": "WGS_84"
+              },
+              "provider": "callabike",
+              "availability": 68.75,
+              "operator": "CallABike"
+            }
+          ]
         }
         
 ## Book a bike available at a bike sharing station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{id}/Process?action=book]
