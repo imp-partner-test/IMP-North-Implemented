@@ -1517,43 +1517,45 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
             "metaData": [
                 {
                     "serviceAlias": "vattenfall",
-                    "lastUpdateTime": "2014-07-10T12:06:09+0200",
+                    "lastUpdateTime": "2014-08-11T14:54:39+0200",
+                    "messages": []
+                },
+                {
+                    "serviceAlias": "hubject",
+                    "lastUpdateTime": "2014-08-11T05:17:50+0200",
                     "messages": []
                 }
             ],
             "resources": [
                 {
                     "actions": [],
-                    "id": 268355,
-                    "description": "Conti",
-                    "type": "EVChargingStation",
-                    "uri": "Resources/EVCharging/Stations/268355",
+                    "id": 53009,
+                    "description": "",
+                    "type": "EVChargingStationDetails",
+                    "uri": "Resources/EVCharging/Stations/EVChargingStationDetails/53009",
                     "location": {
-                        "latitude": 52.51474,
-                        "longitude": 13.38639,
+                        "latitude": 52.43498,
+                        "longitude": 13.43448,
                         "system": "WGS_84"
                     },
                     "provider": "vattenfall",
-                    "availability": 0,
-                    "operator": "Vattenfall",
-                    "modFlag": "Relocated",
-                    "address": {
-                        "citycode": "10117",
-                        "city": "Berlin",
-                        "street": "Glinkastr.",
-                        "houseno": "38",
-                        "district": null,
-                        "region": null,
-                        "country": null
+                    "availability": 100,
+                    "operator": "Vattenfall"
+                },
+                {
+                    "actions": [],
+                    "id": 49313,
+                    "description": "TOTAL-Tankstelle",
+                    "type": "EVChargingStationDetails",
+                    "uri": "Resources/EVCharging/Stations/EVChargingStationDetails/49313",
+                    "location": {
+                        "latitude": 52.5481579,
+                        "longitude": 13.4675685,
+                        "system": "WGS_84"
                     },
-                    "plugTypes": [
-                        "Type2Outlet",
-                        "TypeFSchuko"
-                    ],
-                    "power": {
-                        "unit": "KiloWatt",
-                        "value": 11040
-                    }
+                    "provider": "vattenfall",
+                    "availability": 100,
+                    "operator": "Vattenfall"
                 }
             ]
         }
@@ -4117,7 +4119,7 @@ Parts of the data structure might be omitted if the information is not available
             "metaData": [
                 {
                     "serviceAlias": "vmzParking",
-                    "lastUpdateTime": "2014-07-10T11:11:04+0200",
+                    "lastUpdateTime": "2014-08-11T14:59:21+0200",
                     "messages": []
                 }
             ],
@@ -4127,54 +4129,42 @@ Parts of the data structure might be omitted if the information is not available
                         {
                             "name": "consume",
                             "method": "POST",
-                            "uri": "Resources/Parking/Garages/270113/Process?action=consume"
+                            "uri": "Resources/Parking/Garages/ParkingGarage/50534/Process?action=consume"
                         }
                     ],
-                    "id": 270113,
-                    "description": "Mitte, Parkhaus Dorotheenstraße",
+                    "id": 50534,
+                    "description": "P+R Königs Wusterhausen DB (S)",
                     "type": "ParkingGarage",
-                    "uri": "Resources/Parking/Garages/270113",
+                    "uri": "Resources/Parking/Garages/ParkingGarage/50534",
                     "location": {
-                        "latitude": 52.51908,
-                        "longitude": 13.39094,
+                        "latitude": 52.2980346679688,
+                        "longitude": 13.6327829360962,
                         "system": "WGS_84"
                     },
                     "provider": "vmzParking",
                     "availability": null,
-                    "operator": "Parkinglot",
-                    "totalnumber": {
-                        "others": 495,
-                        "handicappedOnly": 0,
-                        "womenOnly": 0
-                    },
-                    "lottype": "Tiefgarage"
+                    "operator": "PR"
                 },
                 {
                     "actions": [
                         {
                             "name": "consume",
                             "method": "POST",
-                            "uri": "Resources/Parking/Garages/270134/Process?action=consume"
+                            "uri": "Resources/Parking/Garages/ParkingGarage/49527/Process?action=consume"
                         }
                     ],
-                    "id": 270134,
-                    "description": "Mitte, An der Friedrichswerderschen Kirche",
+                    "id": 49527,
+                    "description": "Mitte, Hotel Hilton Kronenstraße",
                     "type": "ParkingGarage",
-                    "uri": "Resources/Parking/Garages/270134",
+                    "uri": "Resources/Parking/Garages/ParkingGarage/49527",
                     "location": {
-                        "latitude": 52.515930000000004,
-                        "longitude": 13.39694,
+                        "latitude": 52.51183,
+                        "longitude": 13.391890000000002,
                         "system": "WGS_84"
                     },
                     "provider": "vmzParking",
                     "availability": null,
-                    "operator": "Parkinglot",
-                    "totalnumber": {
-                        "others": 75,
-                        "handicappedOnly": 0,
-                        "womenOnly": 0
-                    },
-                    "lottype": "Parkplatz"
+                    "operator": "Parkinglot"
                 }
             ]
         }
