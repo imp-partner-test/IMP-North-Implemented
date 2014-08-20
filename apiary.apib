@@ -5318,6 +5318,64 @@ The User Transactions Collection resource has the following attributes:
     + Body
     
             [User Transactions Collection][]
+            
+            
+# Group Business Area Info
+
+## Business Area Info [/imp-endpoint/api/V1/Info/ServiceOffering/{id}/BusinessArea]    
+Business area of a (free-floating) service (cars, bikes) specified by service offering id.
+
+The data structure contains the following attributes:
+
+Attribute | JSON Data Type | Comments
+--- | --- | ---
+operator | String |  operator id. Example values: Car2Go_Berlin, DriveNow, NextBike, CallABike etc
+description | String |  ...
+serviceCategory |ENUM | IMP service categories "CarSharing", "BikeSharing", etc
+businessBoundary | Object | business area specified as MultyPolygon conform to the following GeoJSON Format Specification: http://geojson.org/geojson-spec.html
+
+### Getting Business Area [GET]
+@nottestable
+
+
++ Response 200 (application/json)
+
+    + Body
+            
+            {
+              "operator": "Car2Go_Berlin",
+              "description": "Wagen zum Gehen ",
+              "serviceCategory": "CarSharing",
+              "businessBoundary": {
+                "disjunctedBoundary": {
+                  "type": "MultiPolygon",
+                  "coordinates": [
+                  [[[52.53996,12.977235],[52.540586,12.977782],[52.541037,12.977782],[52.541905,12.977793],[52.541924,12.978501],[52.541885,12.978995]],
+                      [[52.550631,13.29696],[52.550729,13.297985],[52.55021,13.298113],[52.550135,13.297314],[52.550178,13.297051],[52.550631,13.29696]]]
+                      ],
+                  "crs": {
+                    "type": "name",
+                    "properties": {
+                      "name": "WGS84"
+                    }
+                  }
+                },
+                "negatedBoundary": {
+                  "type": "MultiPolygon",
+                  "coordinates": [
+                  [[[52.476409,13.366665],[52.476377,13.366386],[52.475619,13.366161],[52.475256,13.366123],[52.475158,13.366236],[52.475164,13.366413],[52.475275,13.366488],[52.476409,13.366665]],
+                      [[52.530452,13.314314],[52.530347,13.313885],[52.535359,13.312082],[52.537317,13.326759],[52.536821,13.327746]]]
+                      ],
+                  "crs": {
+                    "type": "name",
+                    "properties": {
+                      "name": "WGS84"
+                    }
+                  }
+                }
+              }
+            }
+            
 
 # Group ServiceOfferings per Partner
 TODO
