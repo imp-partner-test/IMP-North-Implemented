@@ -256,6 +256,74 @@ Parts of the data structure might be omitted if the information is not available
           ]
         }
         
+## Station with Detailed Info [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}]
+A single bike sharing station object with Detailed Information determined by a specific id.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+freeBikes | List | 
+
+### Getting a specific station [GET] 
+@nottestable
+
++ Parameters
+    + stationId (string, `203869`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
+        
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "actions": [
+                    {
+                        "name": "book",
+                        "method": "POST",
+                        "uri": "Resources/BikeSharing/Stations/9/Process?action=book"
+                    }
+                ],
+                "id": 9,
+                "description": "Museumsinsel / Monbijoubrücke",
+                "type": "BikeSharingStationDetails",
+                "uri": "Resources/BikeSharing/Stations/9/",
+                "location": {
+                    "latitude": 52.52271270751953,
+                    "longitude": 13.394195556640625,
+                    "system": "WGS_84"
+                },
+                "provider": "callabike",
+                "availability": 33.333333333333336,
+                "operator": "CallABike",
+                "phoneNo": null,
+                "operatorURI": null,
+                "operatorName": "CallABike",
+                "address": null,
+                "numberOfBikes": 18,
+                "numberOfFreeBikes": 6,
+                "services": null,
+                "freeBikes": [
+                    {
+                        "unitId": "2628"
+                    },
+                    {
+                        "unitId": "2703"
+                    },
+                    {
+                        "unitId": "2803"
+                    },
+                    {
+                        "unitId": "3533"
+                    },
+                    {
+                        "unitId": "3764"
+                    },
+                    {
+                        "unitId": "3905"
+                    }
+                ]
+            }
+        
 ## Book a bike available at a bike sharing station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{id}/Process?action=book]
 
 The data structure of the request contains the following attributes:
