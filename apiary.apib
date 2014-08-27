@@ -23,8 +23,11 @@ system please write an email to `henrik.koberg@siemens.com`
 This is a group of all bike sharing related rest resources
     
 ## Bike Sharing Stations [/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]    
-This collection contains a list of all bike sharing stations specified by query parameters
-(for station-based bike sharing)
+This collection contains a list of all bike sharing stations in an area of interest specified by query parameters. (for station-based bike sharing)
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
 Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
@@ -368,9 +371,14 @@ This is a group of all car sharing related rest resources
 
 ## List of Car Sharing Locations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/All?lat={lat}&lng={lng}&radius={radius}] 
 
-This collection contains list of available car sharing locations specified by the query parameters (both free-floating cars and/or car stations) 
+This collection contains list of available car sharing locations in an area of interest specified by the query parameters (both free-floating cars and/or car stations) 
 with basic information and a URI to acquire more details.
 In case of station-based cars, only the URI of the Car Sharing station is returned; in case of free-floating cars, the URI to the car itself.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
@@ -811,7 +819,12 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 
 ## List of free-floating Cars with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/Cars?lat={lat}&lng={lng}&radius={radius}&f_cars={fuelTypeJson}]
 
-This collection contains a list of available free-floating cars in a specific area (NOTE: for free-floating car sharing only!).
+This collection contains a list of available free-floating cars in a specific area specified by query parameters (for free-floating car sharing only!).
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
 The optional filter `f_cars` can be used to get cars with a specific `fuelType`
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
@@ -1023,8 +1036,13 @@ fee | String | car costs per time unit
     
 ## List of Stations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}&f_cars={fuelTypeJson}&operatorId={operatorId}]
 
-This collection contains a list of car sharing stations in a specific area (Note: for station-based car sharing) specified by the query parameters,
+This collection contains a list of car sharing stations in a specific area (for station-based car sharing) specified by the query parameters,
 together with basic information and URI to acquire more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
 The optional filter `f_cars` can be used to get cars with a specific `fuelType`
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
@@ -1457,8 +1475,12 @@ comments | String |
 This is a group of all EV Charging related rest resources    
     
 ## List of EV Charging Stations with Basic Info [/imp-endpoint/api/V1/Resources/EVCharging/Stations?lat={lat}&lng={lng}&radius={radius}]
-This collection contains a list of all electric vehicle (EV) charging stations specified by query parameters (and body), 
+This collection contains a list of all electric vehicle (EV) charging stations in an area of interest specified by query parameters, 
 together with geo location, name, and a URI to acquire more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
 Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
@@ -1948,7 +1970,12 @@ This is a group of all incidents related rest resources.
 
 ## List of Incidents [/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius}] 
 
-This collection contains list of recent general incidents (incidents that affect public AND individual transport) in a specific area and a URI to get more details. List of traffic information in the specified geo location specified by query parameters.
+This collection contains list of recent general incidents (incidents that affect public AND individual transport) in a specific area of interest with an URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
 The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
@@ -2140,7 +2167,12 @@ provider | Enum | {"News", etc.}
     
 ## List of individual transport Incidents [/imp-endpoint/api/V1/Info/Incidents/IndividualTransport?lat={lat}&lng={lng}&radius={radius}] 
 
-This collection contains list of recent incidents that affect individual transport only in a specific area. List of traffic information in the specified geo location specified by query parameters.
+This collection contains list of recent incidents that affect individual transport only in a specific area of interest.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
 The data structure is the same as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]*
 
 + Parameters
@@ -2160,7 +2192,12 @@ The data structure is the same as in *[/imp-endpoint/api/V1/Info/Incidents?lat={
 
 ## List of public transport Incidents [/imp-endpoint/api/V1/Info/Incidents/PublicTransport?lat={lat}&lng={lng}&radius={radius}] 
 
-This collection contains list of recent incidents that affect public transport only in a specific area. List of traffic information in the specified geo location specified by query parameters.
+This collection contains list of recent incidents that affect public transport only in a specific area.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
 The data structure is the same as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]*
 
 + Parameters
@@ -4032,8 +4069,11 @@ userId: user that requests a trip
 This is a group of all parking garages related rest resources
     
 ## Parking Garages with Basic Info [/imp-endpoint/api/V1/Resources/Parking/Garages?lat={lat}&lng={lng}&radius={radius}]    
-This collection contains a list of all parking garages specified by query parameters (and body), 
-together with an URI to acquire more details. 
+This collection contains a list of all parking garages in an area of interest specified by query parameters together with an URI to acquire more details. 
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
 Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
@@ -4332,6 +4372,10 @@ This is a group of all public transportation related rest resources.
 ## List of Public Transport Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}] 
 
 This collection contains list stations (U-Bahn/S-Bahn/train/bus/tram) in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
@@ -4506,6 +4550,11 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 ## List of Bus/Tram Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/BusStations?lat={lat}&lng={lng}&radius={radius}] 
 
 This collection contains list of bus/tram stations in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
@@ -4533,6 +4582,10 @@ The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTran
 ## List of Metro Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/MetroStations?lat={lat}&lng={lng}&radius={radius}] 
 
 This collection contains list of metro stations in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
@@ -4560,6 +4613,10 @@ The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTran
 ## List of City-Train/Regio Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/CityTrainStations?lat={lat}&lng={lng}&radius={radius}] 
 
 This collection contains list of city-train/regio-train stations in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
@@ -4883,6 +4940,10 @@ This is a group of all taxirelated rest resources.
 ## List of available Taxis with Basic Info [/imp-endpoint/api/V1/Resources/TaxiService/Taxis?lat={lat}&lng={lng}&radius={radius}] 
 
 This collection contains list of taxis in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
