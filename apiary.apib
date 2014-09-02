@@ -1968,7 +1968,7 @@ confirmed | Boolean | Value indicating success/failure
 # Group Incidents / Traffic Info
 This is a group of all incidents related rest resources.
 
-## List of Incidents [/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius}] 
+## List of all Incidents [/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius}] 
 
 This collection contains list of recent general incidents (incidents that affect public AND individual transport) in a specific area of interest with an URI to get more details.
 Note: The area of interest can be defined as:
@@ -2002,7 +2002,7 @@ provider | Enum | {"News", etc.}
 + Parameters
     + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
     + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+    + radius (string, `2000`) ... String `radius` longitude value. Has example value.
     
 + Model (application/json)
 
@@ -2069,7 +2069,7 @@ provider | Enum | {"News", etc.}
 
 + Response 200
 
-    [List of Incidents][]
+    [List of all Incidents][]
     
 ## List of All Incidents [/imp-endpoint/api/V1/Info/Incidents/All] 
 
@@ -2096,72 +2096,13 @@ uri | URI | URI
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
 provider | Enum | {"News", etc.}
 
-+ Model (application/json)
-
-    + Body
-    
-            [
-                {
-                    "category": "Blockade",
-                    "message": "Closed Road",
-                    "timePeriod": {
-                        "from": "2012-11-09T12:00:00+0100",
-                        "to": "2014-08-31T17:00:59+0200"
-                    },
-                    "reason": null,
-                    "reasonShort": null,
-                    "consequence": null,
-                    "consequenceShort": null,
-                    "location": {
-                        "latitude": 52.51774,
-                        "longitude": 13.38868,
-                        "system": "WGS_84"
-                    },
-                    "source": "INKO",
-                    "affectedTrips": null,
-                    "net": [],
-                    "description": "Roadworks carriageway reduced from 2 to 1 lane traffic, congestion has to be expected road closed direction closed",
-                    "type": "IndividualTransport",
-                    "uri": null,
-                    "provider": "vmz_trafficinfo",
-                    "operator": "News",
-                    "externalResourceId": "INKO_113388"
-                },
-                {
-                    "category": "Roadworks",
-                    "message": "Road Work",
-                    "timePeriod": {
-                        "from": "2012-04-11T09:00:00+0200",
-                        "to": "2016-05-15T17:00:59+0200"
-                    },
-                    "reason": null,
-                    "reasonShort": null,
-                    "consequence": null,
-                    "consequenceShort": null,
-                    "location": {
-                        "latitude": 52.51753,
-                        "longitude": 13.39682,
-                        "system": "WGS_84"
-                    },
-                    "source": "INKO",
-                    "affectedTrips": null,
-                    "net": [],
-                    "description": "Roadworks, new road layout, carriageway reduced to one lane",
-                    "type": "IndividualTransport",
-                    "uri": null,
-                    "provider": "vmz_trafficinfo",
-                    "operator": "News",
-                    "externalResourceId": "INKO_113041"
-                }
-            ]
-
 
 ### Getting all incidents [GET]
 @testable
 
 + Response 200
 
-    [List of Incidents][]
+    [List of all Incidents][]
     
     
     
@@ -2173,21 +2114,78 @@ Note: The area of interest can be defined as:
 * a bounding circle (lat={lat}&lng={lng}&radius={radius})
 * a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The data structure is the same as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]*
+The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]* and additionally roadName attribute
 
 + Parameters
     + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
     + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+    + radius (string, `2000`) ... String `radius` longitude value. Has example value.
     
++ Model
 
+        [
+            {
+                "category": "Blockade",
+                "message": "Closed Road",
+                "timePeriod": {
+                    "from": "2014-01-06T11:03:00+0100",
+                    "to": "2014-12-31T23:59:00+0100"
+                },
+                "reason": null,
+                "reasonShort": null,
+                "consequence": null,
+                "consequenceShort": null,
+                "location": {
+                    "latitude": 52.51680860970485,
+                    "longitude": 13.385821218640254,
+                    "system": "WGS_84"
+                },
+                "source": "Concert",
+                "affectedTrips": null,
+                "net": [],
+                "description": "Roadworks, direction closed",
+                "type": "IndividualTransport",
+                "uri": null,
+                "provider": "vmz_trafficinfo",
+                "operator": "News",
+                "externalResourceId": "2147338066",
+                "roadName": "Unter den Linden (Mitte)"
+            },
+            {
+                "category": "Roadworks",
+                "message": "Road Work",
+                "timePeriod": {
+                    "from": "2012-04-11T09:00:00+0200",
+                    "to": "2016-05-15T17:00:59+0200"
+                },
+                "reason": null,
+                "reasonShort": null,
+                "consequence": null,
+                "consequenceShort": null,
+                "location": {
+                    "latitude": 52.51753,
+                    "longitude": 13.39682,
+                    "system": "WGS_84"
+                },
+                "source": "INKO",
+                "affectedTrips": null,
+                "net": [],
+                "description": "Roadworks, new road layout, carriageway reduced to one lane",
+                "type": "IndividualTransport",
+                "uri": null,
+                "provider": "vmz_trafficinfo",
+                "operator": "News",
+                "externalResourceId": "INKO_113041",
+                "roadName": "Unter den Linden (Mitte)"
+            }
+        ]
 
 ### Getting recent general incidents that affect individual transport only in a specific area. [GET]
 @testable
 
 + Response 200
 
-    [List of Incidents][]
+    [List of individual transport Incidents][]
 
 
 ## List of public transport Incidents [/imp-endpoint/api/V1/Info/Incidents/PublicTransport?lat={lat}&lng={lng}&radius={radius}] 
@@ -2198,13 +2196,85 @@ Note: The area of interest can be defined as:
 * a bounding circle (lat={lat}&lng={lng}&radius={radius})
 * a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The data structure is the same as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]*
+The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]* and additionally information about line name, first and last stops and line direction
 
 + Parameters
     + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
     + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+    + radius (string, `2000`) ... String `radius` longitude value. Has example value.
+
++ Model (application/json)
+
+    + Body
     
+            [
+                {
+                    "category": "ConstructionProject",
+                    "message": "Disruption",
+                    "timePeriod": {
+                        "from": "2013-08-26T01:00:00+0200",
+                        "to": null
+                    },
+                    "reason": "Sperrung wegen Bauarbeiten der BVG",
+                    "reasonShort": "Sperrung wegen Bauarbeiten der BVG",
+                    "consequence": "Die Linie verkehrt nur zwischen Riesaer Str. und S Hackescher Markt. Die Haltestellen zwischen S Hackescher Markt und U Schwartzkopffstr. werden nicht bedient. Ein Ersatzverkehr mit Bussen ist nicht eingerichtet. Fahrempfehlung: Fahrgäste in Richtung U Schwartzkopffstr. nutzen zur Weiterfahrt bitte die Linien M1 bzw. 12 von der Haltestelle S Hackescher Markt in der Rosenthaler Str. bis U Oranienburger Tor bzw. die S-Bahn bis S+U Friedrichstr. und von dort die U6 in Richtung Alt-Tegel.",
+                    "consequenceShort": "Bauarbeiten, Sperrung Streckenabschnitt lnvalidenstr./Chausseestr. &lt;&gt; U Schwartzkopffstr.",
+                    "location": {
+                        "latitude": 52.52165861111111,
+                        "longitude": 13.40267888888889,
+                        "system": "WGS_84"
+                    },
+                    "source": "PT",
+                    "affectedTrips": null,
+                    "net": [],
+                    "description": "Baumaßnahme",
+                    "type": "PublicTransport",
+                    "uri": null,
+                    "provider": "vmz_trafficinfo",
+                    "operator": "News",
+                    "externalResourceId": "BVG50554",
+                    "direction": "Beide",
+                    "firstStop": "S Hackescher Markt",
+                    "lastStop": "S Hackescher Markt",
+                    "lineName": {
+                        "name": "M6",
+                        "trafficType": "Tram"
+                    }
+                },
+                {
+                    "category": "Diversion",
+                    "message": "Disruption",
+                    "timePeriod": {
+                        "from": "2014-07-02T04:00:00+0200",
+                        "to": null
+                    },
+                    "reason": "Sperrung wegen Bauarbeiten",
+                    "reasonShort": "Sperrung wegen Bauarbeiten",
+                    "consequence": "Die Linie muss in Fahrtrichtung S+U Zoologischer Garten über Caroline-Michaelis-Str., Julie-Wolfthorn-Str., Zinnowitzer Str., Chausseestr., Habersaathstr. und Schwarzer Weg umgeleitet werden.",
+                    "consequenceShort": "Bauarbeiten, Umleitung",
+                    "location": {
+                        "latitude": 52.53041916666667,
+                        "longitude": 13.382412777777777,
+                        "system": "WGS_84"
+                    },
+                    "source": "PT",
+                    "affectedTrips": null,
+                    "net": [],
+                    "description": "Umleitung / geänderte Haltestellenbedienung",
+                    "type": "PublicTransport",
+                    "uri": null,
+                    "provider": "vmz_trafficinfo",
+                    "operator": "News",
+                    "externalResourceId": "BVG54186",
+                    "direction": "Beide",
+                    "firstStop": "S Nordbahnhof/Gartenstr.",
+                    "lastStop": "Invalidenpark",
+                    "lineName": {
+                        "name": "245",
+                        "trafficType": "Bus"
+                    }
+                }
+            ]
 
 
 ### Getting recent general incidents that affect public transport only in a specific area. [GET]
@@ -2212,7 +2282,7 @@ The data structure is the same as in *[/imp-endpoint/api/V1/Info/Incidents?lat={
 
 + Response 200
 
-    [List of Incidents][]
+    [List of public transport Incidents][]
 
 # Group Journey Planner. IMR
 This is a group of all journey planner IMR related rest resources.
