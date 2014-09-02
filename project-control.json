@@ -150,8 +150,7 @@
 	"Bike Sharing",
 	"Car Sharing",
 	"Parking Garages",
-        "Journey Planner. Car Router",
-	"Journey Planner. IMR"
+        "Journey Planner. Car Router"
       ],
       "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
     },
