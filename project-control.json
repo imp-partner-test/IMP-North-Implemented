@@ -2,8 +2,8 @@
   "Projects": [
     
     {
-      "Project": "OMB-driveNow",
-      "Title": "OMB: DriveNow",
+      "Project": "drivenow",
+      "Title": "DriveNow",
       "Chapters": [
         "Introduction",	
 	"Public Transportation",
