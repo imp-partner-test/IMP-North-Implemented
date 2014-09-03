@@ -14,4 +14,5 @@ git clone https://github.com/imp-partner-test/OMB-comove.git
 git clone https://github.com/imp-partner-test/OMB-hacon.git
 git clone https://github.com/imp-partner-test/OMB-cityintel.git
 git clone https://github.com/imp-partner-test/OMB-parku.git
-git clone https://github.com/imp-partner-test/OMB-virtualcity
+git clone https://github.com/imp-partner-test/OMB-virtualcity.git
+git clone https://github.com/imp-partner-test/OMB-drivenow.git
