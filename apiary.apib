@@ -1965,6 +1965,786 @@ confirmed | Boolean | Value indicating success/failure
                 }
             }
 
+# Group Parking
+This is a group of all parking related rest resources. Parking Garages & On-street Paring Vacancies
+    
+## Parking Garages with Basic Info [/imp-endpoint/api/V1/Resources/Parking/Garages?lat={lat}&lng={lng}&radius={radius}]    
+This collection contains a list of all parking garages in an area of interest specified by query parameters together with an URI to acquire more details. 
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | List of available actions on this resource (book, cancel, etc.)
+id | Number | Internal parking garage identification number
+description | String | Approximate location
+type | String | (="ParkingGarage")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
+provider | String | Parking service provider (usually equals operator)
+availability | Double | Availability in percentage
+operator | String | Parking space operator (usually equals provider)
+totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
+lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Sinceodified-Since header is passed in the request 
+
+Parts of the data structure might be omitted if the information is not available. 
+    
+### Getting parking garages [GET]
+@testable
+
++ Parameters
+    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
+    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
+    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+    
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+        
++ Response 200 (application/json)   
+
+        {
+            "metaData": [
+                {
+                    "serviceAlias": "vmzParking",
+                    "lastUpdateTime": "2014-07-10T11:11:04+0200",
+                    "messages": []
+                }
+            ],
+            "resources": [
+                {
+                    "actions": [
+                        {
+                            "name": "consume",
+                            "method": "POST",
+                            "uri": "Resources/Parking/Garages/270113/Process?action=consume"
+                        }
+                    ],
+                    "id": 270113,
+                    "description": "Mitte, Parkhaus Dorotheenstraße",
+                    "type": "ParkingGarage",
+                    "uri": "Resources/Parking/Garages/270113",
+                    "location": {
+                        "latitude": 52.51908,
+                        "longitude": 13.39094,
+                        "system": "WGS_84"
+                    },
+                    "provider": "vmzParking",
+                    "availability": null,
+                    "operator": "Parkinglot",
+                    "totalnumber": {
+                        "others": 495,
+                        "handicappedOnly": 0,
+                        "womenOnly": 0
+                    },
+                    "lottype": "Tiefgarage"
+                },
+                {
+                    "actions": [
+                        {
+                            "name": "consume",
+                            "method": "POST",
+                            "uri": "Resources/Parking/Garages/270134/Process?action=consume"
+                        }
+                    ],
+                    "id": 270134,
+                    "description": "Mitte, An der Friedrichswerderschen Kirche",
+                    "type": "ParkingGarage",
+                    "uri": "Resources/Parking/Garages/270134",
+                    "location": {
+                        "latitude": 52.515930000000004,
+                        "longitude": 13.39694,
+                        "system": "WGS_84"
+                    },
+                    "provider": "vmzParking",
+                    "availability": null,
+                    "operator": "Parkinglot",
+                    "totalnumber": {
+                        "others": 75,
+                        "handicappedOnly": 0,
+                        "womenOnly": 0
+                    },
+                    "lottype": "Parkplatz"
+                }
+            ]
+        }
+        
+## All Parking Garages with Basic Info [/imp-endpoint/api/V1/Resources/Parking/Garages/All]    
+This collection contains a list of all parking garages. 
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | List of available actions on this resource (book, cancel, etc.)
+id | Number | Internal parking garage identification number
+description | String | Approximate location
+type | String | (="ParkingGarage")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
+provider | String | Parking service provider (usually equals operator)
+availability | Double | Availability in percentage
+operator | String | Parking space operator (usually equals provider)
+totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
+lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Sinceodified-Since header is passed in the request 
+
+Parts of the data structure might be omitted if the information is not available. 
+    
+### Getting parking garages [GET]
+@testable
+
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+        
++ Response 200 (application/json)   
+
+        {
+            "metaData": [
+                {
+                    "serviceAlias": "vmzParking",
+                    "lastUpdateTime": "2014-08-11T14:59:21+0200",
+                    "messages": []
+                }
+            ],
+            "resources": [
+                {
+                    "actions": [
+                        {
+                            "name": "consume",
+                            "method": "POST",
+                            "uri": "Resources/Parking/Garages/ParkingGarage/50534/Process?action=consume"
+                        }
+                    ],
+                    "id": 50534,
+                    "description": "P+R Königs Wusterhausen DB (S)",
+                    "type": "ParkingGarage",
+                    "uri": "Resources/Parking/Garages/ParkingGarage/50534",
+                    "location": {
+                        "latitude": 52.2980346679688,
+                        "longitude": 13.6327829360962,
+                        "system": "WGS_84"
+                    },
+                    "provider": "vmzParking",
+                    "availability": null,
+                    "operator": "PR"
+                },
+                {
+                    "actions": [
+                        {
+                            "name": "consume",
+                            "method": "POST",
+                            "uri": "Resources/Parking/Garages/ParkingGarage/49527/Process?action=consume"
+                        }
+                    ],
+                    "id": 49527,
+                    "description": "Mitte, Hotel Hilton Kronenstraße",
+                    "type": "ParkingGarage",
+                    "uri": "Resources/Parking/Garages/ParkingGarage/49527",
+                    "location": {
+                        "latitude": 52.51183,
+                        "longitude": 13.391890000000002,
+                        "system": "WGS_84"
+                    },
+                    "provider": "vmzParking",
+                    "availability": null,
+                    "operator": "Parkinglot"
+                }
+            ]
+        }
+        
+
+## Parking Garage with Detailed Info [/imp-endpoint/api/V1/Resources/Parking/Garages/{id}]
+
+A single parking garage object with Detailed Information. 
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+address | Object | Address {"citycode": String, "city": String, "street": String, "houseno": String }
+pricing | String | Price structure 
+payment | Array | Payment options {COINPAY, BANKNOTEPAY, BANKCARDPAY, CREDICARDPAY, PREPAIDCARDPAY, PAYCARDPAY, DEBITPAY}
+category | Enum | P - parking, P+R park and ride, etc. { "P+R","B+R", "P", ... } 
+openingHours | String | Opening hours
+bookable | Boolean |  
+heightLimit | Object | Height limit { "value": Number, "unit": String } 
+occupancyRate | Number | Occupany rate in percent (real time data) 
+allowedStay | Object | Allowed stay { "value": Number, "unit": String } 
+generalInformations | String |
+restrictions | Array | Usage restrictions {"VisitorsOnly","GuestsOnly"}
+services | Array | Special services { "WomenParking", "DisabledParking", "Monitored", "ChargingStation", "ParentChild", "MotorCycle", ... } 
+securityComment | String |  Securtiy features
+entrance | String |
+
+### Getting a specific charging station [GET] 
+@nottestable
+
++ Parameters
+    + id (string, `8367`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/Parking/Garages?lat={lat}&lng={lng}&radius={radius}]*
+
++ Response 200 (application/json) 
+
+        {
+            "actions": [
+                {
+                    "name": "consume",
+                    "method": "POST",
+                    "uri": "Resources/Parking/Garages/271366/Process?action=consume"
+                }
+            ],
+            "id": 271366,
+            "description": "Mitte, Parkhaus Dorotheenstraße",
+            "type": "ParkingGarage",
+            "uri": "Resources/Parking/Garages/271366/",
+            "location": {
+                "latitude": 52.51908,
+                "longitude": 13.39094,
+                "system": "WGS_84"
+            },
+            "provider": "vmzParking",
+            "availability": null,
+            "operator": "Parkinglot",
+            "totalnumber": {
+                "others": 495,
+                "handicappedOnly": 0,
+                "womenOnly": 0
+            },
+            "lottype": "Tiefgarage",
+            "address": {
+                "citycode": "10117",
+                "city": "Berlin",
+                "street": "Dorotheenstraße",
+                "houseno": "0",
+                "district": null,
+                "region": null,
+                "country": null
+            },
+            "pricing": "2,00 EUR für die 1. Std. <br>2. und 3. Stunde 1,50 Euro<br>je weiter Stunde 1,00 Euro<br>Tagespreis 15,00 Euro<br>Monatspreis 100,00 Euro",
+            "payment": [
+                "BANKNOTEPAY",
+                "COINPAY"
+            ],
+            "category": [
+                "P"
+            ],
+            "openingHours": null,
+            "bookable": false,
+            "heightLimit": null,
+            "occupancyRate": null,
+            "allowedStay": null,
+            "generalInformations": null,
+            "restrictions": null,
+            "services": null,
+            "securityComment": null,
+            "entrance": null
+        }
+
+
+
+# Group Public Transport
+This is a group of all public transportation related rest resources.
+
+## List of Public Transport Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}] 
+
+This collection contains list stations (U-Bahn/S-Bahn/train/bus/tram) in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+availability | Double | Availability in percentage
+operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+
++ Parameters
+    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
+    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
+    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+    
++ Model (application/json)
+
+    + Body
+    
+            {
+                "metaData": [
+                    {
+                        "serviceAlias": "vmzStation",
+                        "lastUpdateTime": "2014-07-11T12:08:22+0200",
+                        "messages": []
+                    }
+                ],
+                "resources": [
+                    {
+                        "actions": [],
+                        "id": 306016,
+                        "description": "Berlin, Jüdisches Museum",
+                        "type": "PublicTransportStation",
+                        "uri": "Resources/PublicTransport/Stations/306016",
+                        "location": {
+                            "latitude": 52.503543,
+                            "longitude": 13.395639,
+                            "system": "WGS_84"
+                        },
+                        "provider": "vmzStation",
+                        "availability": 100,
+                        "operator": "VBBStation",
+                        "modFlag": "Relocated"
+                    },
+                    {
+                        "actions": [],
+                        "id": 306017,
+                        "description": "Berlin, Kommandantenstr.",
+                        "type": "PublicTransportStation",
+                        "uri": "Resources/PublicTransport/Stations/306017",
+                        "location": {
+                            "latitude": 52.507675,
+                            "longitude": 13.40418,
+                            "system": "WGS_84"
+                        },
+                        "provider": "vmzStation",
+                        "availability": 100,
+                        "operator": "VBBStation",
+                        "modFlag": "Relocated"
+                    }
+                ]
+            }
+
+
+### Getting all stations [GET]
+@testable
+
++ Request
+
+    + Headers
+        
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
+
++ Response 200
+
+    [List of Public Transport Stations with Basic Info][]
+    
+    
+## List of All Public Transport Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/Stations/All] 
+
+This collection contains list stations (U-Bahn/S-Bahn/train/bus/tram)
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+description | String | Approximate location
+type | String | (="PublicTransportStation")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+availability | Double | Availability in percentage
+operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
++ Model (application/json)
+
+    + Body
+    
+            {
+                "metaData": [
+                    {
+                        "serviceAlias": "vmzStation",
+                        "lastUpdateTime": "2014-07-11T12:08:22+0200",
+                        "messages": []
+                    }
+                ],
+                "resources": [
+                    {
+                        "actions": [],
+                        "id": 306016,
+                        "description": "Berlin, Jüdisches Museum",
+                        "type": "PublicTransportStation",
+                        "uri": "Resources/PublicTransport/Stations/306016",
+                        "location": {
+                            "latitude": 52.503543,
+                            "longitude": 13.395639,
+                            "system": "WGS_84"
+                        },
+                        "provider": "vmzStation",
+                        "availability": 100,
+                        "operator": "VBBStation",
+                        "modFlag": "Relocated"
+                    },
+                    {
+                        "actions": [],
+                        "id": 306017,
+                        "description": "Berlin, Kommandantenstr.",
+                        "type": "PublicTransportStation",
+                        "uri": "Resources/PublicTransport/Stations/306017",
+                        "location": {
+                            "latitude": 52.507675,
+                            "longitude": 13.40418,
+                            "system": "WGS_84"
+                        },
+                        "provider": "vmzStation",
+                        "availability": 100,
+                        "operator": "VBBStation",
+                        "modFlag": "Relocated"
+                    }
+                ]
+            }
+
+
+### Getting all stations [GET]
+@testable
+
++ Request
+
+    + Headers
+        
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
+
++ Response 200
+
+    [List of Public Transport Stations with Basic Info][]
+
+
+## List of Bus/Tram Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/BusStations?lat={lat}&lng={lng}&radius={radius}] 
+
+This collection contains list of bus/tram stations in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]*
+
+### Getting bus/tram stations [GET]
+@testable
+
++ Parameters
+    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
+    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
+    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+
++ Request
+
+    + Headers
+        
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
+
++ Response 200
+
+    [List of Public Transport Stations with Basic Info][]
+    
+    
+## List of Metro Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/MetroStations?lat={lat}&lng={lng}&radius={radius}] 
+
+This collection contains list of metro stations in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]*
+
+### Getting metro stations [GET]
+@testable
+
++ Parameters
+    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
+    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
+    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+
++ Request
+
+    + Headers
+        
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
+
++ Response 200
+
+    [List of Public Transport Stations with Basic Info][]
+    
+    
+## List of City-Train/Regio Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/CityTrainStations?lat={lat}&lng={lng}&radius={radius}] 
+
+This collection contains list of city-train/regio-train stations in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]*
+
+### Getting city train stations [GET]
+@testable
+
++ Parameters
+    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
+    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
+    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+
++ Request
+
+    + Headers
+        
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
+
++ Response 200
+
+    [List of Public Transport Stations with Basic Info][]
+
+
+## Time Table of a specific Station [/imp-endpoint/api/V1/Resources/PublicTransport/Stations/{id}/TimeTables]
+
+Arrival and departure times at a specified station. 
+The data structure contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+id | Number | Internal public transport station identification number
+... | ... | ...
+arrivals | String | Arrivals info containing direction, line and arrival times
+departures | String | Departures info containing direction, line and departure times
+
+!Please note: expectedTime is not always available.
+
+### Getting a time table [GET] 
+@nottestable
+
++ Parameters
+    + id (string, `2532`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]* .
+
+        
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "metaData": [
+                    {
+                        "serviceAlias": "vmzStation",
+                        "lastUpdateTime": null,
+                        "messages": []
+                    }
+                ],
+                "resources": [
+                    {
+                        "actions": [],
+                        "id": 2532,
+                        "description": "Berlin, Alexandrinenstr.",
+                        "type": "PublicTransportStation",
+                        "uri": "Resources/PublicTransport/Stations/2532/TimeTables/2532",
+                        "location": {
+                            "latitude": 52.505154,
+                            "longitude": 13.405322,
+                            "system": "WGS_84"
+                        },
+                        "provider": "vmzStation",
+                        "availability": 100,
+                        "operator": "VBBStation",
+                        "arrivals": [],
+                        "departures": [
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T18:46:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "Grunewald, Roseneck",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T18:49:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T18:51:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Wittenbergplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T18:54:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T18:56:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "Grunewald, Roseneck",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T18:59:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:01:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Wittenbergplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:04:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:06:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "Grunewald, Roseneck",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:09:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:11:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Wittenbergplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:14:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:16:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "Grunewald, Roseneck",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:19:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:21:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Wittenbergplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:24:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:26:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "Grunewald, Roseneck",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:29:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:31:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Wittenbergplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:34:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:35:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "Grunewald, Roseneck",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:39:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Hermannplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:41:00+0200",
+                                "expectedTime": null
+                            },
+                            {
+                                "direction": "U Wittenbergplatz",
+                                "line": "Bus M29",
+                                "aimedTime": "2014-07-14T19:44:00+0200",
+                                "expectedTime": null
+                            }
+                        ]
+                    }
+                ]
+            }
+
+
 # Group Incidents / Traffic Info
 This is a group of all incidents related rest resources.
 
@@ -4134,785 +4914,6 @@ userId: user that requests a trip
 
     [List of Trip Proposals with Basic Info. Car Journey Planner][]          
 
-
-# Group Parking
-This is a group of all parking related rest resources. Parking Garages & On-street Paring Vacancies
-    
-## Parking Garages with Basic Info [/imp-endpoint/api/V1/Resources/Parking/Garages?lat={lat}&lng={lng}&radius={radius}]    
-This collection contains a list of all parking garages in an area of interest specified by query parameters together with an URI to acquire more details. 
-Note: The area of interest can be defined as:
-
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-The data structure of the response contains the following attributes:
-
-attribute | json data type | comments
---- | --- | ---
-metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
---- | --- | ---
-resources | Array | Array of resources within the search area
---- | --- | ---
-actions | Array | List of available actions on this resource (book, cancel, etc.)
-id | Number | Internal parking garage identification number
-description | String | Approximate location
-type | String | (="ParkingGarage")
-uri | URI | URI to request more details
-location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
-provider | String | Parking service provider (usually equals operator)
-availability | Double | Availability in percentage
-operator | String | Parking space operator (usually equals provider)
-totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
-lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Sinceodified-Since header is passed in the request 
-
-Parts of the data structure might be omitted if the information is not available. 
-    
-### Getting parking garages [GET]
-@testable
-
-+ Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-    
-+ Request
-
-    + Headers
-    
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
-        
-+ Response 200 (application/json)   
-
-        {
-            "metaData": [
-                {
-                    "serviceAlias": "vmzParking",
-                    "lastUpdateTime": "2014-07-10T11:11:04+0200",
-                    "messages": []
-                }
-            ],
-            "resources": [
-                {
-                    "actions": [
-                        {
-                            "name": "consume",
-                            "method": "POST",
-                            "uri": "Resources/Parking/Garages/270113/Process?action=consume"
-                        }
-                    ],
-                    "id": 270113,
-                    "description": "Mitte, Parkhaus Dorotheenstraße",
-                    "type": "ParkingGarage",
-                    "uri": "Resources/Parking/Garages/270113",
-                    "location": {
-                        "latitude": 52.51908,
-                        "longitude": 13.39094,
-                        "system": "WGS_84"
-                    },
-                    "provider": "vmzParking",
-                    "availability": null,
-                    "operator": "Parkinglot",
-                    "totalnumber": {
-                        "others": 495,
-                        "handicappedOnly": 0,
-                        "womenOnly": 0
-                    },
-                    "lottype": "Tiefgarage"
-                },
-                {
-                    "actions": [
-                        {
-                            "name": "consume",
-                            "method": "POST",
-                            "uri": "Resources/Parking/Garages/270134/Process?action=consume"
-                        }
-                    ],
-                    "id": 270134,
-                    "description": "Mitte, An der Friedrichswerderschen Kirche",
-                    "type": "ParkingGarage",
-                    "uri": "Resources/Parking/Garages/270134",
-                    "location": {
-                        "latitude": 52.515930000000004,
-                        "longitude": 13.39694,
-                        "system": "WGS_84"
-                    },
-                    "provider": "vmzParking",
-                    "availability": null,
-                    "operator": "Parkinglot",
-                    "totalnumber": {
-                        "others": 75,
-                        "handicappedOnly": 0,
-                        "womenOnly": 0
-                    },
-                    "lottype": "Parkplatz"
-                }
-            ]
-        }
-        
-## All Parking Garages with Basic Info [/imp-endpoint/api/V1/Resources/Parking/Garages/All]    
-This collection contains a list of all parking garages. 
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-The data structure of the response contains the following attributes:
-
-attribute | json data type | comments
---- | --- | ---
-metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
---- | --- | ---
-resources | Array | Array of resources within the search area
---- | --- | ---
-actions | Array | List of available actions on this resource (book, cancel, etc.)
-id | Number | Internal parking garage identification number
-description | String | Approximate location
-type | String | (="ParkingGarage")
-uri | URI | URI to request more details
-location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
-provider | String | Parking service provider (usually equals operator)
-availability | Double | Availability in percentage
-operator | String | Parking space operator (usually equals provider)
-totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
-lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Sinceodified-Since header is passed in the request 
-
-Parts of the data structure might be omitted if the information is not available. 
-    
-### Getting parking garages [GET]
-@testable
-
-+ Request
-
-    + Headers
-    
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
-        
-+ Response 200 (application/json)   
-
-        {
-            "metaData": [
-                {
-                    "serviceAlias": "vmzParking",
-                    "lastUpdateTime": "2014-08-11T14:59:21+0200",
-                    "messages": []
-                }
-            ],
-            "resources": [
-                {
-                    "actions": [
-                        {
-                            "name": "consume",
-                            "method": "POST",
-                            "uri": "Resources/Parking/Garages/ParkingGarage/50534/Process?action=consume"
-                        }
-                    ],
-                    "id": 50534,
-                    "description": "P+R Königs Wusterhausen DB (S)",
-                    "type": "ParkingGarage",
-                    "uri": "Resources/Parking/Garages/ParkingGarage/50534",
-                    "location": {
-                        "latitude": 52.2980346679688,
-                        "longitude": 13.6327829360962,
-                        "system": "WGS_84"
-                    },
-                    "provider": "vmzParking",
-                    "availability": null,
-                    "operator": "PR"
-                },
-                {
-                    "actions": [
-                        {
-                            "name": "consume",
-                            "method": "POST",
-                            "uri": "Resources/Parking/Garages/ParkingGarage/49527/Process?action=consume"
-                        }
-                    ],
-                    "id": 49527,
-                    "description": "Mitte, Hotel Hilton Kronenstraße",
-                    "type": "ParkingGarage",
-                    "uri": "Resources/Parking/Garages/ParkingGarage/49527",
-                    "location": {
-                        "latitude": 52.51183,
-                        "longitude": 13.391890000000002,
-                        "system": "WGS_84"
-                    },
-                    "provider": "vmzParking",
-                    "availability": null,
-                    "operator": "Parkinglot"
-                }
-            ]
-        }
-        
-
-## Parking Garage with Detailed Info [/imp-endpoint/api/V1/Resources/Parking/Garages/{id}]
-
-A single parking garage object with Detailed Information. 
-The data structure of the response contains the attributes with the basic information and additionally the following attributes:
-
-attribute | json data type | comments
---- | --- | ---
-... | ... | ...
-address | Object | Address {"citycode": String, "city": String, "street": String, "houseno": String }
-pricing | String | Price structure 
-payment | Array | Payment options {COINPAY, BANKNOTEPAY, BANKCARDPAY, CREDICARDPAY, PREPAIDCARDPAY, PAYCARDPAY, DEBITPAY}
-category | Enum | P - parking, P+R park and ride, etc. { "P+R","B+R", "P", ... } 
-openingHours | String | Opening hours
-bookable | Boolean |  
-heightLimit | Object | Height limit { "value": Number, "unit": String } 
-occupancyRate | Number | Occupany rate in percent (real time data) 
-allowedStay | Object | Allowed stay { "value": Number, "unit": String } 
-generalInformations | String |
-restrictions | Array | Usage restrictions {"VisitorsOnly","GuestsOnly"}
-services | Array | Special services { "WomenParking", "DisabledParking", "Monitored", "ChargingStation", "ParentChild", "MotorCycle", ... } 
-securityComment | String |  Securtiy features
-entrance | String |
-
-### Getting a specific charging station [GET] 
-@nottestable
-
-+ Parameters
-    + id (string, `8367`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/Parking/Garages?lat={lat}&lng={lng}&radius={radius}]*
-
-+ Response 200 (application/json) 
-
-        {
-            "actions": [
-                {
-                    "name": "consume",
-                    "method": "POST",
-                    "uri": "Resources/Parking/Garages/271366/Process?action=consume"
-                }
-            ],
-            "id": 271366,
-            "description": "Mitte, Parkhaus Dorotheenstraße",
-            "type": "ParkingGarage",
-            "uri": "Resources/Parking/Garages/271366/",
-            "location": {
-                "latitude": 52.51908,
-                "longitude": 13.39094,
-                "system": "WGS_84"
-            },
-            "provider": "vmzParking",
-            "availability": null,
-            "operator": "Parkinglot",
-            "totalnumber": {
-                "others": 495,
-                "handicappedOnly": 0,
-                "womenOnly": 0
-            },
-            "lottype": "Tiefgarage",
-            "address": {
-                "citycode": "10117",
-                "city": "Berlin",
-                "street": "Dorotheenstraße",
-                "houseno": "0",
-                "district": null,
-                "region": null,
-                "country": null
-            },
-            "pricing": "2,00 EUR für die 1. Std. <br>2. und 3. Stunde 1,50 Euro<br>je weiter Stunde 1,00 Euro<br>Tagespreis 15,00 Euro<br>Monatspreis 100,00 Euro",
-            "payment": [
-                "BANKNOTEPAY",
-                "COINPAY"
-            ],
-            "category": [
-                "P"
-            ],
-            "openingHours": null,
-            "bookable": false,
-            "heightLimit": null,
-            "occupancyRate": null,
-            "allowedStay": null,
-            "generalInformations": null,
-            "restrictions": null,
-            "services": null,
-            "securityComment": null,
-            "entrance": null
-        }
-
-
-
-# Group Public Transport
-This is a group of all public transportation related rest resources.
-
-## List of Public Transport Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}] 
-
-This collection contains list stations (U-Bahn/S-Bahn/train/bus/tram) in a specific area with basic information and a URI to get more details.
-Note: The area of interest can be defined as:
-
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-attribute | json data type | comments
---- | --- | ---
-metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
---- | --- | ---
-resources | Array | Array of resources within the search area
---- | --- | ---
-description | String | Approximate location
-type | String | (="PublicTransportStation")
-uri | URI | URI to request more details
-location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
-availability | Double | Availability in percentage
-operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
-
-
-+ Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-    
-+ Model (application/json)
-
-    + Body
-    
-            {
-                "metaData": [
-                    {
-                        "serviceAlias": "vmzStation",
-                        "lastUpdateTime": "2014-07-11T12:08:22+0200",
-                        "messages": []
-                    }
-                ],
-                "resources": [
-                    {
-                        "actions": [],
-                        "id": 306016,
-                        "description": "Berlin, Jüdisches Museum",
-                        "type": "PublicTransportStation",
-                        "uri": "Resources/PublicTransport/Stations/306016",
-                        "location": {
-                            "latitude": 52.503543,
-                            "longitude": 13.395639,
-                            "system": "WGS_84"
-                        },
-                        "provider": "vmzStation",
-                        "availability": 100,
-                        "operator": "VBBStation",
-                        "modFlag": "Relocated"
-                    },
-                    {
-                        "actions": [],
-                        "id": 306017,
-                        "description": "Berlin, Kommandantenstr.",
-                        "type": "PublicTransportStation",
-                        "uri": "Resources/PublicTransport/Stations/306017",
-                        "location": {
-                            "latitude": 52.507675,
-                            "longitude": 13.40418,
-                            "system": "WGS_84"
-                        },
-                        "provider": "vmzStation",
-                        "availability": 100,
-                        "operator": "VBBStation",
-                        "modFlag": "Relocated"
-                    }
-                ]
-            }
-
-
-### Getting all stations [GET]
-@testable
-
-+ Request
-
-    + Headers
-        
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
-
-+ Response 200
-
-    [List of Public Transport Stations with Basic Info][]
-    
-    
-## List of All Public Transport Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/Stations/All] 
-
-This collection contains list stations (U-Bahn/S-Bahn/train/bus/tram)
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-attribute | json data type | comments
---- | --- | ---
-metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
---- | --- | ---
-resources | Array | Array of resources within the search area
---- | --- | ---
-description | String | Approximate location
-type | String | (="PublicTransportStation")
-uri | URI | URI to request more details
-location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
-availability | Double | Availability in percentage
-operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
-
-+ Model (application/json)
-
-    + Body
-    
-            {
-                "metaData": [
-                    {
-                        "serviceAlias": "vmzStation",
-                        "lastUpdateTime": "2014-07-11T12:08:22+0200",
-                        "messages": []
-                    }
-                ],
-                "resources": [
-                    {
-                        "actions": [],
-                        "id": 306016,
-                        "description": "Berlin, Jüdisches Museum",
-                        "type": "PublicTransportStation",
-                        "uri": "Resources/PublicTransport/Stations/306016",
-                        "location": {
-                            "latitude": 52.503543,
-                            "longitude": 13.395639,
-                            "system": "WGS_84"
-                        },
-                        "provider": "vmzStation",
-                        "availability": 100,
-                        "operator": "VBBStation",
-                        "modFlag": "Relocated"
-                    },
-                    {
-                        "actions": [],
-                        "id": 306017,
-                        "description": "Berlin, Kommandantenstr.",
-                        "type": "PublicTransportStation",
-                        "uri": "Resources/PublicTransport/Stations/306017",
-                        "location": {
-                            "latitude": 52.507675,
-                            "longitude": 13.40418,
-                            "system": "WGS_84"
-                        },
-                        "provider": "vmzStation",
-                        "availability": 100,
-                        "operator": "VBBStation",
-                        "modFlag": "Relocated"
-                    }
-                ]
-            }
-
-
-### Getting all stations [GET]
-@testable
-
-+ Request
-
-    + Headers
-        
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
-
-+ Response 200
-
-    [List of Public Transport Stations with Basic Info][]
-
-
-## List of Bus/Tram Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/BusStations?lat={lat}&lng={lng}&radius={radius}] 
-
-This collection contains list of bus/tram stations in a specific area with basic information and a URI to get more details.
-Note: The area of interest can be defined as:
-
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
-
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]*
-
-### Getting bus/tram stations [GET]
-@testable
-
-+ Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-
-+ Request
-
-    + Headers
-        
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
-
-+ Response 200
-
-    [List of Public Transport Stations with Basic Info][]
-    
-    
-## List of Metro Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/MetroStations?lat={lat}&lng={lng}&radius={radius}] 
-
-This collection contains list of metro stations in a specific area with basic information and a URI to get more details.
-Note: The area of interest can be defined as:
-
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]*
-
-### Getting metro stations [GET]
-@testable
-
-+ Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-
-+ Request
-
-    + Headers
-        
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
-
-+ Response 200
-
-    [List of Public Transport Stations with Basic Info][]
-    
-    
-## List of City-Train/Regio Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/CityTrainStations?lat={lat}&lng={lng}&radius={radius}] 
-
-This collection contains list of city-train/regio-train stations in a specific area with basic information and a URI to get more details.
-Note: The area of interest can be defined as:
-
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]*
-
-### Getting city train stations [GET]
-@testable
-
-+ Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-
-+ Request
-
-    + Headers
-        
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
-
-+ Response 200
-
-    [List of Public Transport Stations with Basic Info][]
-
-
-## Time Table of a specific Station [/imp-endpoint/api/V1/Resources/PublicTransport/Stations/{id}/TimeTables]
-
-Arrival and departure times at a specified station. 
-The data structure contains the following attributes:
-
-attribute | json data type | comments
---- | --- | ---
-metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
---- | --- | ---
-resources | Array | Array of resources within the search area
---- | --- | ---
-id | Number | Internal public transport station identification number
-... | ... | ...
-arrivals | String | Arrivals info containing direction, line and arrival times
-departures | String | Departures info containing direction, line and departure times
-
-!Please note: expectedTime is not always available.
-
-### Getting a time table [GET] 
-@nottestable
-
-+ Parameters
-    + id (string, `2532`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]* .
-
-        
-+ Response 200 (application/json)
-
-    + Body
-    
-            {
-                "metaData": [
-                    {
-                        "serviceAlias": "vmzStation",
-                        "lastUpdateTime": null,
-                        "messages": []
-                    }
-                ],
-                "resources": [
-                    {
-                        "actions": [],
-                        "id": 2532,
-                        "description": "Berlin, Alexandrinenstr.",
-                        "type": "PublicTransportStation",
-                        "uri": "Resources/PublicTransport/Stations/2532/TimeTables/2532",
-                        "location": {
-                            "latitude": 52.505154,
-                            "longitude": 13.405322,
-                            "system": "WGS_84"
-                        },
-                        "provider": "vmzStation",
-                        "availability": 100,
-                        "operator": "VBBStation",
-                        "arrivals": [],
-                        "departures": [
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T18:46:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "Grunewald, Roseneck",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T18:49:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T18:51:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Wittenbergplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T18:54:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T18:56:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "Grunewald, Roseneck",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T18:59:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:01:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Wittenbergplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:04:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:06:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "Grunewald, Roseneck",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:09:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:11:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Wittenbergplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:14:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:16:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "Grunewald, Roseneck",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:19:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:21:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Wittenbergplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:24:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:26:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "Grunewald, Roseneck",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:29:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:31:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Wittenbergplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:34:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:35:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "Grunewald, Roseneck",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:39:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Hermannplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:41:00+0200",
-                                "expectedTime": null
-                            },
-                            {
-                                "direction": "U Wittenbergplatz",
-                                "line": "Bus M29",
-                                "aimedTime": "2014-07-14T19:44:00+0200",
-                                "expectedTime": null
-                            }
-                        ]
-                    }
-                ]
-            }
 
 
 # Group WMS
