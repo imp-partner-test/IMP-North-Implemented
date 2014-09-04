@@ -2744,6 +2744,318 @@ departures | String | Departures info containing direction, line and departure t
                 ]
             }
 
+# Group Taxi Service
+This is a group of all taxi related rest resources.
+
+## List of available Taxis with Basic Info [/imp-endpoint/api/V1/Resources/TaxiService/Taxis?lat={lat}&lng={lng}&radius={radius}] 
+
+This collection contains list of taxis in a specific area with basic information and a URI to get more details.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+### Get taxis in a specific area [GET]
+@testable
+
++ Parameters
+    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
+    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
+    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+    
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+
++ Response 200 (application/json)
+
+        {
+            "metaData": [
+                {
+                  "serviceAlias": "bettertaxi",
+                  "lastUpdateTime": null,
+                  "messages": []
+                }
+            ],
+              "resources": []
+        }
+
+## List of All available Taxis with Basic Info [/imp-endpoint/api/V1/Resources/TaxiService/Taxis/All] 
+
+This collection contains list of taxis.
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+### Get taxis in a specific area [GET]
+@testable
+
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+
++ Response 200 (application/json)
+
+        {
+            "metaData": [
+                {
+                  "serviceAlias": "bettertaxi",
+                  "lastUpdateTime": null,
+                  "messages": []
+                }
+            ],
+              "resources": []
+        }        
+        
+
+## Fare for the specified trip [/imp-endpoint/api/V1/Resources/TaxiService/Fares?origin_lat={lat}&origin_lng={lng}&radius={radius}] 
+
+This response contains estimated fare for trips from origin and distanse from origin.
+
+### Get fare information for the trip specified by origing and radius [GET]
+@nottestable
+
++ Parameters
+    + lat (string, `52.482780222078205`) ... String `lat` latitude value. Has example value.
+    + lng (string, `13.3154296875`) ... String `lng` longitude value. Has example value.
+    + radius (string, `2000`) ... String `radius` longitude value. Has example value.
+
++ Response 200 (application/json)
+
+        {
+            "fareQuality": 1.0,
+            "startTime": "2013-07-09T08:09:17",
+            "arrivalTime": { "value": 360, "unit": "sec"},
+            "totalTime":   { "value": 660, "unit": "sec"},
+            "totalDistance": { "value": 5000, "unit": "m" },
+            "costs": { 
+                "flagFall": { "value":300, "currency":"EuroCent"},
+                "total":    { "value":960, "currency":"EuroCent"}, 
+                "distance": { "value":660, "currency":"EuroCent"}, 
+                "other":    { },
+                "passengers": [
+                   { "value":0,   "currency":"EuroCent" },
+                   { "value":0,   "currency":"EuroCent" },
+                   { "value":0,   "currency":"EuroCent" },
+                   { "value":0,   "currency":"EuroCent" },
+                   { "value":150, "currency":"EuroCent" },
+                   { "value":300, "currency":"EuroCent" },
+                   { "value":450, "currency":"EuroCent" },
+                   { "value":600, "currency":"EuroCent" }
+                ]
+            }
+            "services": {
+                "bookingAvailable": true,
+                "paymentAvailable": false,
+                "privateHireVehicleAvailable": true,
+                "taxiSharing": false,
+                "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
+            }      
+        }
+
+## Fare for the specified trip [/imp-endpoint/api/V1/Resources/TaxiService/Fares?origin_lat={lat}&origin_lng={lng}&dest_lat={dlat}&dest_lng={dlng}] 
+
+This response contains estimated fare for trips from origin and distanse from origin.
+
+### Get fare information for the trip specified by origin and destination [GET]
+@nottestable
+
++ Parameters
+    + lat (string, `52.482780222078205`) ... String `lat` latitude value. Has example value.
+    + lng (string, `13.3154296875`) ... String `lng` longitude value. Has example value.
+    + dlat (string, `53.57914`) ... String `dlat` latitude value. Has example value.
+    + dlng (string, `13.40603`) ... String `dlng` longitude value. Has example value.
+
++ Response 200 (application/json)
+
+        {
+            "fareQuality": 1.0,
+            "startTime": "2013-07-09T08:09:17",
+            "arrivalTime": { "value": 360, "unit": "sec"},
+            "totalTime":   { "value": 660, "unit": "sec"},
+            "totalDistance": { "value": 5000, "unit": "m" },
+            "costs": { 
+                "flagFall": { "value":300, "currency":"EuroCent"},
+                "total":    { "value":960, "currency":"EuroCent"}, 
+                "distance": { "value":660, "currency":"EuroCent"}, 
+                "other":    { },
+                "passengers": [
+                   { "value":0,   "currency":"EuroCent" },
+                   { "value":0,   "currency":"EuroCent" },
+                   { "value":0,   "currency":"EuroCent" },
+                   { "value":0,   "currency":"EuroCent" },
+                   { "value":150, "currency":"EuroCent" },
+                   { "value":300, "currency":"EuroCent" },
+                   { "value":450, "currency":"EuroCent" },
+                   { "value":600, "currency":"EuroCent" }
+                ]
+            }
+            "services": {
+                "bookingAvailable": true,
+                "paymentAvailable": false,
+                "privateHireVehicleAvailable": true,
+                "taxiSharing": false,
+                "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
+            }      
+        }
+
+
+## Booking a taxi [/imp-endpoint/api/V1/Resources/TaxiService/Taxis/Processes?action=Book] 
+
+Book a Taxi: The taxi ride is specified by providing the starting point (address and/or geo location) and the destination.
+This means that no specific, previously selected taxi, is booked.
+
+Input in request body: 
+operator: name, userId and password (for authentication)
+origin of the taxi ride and optional start time
+destination of the taxi ride
+further parameters might later detail the request by specifying the number of passengers, availability of child seats, extra luggage etc.
+
+
+The response contains the estimated costs, the taxi's licence id, and a booking id are returned; the latter can be used to cancel the booking.
+
+Please note: 
+Since data about the traveler is usually requested by the taxi SP, we assume that the end-user (or the mobility provider) himself is responsible to register at the service provider.
+We currently require one operator in the input body.
+If booking is not possible: response body explains the reason why
+
+### Book a taxi [POST]
+@nottestable
+    
++ Request
+
+    + Headers
+    
+            userToken: "some token"
+        
+    + Body
+    
+            {
+                "operator": {
+                    "name": "BetterTaxi",
+                    "userId": "MP1_1",
+                    "password": "TopSecret!"
+                },
+                "origin" : {
+                    "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+                    "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+                    "time": "2013-05-01T12:00:00" 
+                },
+                "destination" : {
+                    "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+                }
+            }
+
+
++ Response 201 (application/json)
+
+    + Headers
+    
+            Location: /api/V1/Process/4711
+            
+    + Body
+    
+            {
+                "processId" : 123,
+                "confirmation" : {
+                    "confirmationId" : 456,
+                    "featureType": "BOOKING"
+                },
+                "origin" : {
+                    "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+                    "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+                    "time": "2013-05-01 12:00:00" 
+                },
+                "destination" : {
+                    "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+                },
+                "operatorId": "BetterTaxi",
+                "licenceId": "B-OB 007",
+                "arrivalTime": "2013-05-01T12:05:00",
+                "services": {
+                    "bookingAvailable": true,
+                    "paymentAvailable": false,
+                    "privateHireVehicleAvailable": true,
+                    "taxiSharing": false,
+                    "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
+                },
+                "actions": [
+                    {
+                        "name": "Cancel",
+                        "method": "PUT",
+                        "uri": "/api/V1/Processes/123?action=Cancel"
+                    }
+                ]
+            }
+
+
+## Canceling a taxi [/imp-endpoint/api/V1/Process/123?action=Cancel] 
+
+Cancel a booking for a taxi that has been booked before with a booking id 4711.
+
+Input in request body: 
+operator: name, userId and password (for authentication)
+
+The response contains information about the originally planned taxi ride and the cancelation fee.
+
+Please note: 
+If booking is not possible: response body explains the reason why
+
+### Book a taxi [POST]
+@nottestable
+    
++ Request
+
+    + Headers
+    
+            userToken: "some token"
+        
+    + Body
+    
+            {
+                "operator": {
+                    "name": "BetterTaxi",
+                    "userId": "MP1_1",
+                    "password": "TopSecret!"
+                }
+            }
+
+
++ Response 201 (application/json)
+
+    + Headers
+    
+            Location: /api/V1/Process/123
+            
+    + Body
+    
+            {
+                "userId": "MP1_1",
+                "ride": { 
+                    "origin" : {
+                        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
+                        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
+                        "time": "2013-05-01 12:00:00" 
+                    },
+                    "destination" : {
+                        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
+                    }
+                },
+                "confirmation": {
+                    "featureType": "CANCELATION",
+                    "confirmationId": "17",
+                    "fee": { "value": 0, "currency": "EUR" }
+                },
+                "actions": [ ]
+            }
+
+
+
 
 # Group Journey Planner. IMR
 This is a group of all journey planner IMR related rest resources.
@@ -4247,321 +4559,6 @@ Please note: The accept-header of this request must be set to "image/png"
     
             �PNG
             
-
-
-
-# Group Taxi Service
-This is a group of all taxi related rest resources.
-
-## List of available Taxis with Basic Info [/imp-endpoint/api/V1/Resources/TaxiService/Taxis?lat={lat}&lng={lng}&radius={radius}] 
-
-This collection contains list of taxis in a specific area with basic information and a URI to get more details.
-Note: The area of interest can be defined as:
-
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-### Get taxis in a specific area [GET]
-@testable
-
-+ Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-    
-+ Request
-
-    + Headers
-    
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
-
-+ Response 200 (application/json)
-
-        {
-            "metaData": [
-                {
-                  "serviceAlias": "bettertaxi",
-                  "lastUpdateTime": null,
-                  "messages": []
-                }
-            ],
-              "resources": []
-        }
-
-## List of All available Taxis with Basic Info [/imp-endpoint/api/V1/Resources/TaxiService/Taxis/All] 
-
-This collection contains list of taxis.
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-### Get taxis in a specific area [GET]
-@testable
-
-+ Request
-
-    + Headers
-    
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
-
-+ Response 200 (application/json)
-
-        {
-            "metaData": [
-                {
-                  "serviceAlias": "bettertaxi",
-                  "lastUpdateTime": null,
-                  "messages": []
-                }
-            ],
-              "resources": []
-        }        
-        
-
-## Fare for the specified trip [/imp-endpoint/api/V1/Resources/TaxiService/Fares?origin_lat={lat}&origin_lng={lng}&radius={radius}] 
-
-This response contains estimated fare for trips from origin and distanse from origin.
-
-### Get fare information for the trip specified by origing and radius [GET]
-@nottestable
-
-+ Parameters
-    + lat (string, `52.482780222078205`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.3154296875`) ... String `lng` longitude value. Has example value.
-    + radius (string, `2000`) ... String `radius` longitude value. Has example value.
-
-+ Response 200 (application/json)
-
-        {
-            "fareQuality": 1.0,
-            "startTime": "2013-07-09T08:09:17",
-            "arrivalTime": { "value": 360, "unit": "sec"},
-            "totalTime":   { "value": 660, "unit": "sec"},
-            "totalDistance": { "value": 5000, "unit": "m" },
-            "costs": { 
-                "flagFall": { "value":300, "currency":"EuroCent"},
-                "total":    { "value":960, "currency":"EuroCent"}, 
-                "distance": { "value":660, "currency":"EuroCent"}, 
-                "other":    { },
-                "passengers": [
-                   { "value":0,   "currency":"EuroCent" },
-                   { "value":0,   "currency":"EuroCent" },
-                   { "value":0,   "currency":"EuroCent" },
-                   { "value":0,   "currency":"EuroCent" },
-                   { "value":150, "currency":"EuroCent" },
-                   { "value":300, "currency":"EuroCent" },
-                   { "value":450, "currency":"EuroCent" },
-                   { "value":600, "currency":"EuroCent" }
-                ]
-            }
-            "services": {
-                "bookingAvailable": true,
-                "paymentAvailable": false,
-                "privateHireVehicleAvailable": true,
-                "taxiSharing": false,
-                "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
-            }      
-        }
-
-## Fare for the specified trip [/imp-endpoint/api/V1/Resources/TaxiService/Fares?origin_lat={lat}&origin_lng={lng}&dest_lat={dlat}&dest_lng={dlng}] 
-
-This response contains estimated fare for trips from origin and distanse from origin.
-
-### Get fare information for the trip specified by origin and destination [GET]
-@nottestable
-
-+ Parameters
-    + lat (string, `52.482780222078205`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.3154296875`) ... String `lng` longitude value. Has example value.
-    + dlat (string, `53.57914`) ... String `dlat` latitude value. Has example value.
-    + dlng (string, `13.40603`) ... String `dlng` longitude value. Has example value.
-
-+ Response 200 (application/json)
-
-        {
-            "fareQuality": 1.0,
-            "startTime": "2013-07-09T08:09:17",
-            "arrivalTime": { "value": 360, "unit": "sec"},
-            "totalTime":   { "value": 660, "unit": "sec"},
-            "totalDistance": { "value": 5000, "unit": "m" },
-            "costs": { 
-                "flagFall": { "value":300, "currency":"EuroCent"},
-                "total":    { "value":960, "currency":"EuroCent"}, 
-                "distance": { "value":660, "currency":"EuroCent"}, 
-                "other":    { },
-                "passengers": [
-                   { "value":0,   "currency":"EuroCent" },
-                   { "value":0,   "currency":"EuroCent" },
-                   { "value":0,   "currency":"EuroCent" },
-                   { "value":0,   "currency":"EuroCent" },
-                   { "value":150, "currency":"EuroCent" },
-                   { "value":300, "currency":"EuroCent" },
-                   { "value":450, "currency":"EuroCent" },
-                   { "value":600, "currency":"EuroCent" }
-                ]
-            }
-            "services": {
-                "bookingAvailable": true,
-                "paymentAvailable": false,
-                "privateHireVehicleAvailable": true,
-                "taxiSharing": false,
-                "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
-            }      
-        }
-
-
-## Booking a taxi [/imp-endpoint/api/V1/Resources/TaxiService/Taxis/Processes?action=Book] 
-
-Book a Taxi: The taxi ride is specified by providing the starting point (address and/or geo location) and the destination.
-This means that no specific, previously selected taxi, is booked.
-
-Input in request body: 
-operator: name, userId and password (for authentication)
-origin of the taxi ride and optional start time
-destination of the taxi ride
-further parameters might later detail the request by specifying the number of passengers, availability of child seats, extra luggage etc.
-
-
-The response contains the estimated costs, the taxi's licence id, and a booking id are returned; the latter can be used to cancel the booking.
-
-Please note: 
-Since data about the traveler is usually requested by the taxi SP, we assume that the end-user (or the mobility provider) himself is responsible to register at the service provider.
-We currently require one operator in the input body.
-If booking is not possible: response body explains the reason why
-
-### Book a taxi [POST]
-@nottestable
-    
-+ Request
-
-    + Headers
-    
-            userToken: "some token"
-        
-    + Body
-    
-            {
-                "operator": {
-                    "name": "BetterTaxi",
-                    "userId": "MP1_1",
-                    "password": "TopSecret!"
-                },
-                "origin" : {
-                    "location": { "latitude":52.51914, "longitude": 13.40693 }, 
-                    "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
-                    "time": "2013-05-01T12:00:00" 
-                },
-                "destination" : {
-                    "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
-                }
-            }
-
-
-+ Response 201 (application/json)
-
-    + Headers
-    
-            Location: /api/V1/Process/4711
-            
-    + Body
-    
-            {
-                "processId" : 123,
-                "confirmation" : {
-                    "confirmationId" : 456,
-                    "featureType": "BOOKING"
-                },
-                "origin" : {
-                    "location": { "latitude":52.51914, "longitude": 13.40693 }, 
-                    "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
-                    "time": "2013-05-01 12:00:00" 
-                },
-                "destination" : {
-                    "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
-                },
-                "operatorId": "BetterTaxi",
-                "licenceId": "B-OB 007",
-                "arrivalTime": "2013-05-01T12:05:00",
-                "services": {
-                    "bookingAvailable": true,
-                    "paymentAvailable": false,
-                    "privateHireVehicleAvailable": true,
-                    "taxiSharing": false,
-                    "information": "An diesem Flughafen ist keine Taxibuchung möglich, bitte nutzen Sie eines der Flughafen Taxis" 
-                },
-                "actions": [
-                    {
-                        "name": "Cancel",
-                        "method": "PUT",
-                        "uri": "/api/V1/Processes/123?action=Cancel"
-                    }
-                ]
-            }
-
-
-## Canceling a taxi [/imp-endpoint/api/V1/Process/123?action=Cancel] 
-
-Cancel a booking for a taxi that has been booked before with a booking id 4711.
-
-Input in request body: 
-operator: name, userId and password (for authentication)
-
-The response contains information about the originally planned taxi ride and the cancelation fee.
-
-Please note: 
-If booking is not possible: response body explains the reason why
-
-### Book a taxi [POST]
-@nottestable
-    
-+ Request
-
-    + Headers
-    
-            userToken: "some token"
-        
-    + Body
-    
-            {
-                "operator": {
-                    "name": "BetterTaxi",
-                    "userId": "MP1_1",
-                    "password": "TopSecret!"
-                }
-            }
-
-
-+ Response 201 (application/json)
-
-    + Headers
-    
-            Location: /api/V1/Process/123
-            
-    + Body
-    
-            {
-                "userId": "MP1_1",
-                "ride": { 
-                    "origin" : {
-                        "location": { "latitude":52.51914, "longitude": 13.40693 }, 
-                        "address": { "citycode":"10178", "city":"Berlin", "Street":"Spandauer Straße","houseno":"9" }, 
-                        "time": "2013-05-01 12:00:00" 
-                    },
-                    "destination" : {
-                        "address": { "citycode":"12109", "city":"Berlin", "Street":"Ullsteinstraße","houseno":"114" }
-                    }
-                },
-                "confirmation": {
-                    "featureType": "CANCELATION",
-                    "confirmationId": "17",
-                    "fee": { "value": 0, "currency": "EUR" }
-                },
-                "actions": [ ]
-            }
-
-
-
   
             
 # Group Partners
