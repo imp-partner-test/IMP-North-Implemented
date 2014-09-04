@@ -5575,6 +5575,60 @@ businessBoundary | Object | business area specified as MultyPolygon conform to t
               }
             }
             
+# Group Heatmap
+This is a group of all rest resources related to heatmap as PNG file. Heat map is a graphical representation of data where the individual values are represented as colors.
+Currently it is used to represent two service categories: CarSharing and BikeSharing services
+
+## CarSharing Heatmap [/imp-endpoint/api/V1/Info/Heatmap/CarSharing?date={x}&left_lower_lat={lllat}&left_lower_lng={lllng}&right_upper_lng={rulng}&right_upper_lat={rulat}]    
+Get WMS PNG file for carSharing for a specific date and for a specific bounding box (place).
+
+### Getting heatmap as PNG image [GET]
+@nottestable
+
++ Parameters
+    + date (required, string, `1404892800000`) ... a date in the history (later also in the future) Has example value.
+    + lllat (required, string, `52.482780222078205`) ... 
+    + lllng (required, string, `13.3154296875`) ...     
+    + rulng (required, string, `13.359375`) ... 
+    + rulat (required, string, `52.50953477032729`) ... 
+    
++ Request
+
+    + Headers
+        
+            accept: image/png 
+
++ Response 200 (image/png)
+
+    + Body
+    
+            �PNG
+
+## BikeSharing Heatmap [/imp-endpoint/api/V1/Info/Heatmap/BikeSharing?date={x}&left_lower_lat={lllat}&left_lower_lng={lllng}&right_upper_lng={rulng}&right_upper_lat={rulat}]    
+Get WMS PNG file for bikesharing for a specific date and for a specific bounding box (place).
+
+### Getting heatmap as PNG image [GET]
+@nottestable
+
++ Parameters
+    + date (required, string, `1404892800000`) ... a date in the history (later also in the future) Has example value.
+    + lllat (required, string, `52.482780222078205`) ... 
+    + lllng (required, string, `13.3154296875`) ...     
+    + rulng (required, string, `13.359375`) ... 
+    + rulat (required, string, `52.50953477032729`) ... 
+
++ Request
+
+    + Headers
+        
+            accept: image/png 
+
++ Response 200 (image/png)
+
+    + Body
+    
+            �PNG
+
 
 # Group ServiceOfferings per Partner
 TODO
