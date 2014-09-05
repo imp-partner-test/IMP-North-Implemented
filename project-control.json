@@ -6,10 +6,10 @@
       "Title": "DriveNow",
       "Chapters": [
         "Introduction",	
-	"Public Transportation",
-	"Handy Ticket",
+	"Public Transport",
+	"Ticketing",
         "EV Charging Station",
-        "Taxi"
+        "Taxi Service"
       ],
       "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
     },
@@ -34,13 +34,13 @@
 	"Car Sharing",
 	"Parking Garages",
         "EV Charging Station",
-	"Public Transportation",
+	"Public Transport",
 	"Journey Planner. Car Router",
 	"Journey Planner. IMR",
 	"Incidents / Traffic Info",
 	"WMS",
-	"Handy Ticket",
-	"Taxi"
+	"Ticketing",
+	"Taxi Service"
       ],
       "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
     },
@@ -50,7 +50,7 @@
       "Chapters": [
         "Introduction",
         "Parking Garages",
-	"Public Transportation"
+	"Public Transport"
       ],
       "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
     },
@@ -59,7 +59,7 @@
       "Title": "OMB: BOSCH",
       "Chapters": [
         "Introduction",
-	"Public Transportation",
+	"Public Transport",
 	"Incidents / Traffic Info",
 	"WMS",
 	"Bike Sharing",
@@ -135,9 +135,9 @@
       "Title": "IMP: RSH",
       "Chapters": [
         "Introduction",
-	"Handy Ticket",
+	"Ticketing",
 	"Parking Garages",
-	"Public Transportation",
+	"Public Transport",
 	"Bike Sharing",
 	"Car Sharing",
 	"EV Charging Station",
@@ -147,7 +147,7 @@
 	"ServiceOfferings for all Partners",
 	"Service Subscriptions",
 	"Service Categories",
-	"Taxi",
+	"Taxi Service",
 	"Journey Planner. Car Router",
 	"Journey Planner. IMR",
 	"Incidents / Traffic Info",
@@ -176,7 +176,7 @@
 	"Car Sharing",
 	"Parking Garages",
         "EV Charging Station",
-	"Public Transportation",
+	"Public Transport",
 	"Journey Planner. IMR",
 	"Incidents / Traffic Info",
 	"WMS"
