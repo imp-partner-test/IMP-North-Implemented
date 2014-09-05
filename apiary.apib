@@ -2269,13 +2269,15 @@ entrance | String |
 # Group Public Transport
 This is a group of all public transportation related rest resources.
 
-## List of Public Transport Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}] 
+## List of Public Transport Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}&f_stations={f_stations}] 
 
 This collection contains list stations (U-Bahn/S-Bahn/train/bus/tram) in a specific area with basic information and a URI to get more details.
 Note: The area of interest can be defined as:
 
 * a bounding circle (lat={lat}&lng={lng}&radius={radius})
 * a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
+The optional filter `f_stations` can be used to get the stations with a particular   `stationType`
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
@@ -2292,6 +2294,7 @@ location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "
 provider | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
 availability | Double | Availability in percentage
 operator | String | Bus/tram (="VBBStation"), metro (="VBBStationU"), S-Bahn (="VBBStationS")
+stationType | String | BusTramStation, MetroStation, CityTrainStation
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
 
 
@@ -2299,7 +2302,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
     + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
     + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
     + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-    
+    + f_stations (optional, string, `{"stationType":"BusTramStation"}`) ... String `f_stations` filter value. Has example value.
 + Model (application/json)
 
     + Body
@@ -2327,6 +2330,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
                         "provider": "vmzStation",
                         "availability": 100,
                         "operator": "VBBStation",
+                        "stationType":"BusTramStation",
                         "modFlag": "Relocated"
                     },
                     {
@@ -2343,6 +2347,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
                         "provider": "vmzStation",
                         "availability": 100,
                         "operator": "VBBStation",
+                        "stationType":"BusTramStation",
                         "modFlag": "Relocated"
                     }
                 ]
@@ -2445,101 +2450,6 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 + Response 200
 
     [List of Public Transport Stations with Basic Info][]
-
-
-## List of Bus/Tram Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/BusStations?lat={lat}&lng={lng}&radius={radius}] 
-
-This collection contains list of bus/tram stations in a specific area with basic information and a URI to get more details.
-Note: The area of interest can be defined as:
-
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
-
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]*
-
-### Getting bus/tram stations [GET]
-@testable
-
-+ Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-
-+ Request
-
-    + Headers
-        
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
-
-+ Response 200
-
-    [List of Public Transport Stations with Basic Info][]
-    
-    
-## List of Metro Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/MetroStations?lat={lat}&lng={lng}&radius={radius}] 
-
-This collection contains list of metro stations in a specific area with basic information and a URI to get more details.
-Note: The area of interest can be defined as:
-
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]*
-
-### Getting metro stations [GET]
-@testable
-
-+ Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-
-+ Request
-
-    + Headers
-        
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
-
-+ Response 200
-
-    [List of Public Transport Stations with Basic Info][]
-    
-    
-## List of City-Train/Regio Stations with Basic Info [/imp-endpoint/api/V1/Resources/PublicTransport/CityTrainStations?lat={lat}&lng={lng}&radius={radius}] 
-
-This collection contains list of city-train/regio-train stations in a specific area with basic information and a URI to get more details.
-Note: The area of interest can be defined as:
-
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
-
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
-
-The data structure is the same as in *[/imp-endpoint/api/V1/Resources/PublicTransport/Stations?lat={lat}&lng={lng}&radius={radius}]*
-
-### Getting city train stations [GET]
-@testable
-
-+ Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
-
-+ Request
-
-    + Headers
-        
-            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT
-
-+ Response 200
-
-    [List of Public Transport Stations with Basic Info][]
-
 
 ## Time Table of a specific Station [/imp-endpoint/api/V1/Resources/PublicTransport/Stations/{id}/TimeTables]
 
