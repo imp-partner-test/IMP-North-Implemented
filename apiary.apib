@@ -266,7 +266,7 @@ The data structure of the response contains the attributes with the basic inform
 attribute | json data type | comments
 --- | --- | ---
 ... | ... | ...
-freeBikes | List | 
+
 
 ### Getting a specific station [GET] 
 @nottestable
@@ -304,28 +304,107 @@ freeBikes | List |
                 "address": null,
                 "numberOfBikes": 18,
                 "numberOfFreeBikes": 6,
-                "services": null,
-                "freeBikes": [
+                "services": null
+            }
+            
+            
+## Getting bikes for a specific station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes]
+Get list of bikes for a specific station determined by a specific stationId.
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+unitId | String | 
+
+### Getting bikes for a specific station [GET] 
+@nottestable
+
++ Parameters
+    + stationId (string, `203869`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
+        
++ Response 200 (application/json)
+
+    + Body
+        
+            {
+                "metaData": [
                     {
-                        "unitId": "2628"
-                    },
+                        "serviceAlias": "callabike",
+                        "lastUpdateTime": "2014-09-08T13:44:09+0530",
+                        "messages": []
+                    }
+                ],
+                "resources": [
                     {
-                        "unitId": "2703"
-                    },
-                    {
-                        "unitId": "2803"
-                    },
-                    {
-                        "unitId": "3533"
-                    },
-                    {
-                        "unitId": "3764"
-                    },
-                    {
-                        "unitId": "3905"
+                        "actions": [
+                            {
+                                "name": "book",
+                                "method": "POST",
+                                "uri": "Resources/BikeSharing/Stations/18612/Bikes/18644/Process?action=book"
+                            }
+                        ],
+                        "id": 18644,
+                        "description": "S+U-Bhf. Friedrichstraße",
+                        "type": "BikeSharingStationBikeDetails",
+                        "uri": "Resources/BikeSharing/Stations/18612/Bikes/18644",
+                        "location": {
+                            "latitude": 52.519676208496094,
+                            "longitude": 13.385995864868164,
+                            "system": "WGS_84"
+                        },
+                        "provider": "callabike",
+                        "availability": 100,
+                        "operator": "CallABike",
+                        "unitId": "9423"
                     }
                 ]
             }
+            
+## Getting details of bike of a specific station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes/{bikeId}]
+Get details of bike of a specific station determined by a specific stationId and bikeId
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+
+
+### Getting details of bike of a specific station [GET] 
+@nottestable
+
++ Parameters
+    + stationId (string, `203869`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
+    + bikeId (string, `18644`) ... String `bikeId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes]* .
+        
++ Response 200 (application/json)
+
+    + Body
+        
+            {
+                "actions": [
+                    {
+                        "name": "book",
+                        "method": "POST",
+                        "uri": "Resources/BikeSharing/Stations/18612/Bikes/18644/Process?action=book"
+                    }
+                ],
+                "id": 18644,
+                "description": "S+U-Bhf. Friedrichstraße",
+                "type": "BikeSharingStationBikeDetails",
+                "uri": "Resources/BikeSharing/Stations/18612/Bikes/18644/",
+                "location": {
+                    "latitude": 52.519676208496094,
+                    "longitude": 13.385995864868164,
+                    "system": "WGS_84"
+                },
+                "provider": "callabike",
+                "availability": 100,
+                "operator": "CallABike",
+                "unitId": "9423"
+            }
+     
+            
         
 ## Book a bike available at a bike sharing station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{id}/Process?action=book]
 
@@ -353,19 +432,261 @@ comments | String |
 + Request
 
         { 
-           "operator": "nextbike",
-            "from": null,
-            "to": null,
-            "userId": "4711/10" 
+           "operator":{
+           "name":"callabike",   
+            "userId": "3349",
+            "password": "41b40ce13a2eb2901fe0e31a528bbd62"            
+                    },
+         "userId":"callabike_user",
+         "from":"2002-20-10T22:00:33UTC+0200",
+         "to":"2002-20-10T22:00:33UTC+0200"
         }
 
+
 + Response 201 (application/json)
+        
+        {
+            "actions": [
+            {
+                "name": "cancel",
+                "method": "PUT",
+                "uri": "Processes/82?action=cancel"
+            }
+            ],
+            "processId": "82",
+            "confirmation": {
+            "featureType": "BOOKING",
+            "confirmationId": "Reservation",
+            "confirmationData": "6678"
+            }
+        }
 
-        {  
-            "confirmationId": "1012020020",
-            "comments": "Comments"
-        } 
 
+## Book a specific bike of bike sharing station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes/{bikeId}/Process?action=book]
+
+The data structure of the request contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional 
+
+The data structure of the response has the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+### Book a specific bike of bike sharing station [POST]
+@nottestable
+
++ Parameters
+    + stationId (string, `2`) ... Bike sharing station id where the bike is to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
+    + bikeId (string, `1`) ... Bike to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes]* .
+
++ Request
+
+        { 
+           "operator":{
+           "name":"callabike",   
+            "userId": "3349",
+            "password": "41b40ce13a2eb2901fe0e31a528bbd62"            
+                    },
+         "userId":"callabike_user",
+         "from":"2002-20-10T22:00:33UTC+0200",
+         "to":"2002-20-10T22:00:33UTC+0200"
+        }
+
+
++ Response 201 (application/json)
+        
+        {
+            "actions": [
+            {
+                "name": "cancel",
+                "method": "PUT",
+                "uri": "Processes/82?action=cancel"
+            }
+            ],
+            "processId": "82",
+            "confirmation": {
+            "featureType": "BOOKING",
+            "confirmationId": "Reservation",
+            "confirmationData": "6678"
+            }
+        }
+
+## Get floating bikes [/imp-endpoint/api/V1/Resources/BikeSharing/Bikes?lat={lat}&lng={lng}&radius={radius}]    
+This collection contains a list of all floating bikes in an area of interest specified by query parameters.
+Note: The area of interest can be defined as:
+
+* a bounding circle (lat={lat}&lng={lng}&radius={radius})
+* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure of the response contains the following attributes: 
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | Available actions
+id | Number | Internal bike sharing station identification number
+description | String | Approximate location
+type | String | Type of bike sharing station
+uri | URI | URI to request more details.
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
+provider | String | service provider
+availability | Double | Availability in percentage
+operator | String | resource operator
+phoneNo | String | 
+operatorURI | String |
+operatorName | String | 
+address | Object | 
+numberOfBikes | Number | 
+numberOfFreeBikes | Number | 
+services | Array | 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
+
+Parts of the data structure might be omitted if the information is not available. 
+    
+### Get floating bikes [GET]
+@nottestable
+
++ Parameters
+    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
+    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
+    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+    
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+        
++ Response 200 (application/json)
+
+        {
+            "metaData": [
+                {
+                    "serviceAlias": "callabike",
+                    "lastUpdateTime": "2014-09-08T13:44:09+0530",
+                    "messages": []
+                },
+                {
+                    "serviceAlias": "nextbike",
+                    "lastUpdateTime": "2014-09-08T13:40:38+0530",
+                    "messages": []
+                }
+            ],
+            "resources": []
+        }
+        
+        
+## Getting details of flaoting bike [/imp-endpoint/api/V1/Resources/BikeSharing/Bikes/{bikeId}]
+Get details of floating bike determined by a specific bikeId
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+
+
+### Getting details of flaoting bike [GET] 
+@nottestable
+
++ Parameters
+    + bikeId (string, `18644`) ... String `bikeId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Bikes?lat={lat}&lng={lng}&radius={radius}]* .
+        
++ Response 200 (application/json)
+
+    + Body
+        
+            {
+                "actions": [
+                    {
+                        "name": "book",
+                        "method": "POST",
+                        "uri": "Resources/BikeSharing/Bikes/18644/Process?action=book"
+                    }
+                ],
+                "id": 18644,
+                "description": "S+U-Bhf. Friedrichstraße",
+                "type": "BikeSharingBikeDetails",
+                "uri": "Resources/BikeSharing/Bikes/18644/",
+                "location": {
+                    "latitude": 52.519676208496094,
+                    "longitude": 13.385995864868164,
+                    "system": "WGS_84"
+                },
+                "provider": "callabike",
+                "availability": 100,
+                "operator": "CallABike",
+                "unitId": "9423"
+            }
+
+## Book a floating bike [/imp-endpoint/api/V1/Resources/BikeSharing/Bikes/{bikeId}/Process?action=book]
+
+The data structure of the request contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+operator | String | Name of the operator
+from | DateTime | Optional. Default value is current time
+to | DateTime | Optional 
+
+The data structure of the response has the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+confirmationId | String | 
+comments | String | 
+
+### Book a floating bike [POST]
+@nottestable
+
++ Parameters
+    + bikeId (string, `1`) ... Bike to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Bikes?lat={lat}&lng={lng}&radius={radius}]* .
+
++ Request
+
+        { 
+           "operator":{
+           "name":"callabike",   
+            "userId": "3349",
+            "password": "41b40ce13a2eb2901fe0e31a528bbd62"            
+                    },
+         "userId":"callabike_user",
+         "from":"2002-20-10T22:00:33UTC+0200",
+         "to":"2002-20-10T22:00:33UTC+0200"
+        }
+
+
++ Response 201 (application/json)
+        
+        {
+            "actions": [
+            {
+                "name": "cancel",
+                "method": "PUT",
+                "uri": "Processes/82?action=cancel"
+            }
+            ],
+            "processId": "82",
+            "confirmation": {
+            "featureType": "BOOKING",
+            "confirmationId": "Reservation",
+            "confirmationData": "6678"
+            }
+        }             
+        
+        
 # Group Car Sharing
 This is a group of all car sharing related rest resources
 
