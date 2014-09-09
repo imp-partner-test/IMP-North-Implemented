@@ -5053,7 +5053,7 @@ businessBoundary | Object | business area specified as MultyPolygon conform to t
 This is a group of all rest resources related to heatmap as PNG file. Heat map is a graphical representation of data where the individual values are represented as colors.
 Currently it is used to represent two service categories: CarSharing and BikeSharing services
 
-## CarSharing Heatmap [/imp-endpoint/api/V1/Info/Heatmap/CarSharing?date={x}&left_lower_lat={lllat}&left_lower_lng={lllng}&right_upper_lng={rulng}&right_upper_lat={rulat}]    
+## CarSharing Heatmap [/imp-endpoint/api/V1/Info/Heatmap/CarSharing?date={x}&left_lower_lat={lllat}&left_lower_lng={lllng}&right_upper_lng={rulng}&right_upper_lat={rulat}&width={wdval}&height={htval}]    
 Get WMS PNG file for carSharing for a specific date and for a specific bounding box (place).
 
 ### Getting heatmap as PNG image [GET]
@@ -5065,6 +5065,8 @@ Get WMS PNG file for carSharing for a specific date and for a specific bounding 
     + lllng (required, string, `13.3154296875`) ...     
     + rulng (required, string, `13.359375`) ... 
     + rulat (required, string, `52.50953477032729`) ... 
+    + wdval (required, string, `255`) ... 
+    + htval (required, string, `255`) ... 
     
 + Request
 
@@ -5078,7 +5080,7 @@ Get WMS PNG file for carSharing for a specific date and for a specific bounding 
     
             �PNG
 
-## BikeSharing Heatmap [/imp-endpoint/api/V1/Info/Heatmap/BikeSharing?date={x}&left_lower_lat={lllat}&left_lower_lng={lllng}&right_upper_lng={rulng}&right_upper_lat={rulat}]    
+## BikeSharing Heatmap [/imp-endpoint/api/V1/Info/Heatmap/BikeSharing?date={x}&left_lower_lat={lllat}&left_lower_lng={lllng}&right_upper_lng={rulng}&right_upper_lat={rulat}&width={wdval}&height={htval}]    
 Get WMS PNG file for bikesharing for a specific date and for a specific bounding box (place).
 
 ### Getting heatmap as PNG image [GET]
@@ -5090,6 +5092,8 @@ Get WMS PNG file for bikesharing for a specific date and for a specific bounding
     + lllng (required, string, `13.3154296875`) ...     
     + rulng (required, string, `13.359375`) ... 
     + rulat (required, string, `52.50953477032729`) ... 
+    + wdval (required, string, `255`) ... 
+    + htval (required, string, `255`) ... 
 
 + Request
 
