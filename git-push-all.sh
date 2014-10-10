@@ -8,6 +8,8 @@ echo ---------------------------------------------------------------------------
 echo cd $dir
 echo git push
 
+git config --global push.default simple
+
 git push
 cd ..
 done
