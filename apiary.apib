@@ -2992,9 +2992,9 @@ The If-Modified-Since (optional) can be set to a specific date-time in order to 
 @testable
 
 + Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `1000`) ... String `radius` longitude value. Has example value.
+    + lat (number, `52.52`) ... latitude value. Has example value.
+    + lng (number, `13.39`) ... longitude value. Has example value.
+    + radius (number, `1000`) ... radius value. Has example value.
     
 + Request
 
@@ -3052,9 +3052,9 @@ This response contains estimated fare for trips from origin and distanse from or
 @nottestable
 
 + Parameters
-    + lat (string, `52.482780222078205`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.3154296875`) ... String `lng` longitude value. Has example value.
-    + radius (string, `2000`) ... String `radius` longitude value. Has example value.
+    + lat (number, `52.482780222078205`) ... latitude value. Has example value.
+    + lng (number, `13.3154296875`) ... longitude value. Has example value.
+    + radius (number, `2000`) ... radius value. Has example value.
 
 + Response 200 (application/json)
 
@@ -3097,10 +3097,10 @@ This response contains estimated fare for trips from origin and distanse from or
 @nottestable
 
 + Parameters
-    + lat (string, `52.482780222078205`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.3154296875`) ... String `lng` longitude value. Has example value.
-    + dlat (string, `53.57914`) ... String `dlat` latitude value. Has example value.
-    + dlng (string, `13.40603`) ... String `dlng` longitude value. Has example value.
+    + lat (number, `52.482780222078205`) ... latitude value. Has example value.
+    + lng (number, `13.3154296875`) ... longitude value. Has example value.
+    + dlat (number, `53.57914`) ... latitude value. Has example value.
+    + dlng (number, `13.40603`) ... longitude value. Has example value.
 
 + Response 200 (application/json)
 
@@ -4419,9 +4419,9 @@ provider | Enum | {"News", etc.}
 
 
 + Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `2000`) ... String `radius` longitude value. Has example value.
+    + lat (number, `52.52`) ... latitude value. Has example value.
+    + lng (number, `13.39`) ... longitude value. Has example value.
+    + radius (number, `2000`) ... radius value. Has example value.
     
 + Model (application/json)
 
@@ -4536,9 +4536,9 @@ Note: The area of interest can be defined as:
 The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]* and additionally roadName attribute
 
 + Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `2000`) ... String `radius` longitude value. Has example value.
+    + lat (number, `52.52`) ... latitude value. Has example value.
+    + lng (number, `13.39`) ... longitude value. Has example value.
+    + radius (number, `2000`) ... radius value. Has example value.
     
 + Model
 
@@ -4618,9 +4618,9 @@ Note: The area of interest can be defined as:
 The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]* and additionally information about line name, first and last stops and line direction
 
 + Parameters
-    + lat (string, `52.52`) ... String `lat` latitude value. Has example value.
-    + lng (string, `13.39`) ... String `lng` longitude value. Has example value.
-    + radius (string, `2000`) ... String `radius` longitude value. Has example value.
+    + lat (number, `52.52`) ... latitude value. Has example value.
+    + lng (number, `13.39`) ... longitude value. Has example value.
+    + radius (number, `2000`) ... longitude value. Has example value.
 
 + Model (application/json)
 
@@ -4716,13 +4716,13 @@ Get WMS PNG file for points of interests specified by (several) service categori
 Please note: The accept-header of this request must be set to "image/png"
 
 + Parameters
-    + lllat (string, `52.482780222078205`) ... 
-    + lllng (string, `13.3154296875`) ...     
-    + rulng (string, `13.359375`) ... 
-    + rulat (string, `52.50953477032729`) ... 
+    + lllat (number, `52.482780222078205`) ... 
+    + lllng (number, `13.3154296875`) ...     
+    + rulng (number, `13.359375`) ... 
+    + rulat (number, `52.50953477032729`) ... 
     + categories (string, `Parking,PublicTransport`) ... service names, comma-separated list of service categories (currently offered as WMS layers by VMZ), e.g. PublicTransport, Parking
-    + h (optional, string, `250`) ... height of map output in pixels (semantics according to WMS GetMap request). the default value is height=250
-    + w (optional, string, `250`) ... width of map output in pixels (semantics according to WMS GetMap request). the default value is width=250
+    + h (optional, number, `250`) ... height of map output in pixels (semantics according to WMS GetMap request). the default value is height=250
+    + w (optional, number, `250`) ... width of map output in pixels (semantics according to WMS GetMap request). the default value is width=250
 
 + Request
 
@@ -4745,12 +4745,12 @@ Get WMS PNG file for public transport stations
 Please note: The accept-header of this request must be set to "image/png"
 
 + Parameters
-    + lllat (string, `52.482780222078205`) ... 
-    + lllng (string, `13.3154296875`) ...     
-    + rulng (string, `13.359375`) ... 
-    + rulat (string, `52.50953477032729`) ... 
-    + h (optional, string, `250`) ... height of map output in pixels (semantics according to WMS GetMap request). the default value is height=250
-    + w (optional, string, `250`) ... width of map output in pixels (semantics according to WMS GetMap request). the default value is width=250
+    + lllat (number, `52.482780222078205`) ... 
+    + lllng (number, `13.3154296875`) ...     
+    + rulng (number, `13.359375`) ... 
+    + rulat (number, `52.50953477032729`) ... 
+    + h (optional, number, `250`) ... height of map output in pixels (semantics according to WMS GetMap request). the default value is height=250
+    + w (optional, number, `250`) ... width of map output in pixels (semantics according to WMS GetMap request). the default value is width=250
 
 + Request
 
@@ -4773,12 +4773,12 @@ Get WMS PNG file for current traffic
 Please note: The accept-header of this request must be set to "image/png"
 
 + Parameters
-    + lllat (string, `52.482780222078205`) ... 
-    + lllng (string, `13.3154296875`) ...     
-    + rulng (string, `13.359375`) ... 
-    + rulat (string, `52.50953477032729`) ... 
-    + h (optional, string, `250`) ... height of map output in pixels (semantics according to WMS GetMap request). the default value is height=250
-    + w (optional, string, `250`) ... width of map output in pixels (semantics according to WMS GetMap request). the default value is width=250
+    + lllat (number, `52.482780222078205`) ... 
+    + lllng (number, `13.3154296875`) ...     
+    + rulng (number, `13.359375`) ... 
+    + rulat (number, `52.50953477032729`) ... 
+    + h (optional, number, `250`) ... height of map output in pixels (semantics according to WMS GetMap request). the default value is height=250
+    + w (optional, number, `250`) ... width of map output in pixels (semantics according to WMS GetMap request). the default value is width=250
 
 + Request
 
@@ -5062,13 +5062,13 @@ If the date is in the history, the returned image with green dots represents his
 @nottestable
 
 + Parameters
-    + date (required, string, `1404892800000`) ... a date in the history for historical data / in the future for predictions. Has example value.
-    + lllat (required, string, `52.482780222078205`) ... 
-    + lllng (required, string, `13.3154296875`) ...     
-    + rulng (required, string, `13.359375`) ... 
-    + rulat (required, string, `52.50953477032729`) ... 
-    + wdval (required, string, `480`) ... 
-    + htval (required, string, `800`) ... 
+    + date (required, number, `1404892800000`) ... a date in the history for historical data / in the future for predictions. Has example value.
+    + lllat (required, number, `52.482780222078205`) ... 
+    + lllng (required, number, `13.3154296875`) ...     
+    + rulng (required, number, `13.359375`) ... 
+    + rulat (required, number, `52.50953477032729`) ... 
+    + wdval (required, number, `480`) ... 
+    + htval (required, number, `800`) ... 
     
 + Request
 
@@ -5089,13 +5089,13 @@ Get WMS PNG file for bikesharing for a specific date and for a specific bounding
 @nottestable
 
 + Parameters
-    + date (required, string, `1404892800000`) ... a date in the history (later also in the future) Has example value.
-    + lllat (required, string, `52.482780222078205`) ... 
-    + lllng (required, string, `13.3154296875`) ...     
-    + rulng (required, string, `13.359375`) ... 
-    + rulat (required, string, `52.50953477032729`) ... 
-    + wdval (required, string, `255`) ... 
-    + htval (required, string, `255`) ... 
+    + date (required, number, `1404892800000`) ... a date in the history (later also in the future) Has example value.
+    + lllat (required, number, `52.482780222078205`) ... 
+    + lllng (required, number, `13.3154296875`) ...     
+    + rulng (required, number, `13.359375`) ... 
+    + rulat (required, number, `52.50953477032729`) ... 
+    + wdval (required, number, `255`) ... 
+    + htval (required, number, `255`) ... 
 
 + Request
 
