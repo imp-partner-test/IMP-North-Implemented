@@ -22,11 +22,11 @@ def fileText = new File(apiBaseFileName).getText()
 def apiFileName = dirName + "/apiary.apib"			// on Jenkins
 println "the file to be generated: " + apiFileName
 
-//def bakFileName = apiFileName + ".bak"
-//def bakFile = new File(bakFileName)
-//bakFile.delete()
+def bakFileName = apiFileName + ".bak"
+def bakFile = new File(bakFileName)
+bakFile.delete()
 def apiFile = new File(apiFileName)
-//apiFile.renameTo(bakFileName)
+apiFile.renameTo(bakFileName)
 
 apiFile.append("FORMAT: 1A\n");
 apiFile.append("HOST: " + host + "\n\n")
