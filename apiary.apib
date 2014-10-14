@@ -3348,22 +3348,6 @@ trafficTypes | Array | list of traffic types used in the proposed trip. Possible
 description | String | description of the trip proposal
 costs | Array | list of costs for the proposed trip including distance, duration, price, etc.
 
-
-The REQUEST BODY contains different criteria for selection of trip proposals by IMR. the criterias can be specified by the following attributes:
-
-attribute | json data type | comments
---- | --- | ---
-origin | Object | start point of a trip (optionally can also include starttime)
-destination | Object | end of a trip (optional can also indlude endtime). Note if time in the origin is specified, time in the destination is discarded! If no time is specified current time is taken.
-viapoints | Array of Objects | list of viapoints to be passed in the trip
-costfunctions | Array of Objects | list of costfunctions. A costfunction is defined as a pair of a costyType (duration, distance, emission and price) and percentage value (number from 0 to 100) Sample custfunction: {"costType":"Duration","percentage":"100"}
-ownVehicles | Array of Objects | list of own vehicles which should be included into trip proposal calculation. Sample object value {"trafficType":"Car", "useParking":true,"useParkAndRide":false, "location":{"longitude":13.064472900000055,"latitude":52.3905689,"system":"WGS84"}}
-userId | String | User Id. Sample value: "userId":"4711/10"
-trafficTypes | Array | list of traffic types wich should be included into trip proposal calculation. Currently possible: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking
-routingConstraints | Array of Objects | list of routing constraints which should be included into trip proposal calculation. E.q. maximal distance in meters the traveller agrees to walk: {"routingConstraintType": "Distance", "trafficType": "Walk", "min": { "value": 0,"unit": "Meter" }, "max":{"value":600, "unit":"Meter"}}
-useBikeSharing | Boolean | use bike sharing services for routing [default: false]
-useCarSharing | Boolean | use car sharing services for routing [default: false]
-
     
 + Model (application/json)
 
@@ -3469,15 +3453,22 @@ useCarSharing | Boolean | use car sharing services for routing [default: false]
 ### Getting Trip Proposals by IMR Planner  [POST]
 @testable
 
-Selection criteria is specified in the request body as described in the sample request:
-origin: start point specified by a geo location. (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
-destination: start point specified by a geo location
-either orgin or destination might specify a time
-viaPoints: list of geo locations that the route should use
-costFunction: list of cost factors (such as Distance, Duration, Price, Emission), each with a percentual weight 
-trafficTypes: list of traffic types. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk. trafficType Other is used in the segments for car rental/parking
-routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
-userId: user that requests a trip
+Selection criteria for trip proposals is specified in the request body as described in the sample request with the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+origin | Object | start point specified by a geo location (optionally can also include starttime). (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
+destination | Object | end point specified by a geo location (optional can also include endtime). Note if time in the origin is specified, time in the destination is discarded! If no time is specified current time is taken.
+viapoints | Array of Objects | list of geolocations the route should pass
+costfunctions | Array of Objects | list of cost factors, (such as Distance, Duration, Price, Emission), each with a percentual weight. Sample custfunction: {"costType":"Duration","percentage":"100"}
+ownVehicles | Array of Objects | list of own vehicles which should be included into trip proposal calculation. Sample object value {"trafficType":"Car", "useParking":true,"useParkAndRide":false, "location":{"longitude":13.064472900000055,"latitude":52.3905689,"system":"WGS84"}}
+userId | String | user that requests a trip. Sample value: "userId":"4711/10"
+trafficTypes | Array | list of traffic types wich should be included into trip proposal calculation. Currently possible: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking
+routingConstraints | Array of Objects | list of constraints to be taken into account for various traffic types, specified by min/max values. E.q. maximal distance in meters the traveller agrees to walk: {"routingConstraintType": "Distance", "trafficType": "Walk", "min": { "value": 0,"unit": "Meter" }, "max":{"value":600, "unit":"Meter"}}
+useBikeSharing | Boolean | use bike sharing services for routing [default: false]
+useCarSharing | Boolean | use car sharing services for routing [default: false]
+
+
 
 + Request
 
