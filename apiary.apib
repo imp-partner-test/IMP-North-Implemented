@@ -2675,7 +2675,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
             }
 
 
-### Getting all stations [GET]
+### Getting all stations in a specific area [GET]
 @testable
 
 + Request
@@ -2770,7 +2770,49 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 
 + Response 200
 
-    [List of Public Transport Stations with Basic Info][]
+            {
+                        "metaData": [
+                            {
+                                "serviceAlias": "vmzStation",
+                                "lastUpdateTime": "2014-10-14T07:48:27+0200",
+                                "messages": []
+                            }
+                        ],
+                        "resources": [
+                            {
+                                "actions": [],
+                                "id": 52696,
+                                "description": "Berlin, Wiebestr./Huttenstr.",
+                                "type": "PublicTransportStation",
+                                "uri": "Resources/PublicTransport/Stations/PublicTransportStation/52696",
+                                "location": {
+                                    "latitude": 52.528315,
+                                    "longitude": 13.320255,
+                                    "system": "WGS_84"
+                                },
+                                "provider": "vmzStation",
+                                "availability": 100,
+                                "operator": "VBBStation",
+                                "modFlag": "Modified"
+                            },
+                            {
+                                "actions": [],
+                                "id": 51655,
+                                "description": "Berlin, Waltersdorfer Str./Krumme Str.",
+                                "type": "PublicTransportStation",
+                                "uri": "Resources/PublicTransport/Stations/PublicTransportStation/51655",
+                                "location": {
+                                    "latitude": 52.398914,
+                                    "longitude": 13.574981,
+                                    "system": "WGS_84"
+                                },
+                                "provider": "vmzStation",
+                                "availability": 100,
+                                "operator": "VBBStation",
+                                "modFlag": "Modified"
+                            }
+                        ]
+                    }
 
 ## Time Table of a specific Station [/imp-endpoint/api/V1/Resources/PublicTransport/Stations/{id}/TimeTables]
 
