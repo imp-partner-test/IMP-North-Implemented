@@ -3553,18 +3553,15 @@ Notes:
 
 ## Trip Proposal with Detailed Info [/imp-endpoint/api/V1/TripProposals/IMR/{proposalId}]
 
-A single trip proposal object with Detailed Information.
-
+A single trip proposal object with Detailed Information. 
 Each trip proposal consists of several segments, one segment for one transportation modality such as bike, car, train, etc. 
 There is also a separate segment if the traveler shall use different lines of the same transport modality, 
-for instance, first U5 from A to B and then U4 from B to C.
-
-Each segement has an origin and a destination with corresponding timestamps when to arrive and depart.
+for instance, first U5 from A to B and then U4 from B to C. Each segement has an origin and a destination with corresponding timestamps when to arrive and depart.
 A segment consists of a sequence of wayPoints and guidingPoints.
 A wayPoint describes an intermediate geo location useful for displaying the trip proposal in a map.
 A guidingPoint gives a traveler hints how to travel, e.g., whenever to change the road at a crossing. GuidingPoints are a subset of wayPoints
 
-The data structure of the response contains the attributes with the basic information and additionally the following attributes of a segment object:
+The data structure of the trip proposal with detailed info contains the basic information attributes (*[POST /imp-endpoint/api/V1/TripProposals/IMR]*) and additionally the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -3573,10 +3570,8 @@ origin | Object | start point of the proposed trip. For car sharing segment we h
 destination | Object | endpoint of the proposed trip
 
 
-Please note:
-
-The trip proposals as returned by *[GET /imp-endpoint/api/V1/TripProposals/IMR]* are internally stored only for a certain time; afterward they expire and details are no longer available. 
-The current expiration time is 10 minutes.
+Notes:
+- The trip proposals as returned by *[GET /imp-endpoint/api/V1/TripProposals/IMR]* are internally stored only for a certain time; afterward they expire and details are no longer available. The current expiration time is 10 minutes.
 
 ### Getting a specific Trip Proposal [GET] 
 @nottestable
