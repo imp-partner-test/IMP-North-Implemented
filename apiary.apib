@@ -3462,11 +3462,17 @@ destination | Object | end point specified by a geo location (optional can also 
 viapoints | Array of Objects | list of geolocations the route should pass
 costfunctions | Array of Objects | list of cost factors, (such as Distance, Duration, Price, Emission), each with a percentual weight. Sample custfunction: {"costType":"Duration","percentage":"100"}
 ownVehicles | Array of Objects | list of own vehicles which should be included into trip proposal calculation. Sample object value {"trafficType":"Car", "useParking":true,"useParkAndRide":false, "location":{"longitude":13.064472900000055,"latitude":52.3905689,"system":"WGS84"}}
-userId | String | user that requests a trip. Sample value: "userId":"4711/10"
+userId | String | traveller id that requests a trip. Note: currently not used by IMP and can be any string
 trafficTypes | Array | list of traffic types wich should be included into trip proposal calculation. Currently possible: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking
 routingConstraints | Array of Objects | list of constraints to be taken into account for various traffic types, specified by min/max values. E.q. maximal distance in meters the traveller agrees to walk: {"routingConstraintType": "Distance", "trafficType": "Walk", "min": { "value": 0,"unit": "Meter" }, "max":{"value":600, "unit":"Meter"}}
 useBikeSharing | Boolean | use bike sharing services for routing [default: false]
 useCarSharing | Boolean | use car sharing services for routing [default: false]
+
+Notes:
+- IMR also provides routes in the past, but not for public transport
+- route calculation the IMR takes into account information about current traffic situation (traffic jams/road works/...)
+- Traveling time costs for proposed journeys include the following extra time: 2 minutes set-up time and 1 minute return time for free-floating car sharing and bike sharing; 2 minutes set-up time and 0 minutes return time for station-based car and bike sharing, 5 minutes parking time for free-floating car sharing and own car
+
 
 
 
