@@ -3331,12 +3331,13 @@ If booking is not possible: response body explains the reason why
 
 
 # Group Journey Planner. IMR
-This is a group of all journey planner IMR related rest resources.
+This is a group of all IMR journey planner related rest resources.
 
 ## List of Trip Proposals with Basic Info. Intermodal Router [/imp-endpoint/api/V1/TripProposals/IMR] 
 
-This collection contains trip proposals with basic information for specified trip criteria. Note: the trip proposals can be multimodal or intermodal, depending on to which routing service the user is subscribed to.
-The data structure of the response contains the following attributes:
+This collection contains trip proposals with basic information for specified trip criteria. Note: the trip proposals can be multimodal or intermodal, depending on which routing service the user is subscribed to.
+
+The data structure of the RESPONSE contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -3345,12 +3346,24 @@ origin | Object | start point of the proposed trip
 destination | Object | endpoint of the proposed trip
 trafficTypes | Array | list of traffic types used in the proposed trip. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking
 description | String | 
-costs | Array | list of costs for the proposed trip
+costs | Array | list of costs for the proposed trip including distance, duration, price, etc.
+
+
+The data structure of the REQUEST BODY contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+origin | Object | start point of the trip (optional including starttime)
+destination | Object | endpoint of the trip (optional including endtime). Note if time in the origin is specified, time in the destination is discardet! If no time is specified current time is taken.
+viapoints | Array of Objects | list of viapoints
+costfunctions | Array of Objects | list of costfunctions. Sample object value: {"costType":"Duration","percentage":"100"}
+ownVehicles | Array of Objects | list of onw vihicles. Sample object value {"trafficType":"Car", "useParking":true,"useParkAndRide":false, "location":{"longitude":13.064472900000055,"latitude":52.3905689,"system":"WGS84"}}
+userId | String | User Id. Sample value: "userId":"4711/10"
+trafficTypes | Array | list of traffic types with should be used in the proposed trip. Currently possible: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking
+routingConstraints | Array of Objects | Sample object value: {"routingConstraintType": "Distance", "trafficType": "Walk", "min": { "value": 0,   "unit": "Meter" }, "max": { "value": 600, "unit": "Meter"}}
 useBikeSharing | Boolean | use bike sharing services for routing [default: false]
 useCarSharing | Boolean | use car sharing services for routing [default: false]
---- | --- | ---
-ownVehicles | Object | 
---- | --- | ---
+
 trafficType | Enum | Own vehicle type - Car / Bike
 useParking | Boolean | Use parking for own vehicle 
 useParkAndRide | Boolean | Use parking and ride for own vehicle 
