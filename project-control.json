@@ -26,25 +26,6 @@
       "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
     },
     {
-      "Project": "OMB-parku",
-      "Title": "OMB: ParkU",
-      "Chapters": [
-        "Introduction",	
-	"Bike Sharing",
-	"Car Sharing",
-	"Parking",
-        "EV Charging",
-	"Public Transport",
-	"Journey Planner. Car Router",
-	"Journey Planner. IMR",
-	"Incidents / Traffic Info",
-	"WMS",
-	"Ticketing",
-	"Taxi Service"
-      ],
-      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
-    },
-    {
       "Project": "OMB-bmw",
       "Title": "OMB: BMW",
       "Chapters": [
@@ -92,34 +73,8 @@
       "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
     },
     {
-      "Project": "OMB-tom-jell",
-      "Title": "OMB: Tom Jell",
-      "Chapters": [
-        "Introduction",
-        "Parking",
-        "Incidents / Traffic Info",
-        "WMS",
-        "Bike Sharing",
-        "Car Sharing"
-      ],
-      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
-    },
-    {
       "Project": "OMB-verkehrsmittelvergleich",
       "Title": "OMB: Verkehrsmittelvergleich",
-      "Chapters": [
-        "Introduction",
-        "Parking",
-        "Incidents / Traffic Info",
-        "WMS",
-        "Bike Sharing",
-        "Car Sharing"
-      ],
-      "Host":"https://cluster.production.imp.mobilitaetsdienste.de:8443/"
-    },
-    {
-      "Project": "OMB-volkswagen",
-      "Title": "OMB: Volkswagen",
       "Chapters": [
         "Introduction",
         "Parking",
