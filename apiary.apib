@@ -4860,11 +4860,9 @@ The Partner resource has the following attributes:
 ### Show details of specified Partner [GET]
 @nottestable
 
-+ Response 200 (application/json)
-
-    + Body
++ Response 200
     
-            [Partner][]
+    [Partner][]
             
 ### Request update of Partner details [PUT]
 @nottestable
@@ -4881,11 +4879,9 @@ Starts "Update Partner" Process (UC PM-1)
         
             { "companyName":"Partner 1 new" }
         
-+ Response 200 (application/json)
++ Response 200
 
-    + Body
-    
-            [Partner][]
+    [Partner][]
 
 ### Request deletion of specified Partner [DELETE]
 @nottestable
@@ -4933,16 +4929,7 @@ Starts "New Partner" Process
 
 + Response 201
 
-    + Headers
-    
-            Content-Type: application/json
-            Access-Control-Allow-Origin: *
-            Access-Control-Allow-Methods: POST, GET, UPDATE, DELETE, OPTIONS
-            Access-Control-Allow-Headers: content-type, x-http-method-override, x-requested-with
-
-    + Body
-    
-            [Partner][]
+    [Partner][]
 
 ## User Token [/imp-endpoint/api/V1/Partners/User/Process?action={action}]
 
@@ -4977,9 +4964,7 @@ Starts "User Token Generation" Process
 
 + Response 201 (application/json)
 
-    + Body
-    
-            [User Token][]
+    [User Token][]
 
 
 ## User Transactions Collection [/imp-endpoint/api/V1/Partners/User/Transactions?startDate={startDate}&endDate={endDate}]
@@ -5028,9 +5013,7 @@ The User Transactions Collection resource has the following attributes:
 
 + Response 200 (application/json)
 
-    + Body
-    
-            [User Transactions Collection][]
+    [User Transactions Collection][]
             
             
 # Group Business Area Info
