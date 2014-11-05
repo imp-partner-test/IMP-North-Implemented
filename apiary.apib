@@ -4337,25 +4337,9 @@ useParkAndRide | Boolean | Use parking and ride for own vehicle
     
             [
                 {
-                    "url": "TripProposals/CarRouter/80844",
-                    "origin": {
-                        "location": {
-                            "latitude": 52.39419937133789,
-                            "longitude": 13.07367992401123,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T13:04:40+0100"
-                    },
-                    "destination": {
-                        "location": {
-                            "latitude": 52.563589,
-                            "longitude": 13.319065,
-                            "system": "WGS_84"
-                        },
-                        "address": null,
-                        "time": "2014-03-27T14:48:09+0100"
-                    },
+                    "url": "TripProposals/CarRouter/1",
+                    "origin": "timed start location in GEOJson Format",
+                    "destination": "timed end location in GEOJson Format",
                     "trafficTypes": [
                         "Car"
                     ],
@@ -4363,12 +4347,29 @@ useParkAndRide | Boolean | Use parking and ride for own vehicle
                     "costs": {
                         "distance": null,
                         "duration": {
-                            "unit": "Second",
-                            "value": 5947.563361271776
+                            "unit": "Minute",
+                            "value": 20
                         },
                         "price": null,
                         "emission": null,
-                        "ticketPrice": null
+                    }
+                },
+                {
+                    "url": "TripProposals/CarRouter/2",
+                    "origin": "timed start location in GEOJson Format",
+                    "destination": "timed end location in GEOJson Format",
+                    "trafficTypes": [
+                        "Car"
+                    ],
+                    "description": null,
+                    "costs": {
+                        "distance": null,
+                        "duration": {
+                            "unit": "Minute",
+                            "value": 20
+                        },
+                        "price": null,
+                        "emission": null,
                     }
                 }
             ]
@@ -4378,13 +4379,16 @@ useParkAndRide | Boolean | Use parking and ride for own vehicle
 @testable
 
 Selection criteria is specified in the request body as described in the sample request:
-origin: start point specified by a geo location (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
-destination: start point specified by a geo location
-either orgin or destination might specify a time
-viaPoints: list of geo locations that the route should use
-costFunction: list of cost factors (such as Distance, Duration, Price, Emission), each with a percentual weight 
-routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
-userId: user that requests a trip
+- origin: start point. list of locations in GEOJson Format possible but expected only one as start n:n routing
+- destination: lend point. list of locations in GEOJson Format
+- reserseDirection: bool, if true destinaiton->origin, else origin -> destination.
+- time: time of departure or destination
+- isDepartureTime:  if true -> departure time, if false -> arrival time. default -> true
+
+- viaPoints: list of geo locations that the route should use
+- costFunction: list of cost factors (such as Distance, Duration, Price, Emission), each with a percentual weight 
+- routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
+- userId: user that requests a trip
 
 + Request
 
@@ -4396,22 +4400,11 @@ userId: user that requests a trip
     + Body
         
             {
-                  "origin": {
-                    "location": {
-                      "longitude": 13.072690999999963,
-                      "latitude": 52.3941887,
-                      "system": "WGS84"
-                    },
-                    "time": "2014-03-27T12:04:02UTC+05:30"
-                  },
-                  "destination": {
-                    "location": {
-                      "longitude": 13.319420000000036,
-                      "latitude": 52.56347100000001,
-                      "system": "WGS84"
-                    },
-                    "time": null
-                  },
+                  "origin": "list of locations in GEOJson Format",
+                  "destination": "list of locations in GEOJson Format",
+                  "reserseDirection": "false"
+                  "time": "2014-11-27T12:04:02UTC+05:30",
+                  "isDepartureTime": "true",
                   "viaPoints": [],
                   "costFunctions": [],
                   "userId": "4711/10",
