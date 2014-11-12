@@ -5131,12 +5131,12 @@ Get WMS PNG file for bikesharing for a specific date and for a specific bounding
             �PNG
 
 
-# Group ServiceOfferings per Partner
+# Group ServiceOfferings
 
-## ServiceOfferings per Partner [/imp-endpoint/api/V1/Partners/{partnerId}/ServiceOfferings] 
+## ServiceOfferings [/imp-endpoint/api/V1/ServiceOfferings] 
 
 RESPONSE:
-This collection contains a list service offerings per partner:
+This collection contains a list service offerings :
 
 attribute | json data type | comments
 --- | --- | ---
@@ -5409,15 +5409,26 @@ x | String | xx
         ]
 
 
-### setting service offerings per partner [GET]
+### getting all service offerings [GET]
 @testable
 
 + Response 200
     
-    [ServiceOfferings per Partner][]
+    [ServiceOfferings][]
 
-# Group ServiceOfferings for all Partner
-TODO
+## Service Offerings per Partner [/imp-endpoint/api/V1/Partners/{partnerId}/ServiceOfferings]
+
+### getting service offerings per partner [GET]
+@testable
+
++ Parameters
+    + partnerId (number, `42`) ... partner id.
+
++ Response 200
+    
+    [ServiceOfferings][]
+
+
 
 # Group Service Subscriptions
 TODO
