@@ -5143,6 +5143,83 @@ TODO
 # Group Service Categories
 TODO
 
+{{host}}/imp-endpoint/api/{{version}}/ServiceCategories
+
+This is a group of all rest resources related to service categories available. Services offered by service provider have to be classified with one of these service categories.
+
+## Service Categories [/imp-endpoint/api/V1/ServiceCategories    
+RESPONSE:
+This collection contains a list of all currently available service categories in IMP. Each service category has the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+id | Number | internal id
+name | String | Service Category name
+
++ Model (application/json)
+
+    +Body
+    
+        [
+            {
+                "id": 33,
+                "name": "BikeSharing"
+            },
+            {
+                "id": 126351,
+                "name": "CarJourneyPlanner"
+            },
+            {
+                "id": 32,
+                "name": "CarSharing"
+            },
+            {
+                "id": 34,
+                "name": "EVCharging"
+            },
+            {
+                "id": 38,
+                "name": "GeoCoding"
+            },
+            {
+                "id": 36,
+                "name": "JourneyPlanner"
+            },
+            {
+                "id": 28,
+                "name": "Parking"
+            },
+            {
+                "id": 29,
+                "name": "PublicTransport"
+            },
+            {
+                "id": 37,
+                "name": "TaxiService"
+            },
+            {
+                "id": 31,
+                "name": "Ticketing"
+            },
+            {
+                "id": 30,
+                "name": "TrafficInfo"
+            },
+            {
+                "id": 35,
+                "name": "WMS"
+            }
+        ]
+
+### Getting service categories [GET]
+@testable
+
++ Response 200
+
+    [Service Categories][]
+    
+            
+
 # Group Reporting
 TODO
 
