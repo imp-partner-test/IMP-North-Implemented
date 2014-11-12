@@ -5132,9 +5132,291 @@ Get WMS PNG file for bikesharing for a specific date and for a specific bounding
 
 
 # Group ServiceOfferings per Partner
-TODO
 
-# Group ServiceOfferings for all Partners
+## ServiceOfferings per Partner [/imp-endpoint/api/V1/Partners/{partnerId}/ServiceOfferings] 
+
+RESPONSE:
+This collection contains a list service offerings per partner:
+
+attribute | json data type | comments
+--- | --- | ---
+x | Number | xx
+x | String | xx 
+
++ Model (application/json)
+    
+        [
+            {
+                "id": 137,
+                "name": "Aggregated Static Parking POIs",
+                "url": "http://vmz.de/Parking",
+                "category": {
+                    "id": 28,
+                    "name": "Parking"
+                },
+                "ownerName": null,
+                "contact": null,
+                "shortDescription": null,
+                "geographicalInformation": null,
+                "validFrom": 1404138735000,
+                "validTo": 1409867999000,
+                "noticePeriod": "10",
+                "version": 1,
+                "serviceSubscriptionProcessName": "subscribeWithAutomaticAcceptance",
+                "serviceUsageProcessName": "vmzParkingGarage",
+                "features": [
+                    {
+                        "id": 138,
+                        "type": "RELEASE",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    },
+                    {
+                        "id": 139,
+                        "type": "LIST",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    },
+                    {
+                        "id": 140,
+                        "type": "CONSUME",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    },
+                    {
+                        "id": 141,
+                        "type": "DETAIL",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    }
+                ],
+                "serviceAlias": "vmzParking",
+                "serviceProviderName": "VMZ Berlin",
+                "serviceProviderStatus": "ACTIVE",
+                "serviceCosts": [],
+                "offeringStatus": "INACTIVE"
+            },
+            {
+                "id": 154,
+                "name": "Traffic Incidents",
+                "url": "http://vmz.de/Traffic",
+                "category": {
+                    "id": 30,
+                    "name": "TrafficInfo"
+                },
+                "ownerName": null,
+                "contact": null,
+                "shortDescription": null,
+                "geographicalInformation": null,
+                "validFrom": null,
+                "validTo": null,
+                "noticePeriod": "",
+                "version": 1,
+                "serviceSubscriptionProcessName": "subscribeWithAutomaticAcceptance",
+                "serviceUsageProcessName": null,
+                "features": [
+                    {
+                        "id": 155,
+                        "type": "LIST",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    },
+                    {
+                        "id": 156,
+                        "type": "DETAIL",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    },
+                    {
+                        "id": 157,
+                        "type": "WMS",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    }
+                ],
+                "serviceAlias": "vmz_trafficinfo",
+                "serviceProviderName": "VMZ Berlin",
+                "serviceProviderStatus": "ACTIVE",
+                "serviceCosts": [],
+                "offeringStatus": "ACCEPTED"
+            },
+            {
+                "id": 158,
+                "name": "Traffic Level-of-Service",
+                "url": "http://vmz.de/WMS",
+                "category": {
+                    "id": 35,
+                    "name": "WMS"
+                },
+                "ownerName": null,
+                "contact": null,
+                "shortDescription": null,
+                "geographicalInformation": null,
+                "validFrom": null,
+                "validTo": null,
+                "noticePeriod": "",
+                "version": 1,
+                "serviceSubscriptionProcessName": "subscribeWithAutomaticAcceptance",
+                "serviceUsageProcessName": null,
+                "features": [
+                    {
+                        "id": 159,
+                        "type": "WMS",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    }
+                ],
+                "serviceAlias": "vmz",
+                "serviceProviderName": "VMZ Berlin",
+                "serviceProviderStatus": "ACTIVE",
+                "serviceCosts": [],
+                "offeringStatus": "ACCEPTED"
+            },
+            {
+                "id": 160,
+                "name": "Geo Coding",
+                "url": "http://vmz.de/GeoCoding",
+                "category": {
+                    "id": 38,
+                    "name": "GeoCoding"
+                },
+                "ownerName": null,
+                "contact": null,
+                "shortDescription": null,
+                "geographicalInformation": null,
+                "validFrom": null,
+                "validTo": null,
+                "noticePeriod": "",
+                "version": 1,
+                "serviceSubscriptionProcessName": "subscribeWithAutomaticAcceptance",
+                "serviceUsageProcessName": null,
+                "features": [
+                    {
+                        "id": 161,
+                        "type": "LIST",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    }
+                ],
+                "serviceAlias": "vmzGeoCoding",
+                "serviceProviderName": "VMZ Berlin",
+                "serviceProviderStatus": "ACTIVE",
+                "serviceCosts": [],
+                "offeringStatus": "ACCEPTED"
+            },
+            {
+                "id": 162,
+                "name": "IMR Routing",
+                "url": "http://vmz.de/IMRRouter",
+                "category": {
+                    "id": 36,
+                    "name": "JourneyPlanner"
+                },
+                "ownerName": null,
+                "contact": null,
+                "shortDescription": null,
+                "geographicalInformation": null,
+                "validFrom": null,
+                "validTo": null,
+                "noticePeriod": "",
+                "version": 1,
+                "serviceSubscriptionProcessName": "subscribeWithAutomaticAcceptance",
+                "serviceUsageProcessName": null,
+                "features": [
+                    {
+                        "id": 163,
+                        "type": "LIST",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    },
+                    {
+                        "id": 164,
+                        "type": "DETAIL",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    }
+                ],
+                "serviceAlias": "vmzImrRouting",
+                "serviceProviderName": "VMZ Berlin",
+                "serviceProviderStatus": "ACTIVE",
+                "serviceCosts": [],
+                "offeringStatus": "ACCEPTED"
+            },
+            {
+                "id": 126352,
+                "name": "Car Routing",
+                "url": "http://vmz.de/CarRouter",
+                "category": {
+                    "id": 126351,
+                    "name": "CarJourneyPlanner"
+                },
+                "ownerName": null,
+                "contact": null,
+                "shortDescription": null,
+                "geographicalInformation": null,
+                "validFrom": null,
+                "validTo": null,
+                "noticePeriod": "",
+                "version": 1,
+                "serviceSubscriptionProcessName": "subscribeWithAutomaticAcceptance",
+                "serviceUsageProcessName": null,
+                "features": [
+                    {
+                        "id": 126353,
+                        "type": "LIST",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    },
+                    {
+                        "id": 126354,
+                        "type": "DETAIL",
+                        "interfaceType": null,
+                        "priceModelType": null,
+                        "url": null,
+                        "documentation": null
+                    }
+                ],
+                "serviceAlias": "vmzCarRouting",
+                "serviceProviderName": "VMZ Berlin",
+                "serviceProviderStatus": "ACTIVE",
+                "serviceCosts": [],
+                "offeringStatus": "ACCEPTED"
+            }
+        ]
+
+
+### setting service offerings per partner [GET]
+@testable
+
++ Response 200
+    
+    [ServiceOfferings per Partner][]
+
+# Group ServiceOfferings for all Partner
 TODO
 
 # Group Service Subscriptions
