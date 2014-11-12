@@ -5141,9 +5141,6 @@ TODO
 TODO
 
 # Group Service Categories
-TODO
-
-{{host}}/imp-endpoint/api/{{version}}/ServiceCategories
 
 This is a group of all rest resources related to service categories available. Services offered by service provider have to be classified with one of these service categories.
 
@@ -5219,6 +5216,190 @@ name | String | Service Category name
     [Service Categories][]
     
             
+
+# Group Process Definitions
+
+This is a group of all rest resources related to BPMN process definitions
+
+## All Process Definitions [/imp-endpoint/api/V1/ProcessDefinitions] 
+
+RESPONSE:
+This collection contains a list of all Processes. Each service usage has the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+id | String | process id
+name | String | process name
+description | String | 
+processCategory | String | category of the process (ServiceUsage, ...)
+requiredFeatures | Array | list of features (BOOKING, CANCELATION, etc.)
+
++ Model (application/json)
+    
+        [
+            {
+                "id": "bookingWithCancelation",
+                "name": "Booking / Cancelation",
+                "description": null,
+                "processCategory": "ServiceUsage",
+                "requiredFeatures": [
+                    "BOOKING",
+                    "CANCELATION"
+                ]
+            },
+            {
+                "id": "bookingWithoutCancelation",
+                "name": "Booking",
+                "description": null,
+                "processCategory": "ServiceUsage",
+                "requiredFeatures": [
+                    "BOOKING"
+                ]
+            },
+            {
+                "id": "handyticketBookingProcess",
+                "name": "HandyTicket Booking",
+                "description": null,
+                "processCategory": "ServiceUsage",
+                "requiredFeatures": [
+                    "BUY",
+                    "CONFIRM"
+                ]
+            },
+            {
+                "id": "vmzParkingGarage",
+                "name": "Parking Garage",
+                "description": null,
+                "processCategory": "ServiceUsage",
+                "requiredFeatures": [
+                    "CONSUME",
+                    "RELEASE"
+                ]
+            }
+        ]
+
+
+### getting all BPMN process definitions [GET]
+@nottestable
+
+REQUEST
+
++ Response 200
+    
+    [All Process Definitions][]
+
+
+## Process Definitions for Service Usage [/imp-endpoint/api/V1/ProcessDefinitions/ServiceUsage] 
+
+RESPONSE:
+This collection contains a list of process definitions of the type service usage. Each process has the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+id | String | process id
+name | String | process name
+description | String | 
+processCategory | String | category of the process (ServiceUsage, ...)
+requiredFeatures | Array | list of features (BOOKING, CANCELATION, etc.)
+
++ Model (application/json)
+    
+        [
+            {
+                "id": "bookingWithCancelation",
+                "name": "Booking / Cancelation",
+                "description": null,
+                "processCategory": "ServiceUsage",
+                "requiredFeatures": [
+                    "BOOKING",
+                    "CANCELATION"
+                ]
+            },
+            {
+                "id": "bookingWithoutCancelation",
+                "name": "Booking",
+                "description": null,
+                "processCategory": "ServiceUsage",
+                "requiredFeatures": [
+                    "BOOKING"
+                ]
+            },
+            {
+                "id": "handyticketBookingProcess",
+                "name": "HandyTicket Booking",
+                "description": null,
+                "processCategory": "ServiceUsage",
+                "requiredFeatures": [
+                    "BUY",
+                    "CONFIRM"
+                ]
+            },
+            {
+                "id": "vmzParkingGarage",
+                "name": "Parking Garage",
+                "description": null,
+                "processCategory": "ServiceUsage",
+                "requiredFeatures": [
+                    "CONSUME",
+                    "RELEASE"
+                ]
+            }
+        ]
+
+
+### getting service usage BPMN process definitions [GET]
+@testable
+
++ Response 200
+    
+    [Process Definitions for Service Usage ][]
+
+## Process Definitions for Service Subscription [/imp-endpoint/api/V1/ProcessDefinitions/ServiceSubscription] 
+
+RESPONSE:
+This collection contains a list of process definitions of the type service subscription. Each process has the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+id | String | process id
+name | String | process name
+description | String | 
+processCategory | String | category of the process (ServiceUsage, ...)
+requiredFeatures | Array | list of features (BOOKING, CANCELATION, etc.)
+
++ Model (application/json)
+    
+        [
+            {
+                "id": "subscribePublicFree",
+                "name": "Public & free",
+                "description": null,
+                "processCategory": "ServiceSubscription",
+                "requiredFeatures": []
+            },
+            {
+                "id": "subscribeWithAcceptance",
+                "name": "Acceptance process",
+                "description": null,
+                "processCategory": "ServiceSubscription",
+                "requiredFeatures": []
+            },
+            {
+                "id": "subscribeWithAutomaticAcceptance",
+                "name": "Automatic acceptance",
+                "description": null,
+                "processCategory": "ServiceSubscription",
+                "requiredFeatures": []
+            }
+        ]
+
+
+### getting service subscription BPMN process definitions [GET]
+@testable
+
++ Response 200
+    
+    [Process Definitions for Service Subscription][]
 
 # Group Reporting
 TODO
