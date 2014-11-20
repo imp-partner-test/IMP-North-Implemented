@@ -2404,6 +2404,128 @@ Parts of the data structure might be omitted if the information is not available
             ]
         }
         
+## Parking Garages with specified category [/imp-endpoint/api/V1/Resources/Parking/Garages?lat={lat}&lng={lng}&radius={radius}&f_garages={categoryJson}]    
+This collection contains a list of parking garages in an area of interest for specified option of garage category viz. P+R or P.
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | List of available actions on this resource (book, cancel, etc.)
+id | Number | Internal parking garage identification number
+description | String | Approximate location
+type | String | (="ParkingGarage")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
+provider | String | Parking service provider (usually equals operator)
+availability | Double | Availability in percentage
+operator | String | Parking space operator (usually equals provider)
+totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
+lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+Parts of the data structure might be omitted if the information is not available. 
+    
+### Getting parking garages with specified category [GET]
+@testable
+
++ Parameters
+    + lat (number, `52.43`) ... latitude value. Has example value.
+    + lng (number, `13.38`) ... longitude value. Has example value.
+    + radius (number, `2000`) ... longitude value. Has example value.
+    + categoryJson (optional, string, `{"category":"P%2BR"}`) ... String `categoryJson` category json data. Example value `{"category":"P%2BR"}` or `{"category":"P"}`
+    
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+        
++ Response 200 (application/json)   
+
+        {
+            "metaData": [
+                {
+                    "serviceAlias": "vmzParking",
+                    "lastUpdateTime": "2014-11-20T12:55:14+01:00",
+                    "messages": []
+                                    },
+                {
+                    "serviceAlias": "city2eParking",
+                    "lastUpdateTime": "2014-11-20T13:22:50+01:00",
+                    "messages": []
+                },
+                {
+                    "serviceAlias": "parkUParking",
+                    "lastUpdateTime": "2014-11-20T13:22:54+01:00",
+                    "messages": []
+                }
+            ],
+            "resources": [
+                {
+                    "actions": [
+                        {
+                            "name": "consume",
+                            "method": "POST",
+                            "uri": "Resources/Parking/Garages/9693/Process?action=consume"
+                        }
+                    ],
+                    "id": 9693,
+                    "description": "P+R, S Marienfelde",
+                    "type": "ParkingGarage",
+                    "uri": "Resources/Parking/Garages/9693",
+                    "location": {
+                    "latitude": 52.42318,
+                    "longitude": 13.37442,
+                    "system": "WGS_84"
+                    },
+                    "provider": "vmzParking",
+                    "availability": null,
+                    "operator": "P",
+                    "totalnumber": {
+                    "others": 75,
+                    "handicappedOnly": 0,
+                    "womenOnly": 0
+                    },
+                    "lottype": "Parkplatz"
+                },
+                {
+                    "actions": [
+                        {
+                            "name": "consume",
+                            "method": "POST",
+                            "uri": "Resources/Parking/Garages/9647/Process?action=consume"
+                        }
+                    ],
+                    "id": 9647,
+                    "description": "P+R, Tempelhof, U Alt-Mariendorf",
+                    "type": "ParkingGarage",
+                    "uri": "Resources/Parking/Garages/9647",
+                    "location": {
+                    "latitude": 52.439330000000005,
+                    "longitude": 13.389830000000002,
+                    "system": "WGS_84"
+                    },
+                    "provider": "vmzParking",
+                    "availability": null,
+                    "operator": "P",
+                    "totalnumber": {
+                    "others": 125,
+                    "handicappedOnly": 0,
+                    "womenOnly": 0
+                    },
+                    "lottype": "Parkplatz"
+                }
+            ]
+        }
+
 ## All Parking Garages with Basic Info [/imp-endpoint/api/V1/Resources/Parking/Garages/All]    
 This collection contains a list of all parking garages. 
 
