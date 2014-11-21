@@ -2440,7 +2440,7 @@ Parts of the data structure might be omitted if the information is not available
     + lat (number, `52.43`) ... latitude value. Has example value.
     + lng (number, `13.38`) ... longitude value. Has example value.
     + radius (number, `2000`) ... longitude value. Has example value.
-    + categoryJson (optional, string, `{"category":"P%2BR"}`) ... String `categoryJson` category json data. Example value `{"category":"P%2BR"}` or `{"category":"P"}`
+    + categoryJson (optional, string, `{"category":"P%2BR"}`) ... String `categoryJson` category json data. Example value `{"category":"P+R"}` or `{"category":"P"}`
     
 + Request
 
@@ -2654,7 +2654,7 @@ Parts of the data structure might be omitted if the information is not available
 @testable
 
 + Parameters
-    + categoryJson (optional, string, `{"category":"P%2BR"}`) ... String `categoryJson` category json data. Example value `{"category":"P%2BR"}` or `{"category":"P"}`
+    + categoryJson (optional, string, `{"category":"P%2BR"}`) ... String `categoryJson` category json data. Example value `{"category":"P+R"}` or `{"category":"P"}`
     
 + Request
 
@@ -2764,70 +2764,92 @@ services | Array | Special services { "WomenParking", "DisabledParking", "Monito
 securityComment | String |  Securtiy features
 entrance | String |
 
-### Getting a specific charging station [GET] 
-@nottestable
+## OnStreet Parking Spaces for specified size [/imp-endpoint/api/V1/Resources/Parking/OnStreetSpaces?lat={lat}&lng={lng}&radius={radius}&f_onStreetSpaces={sizeJson}]
+This collection contains a list of OnStreet parking spaces for specified size in an area of interest specified by query parameters together with an URI to acquire more details. 
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | List of available actions on this resource (currently no actions available)
+id | Number | Internal parking garage identification number
+description | String | Approximate location
+type | String | (="ParkingGarage")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
+provider | String | Parking service provider (usually equals operator)
+availability | Double | Availability in percentage
+operator | String | Parking space operator (usually equals provider)
+size | Enum | Size of OnStreet parking space {"Large", "Medium", "Small", "Unknown"} 
+accessibility | Enum | Accessbility of OnStreet parking space {"Private","Public","SemiPublic","Unknown"}
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+Parts of the data structure might be omitted if the information is not available. 
+
+### Getting OnStreet parking spaces for specified size [GET]
+@testable
 
 + Parameters
-    + id (string, `8367`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/Parking/Garages?lat={lat}&lng={lng}&radius={radius}]*
+    + lat (number, `52.50`) ... latitude value. Has example value.
+    + lng (number, `13.35`) ... longitude value. Has example value.
+    + radius (number, `1000`) ... longitude value. Has example value.
+    + sizeJson (optional, string, `{"size":"Large"}`) ... String `sizeJson` size json data. Example value `{"size":"Large"}` or `{"size":"Medium"}`
 
-+ Response 200 (application/json) 
++ Request
+
+    + Headers
+
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+
++ Response 200 (application/json)   
 
         {
-            "actions": [
+            "metaData": [
                 {
-                    "name": "consume",
-                    "method": "POST",
-                    "uri": "Resources/Parking/Garages/271366/Process?action=consume"
+                    "serviceAlias": "vmzParking",
+                    "lastUpdateTime": "2014-11-21T05:55:47+01:00",
+                    "messages": []
+                },
+                {
+                    "serviceAlias": "city2eParking",
+                    "lastUpdateTime": "2014-11-21T06:45:08+01:00",
+                    "messages": []
+                },
+                {
+                    "serviceAlias": "parkUParking",
+                    "lastUpdateTime": "2014-11-21T06:45:09+01:00",
+                    "messages": []
                 }
             ],
-            "id": 271366,
-            "description": "Mitte, Parkhaus Dorotheenstraße",
-            "type": "ParkingGarage",
-            "uri": "Resources/Parking/Garages/271366/",
-            "location": {
-                "latitude": 52.51908,
-                "longitude": 13.39094,
-                "system": "WGS_84"
-            },
-            "provider": "vmzParking",
-            "availability": null,
-            "operator": "Parkinglot",
-            "totalnumber": {
-                "others": 495,
-                "handicappedOnly": 0,
-                "womenOnly": 0
-            },
-            "lottype": "Tiefgarage",
-            "address": {
-                "citycode": "10117",
-                "city": "Berlin",
-                "street": "Dorotheenstraße",
-                "houseno": "0",
-                "district": null,
-                "region": null,
-                "country": null
-            },
-            "pricing": "2,00 EUR für die 1. Std. <br>2. und 3. Stunde 1,50 Euro<br>je weiter Stunde 1,00 Euro<br>Tagespreis 15,00 Euro<br>Monatspreis 100,00 Euro",
-            "payment": [
-                "BANKNOTEPAY",
-                "COINPAY"
-            ],
-            "category": [
-                "P"
-            ],
-            "openingHours": null,
-            "bookable": false,
-            "heightLimit": null,
-            "occupancyRate": null,
-            "allowedStay": null,
-            "generalInformations": null,
-            "restrictions": null,
-            "services": null,
-            "securityComment": null,
-            "entrance": null
+            "resources": [
+                {
+                    "actions": [],
+                    "id": 121,
+                    "description": "Einemstraße",
+                    "type": "ParkingOnStreetSpace",
+                    "uri": "Resources/Parking/OnStreetSpaces/121",
+                    "location": {
+                    "latitude": 52.502795,
+                    "longitude": 13.352953,
+                    "system": "WGS_84"
+                    },
+                    "provider": "parkUParking",
+                    "availability": 100,
+                    "operator": "ParkU",
+                    "size": "Large",
+                    "accessibility": null
+                }
+            ]
         }
-
-
+        
+            
 
 # Group Public Transport
 This is a group of all public transportation related rest resources.
