@@ -2779,9 +2779,9 @@ metadata | Object | List of service providers and the last update times and fail
 resources | Array | Array of resources within the search area
 --- | --- | ---
 actions | Array | List of available actions on this resource (currently no actions available)
-id | Number | Internal parking garage identification number
+id | Number | Internal OnStreet parking space identification number
 description | String | Approximate location
-type | String | (="ParkingGarage")
+type | String | (="ParkingOnStreetSpace")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
 provider | String | Parking service provider (usually equals operator)
@@ -2849,6 +2849,92 @@ Parts of the data structure might be omitted if the information is not available
             ]
         }
         
+## OnStreet Parking Spaces for specified category [/imp-endpoint/api/V1/Resources/Parking/OnStreetSpaces?lat={lat}&lng={lng}&radius={radius}&f_garages={categoryJson}]
+This collection contains a list of OnStreet parking spaces for specified category in an area of interest specified by query parameters together with an URI to acquire more details. 
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The data structure of the response contains the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+actions | Array | List of available actions on this resource (currently no actions available)
+id | Number | Internal OnStreet parking space identification number
+description | String | Approximate location
+type | String | (="ParkingOnStreetSpace")
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
+provider | String | Parking service provider (usually equals operator)
+availability | Double | Availability in percentage
+operator | String | Parking space operator (usually equals provider)
+size | Enum | Size of OnStreet parking space {"Large", "Medium", "Small", "Unknown"} 
+accessibility | Enum | Accessbility of OnStreet parking space {"Private","Public","SemiPublic","Unknown"}
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+
+Parts of the data structure might be omitted if the information is not available. 
+
+### Getting OnStreet parking spaces for specified category [GET]
+@nottestable
+
++ Parameters
+    + lat (number, `52.50`) ... latitude value. Has example value.
+    + lng (number, `13.35`) ... longitude value. Has example value.
+    + radius (number, `1000`) ... longitude value. Has example value.
+    + categoryJson (optional, string, `{"category":"P%2BR"}`) ... String `categoryJson` category json data. Example value `{"category":"P+R"}` or `{"category":"P"}`
+
++ Request
+
+    + Headers
+
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+
++ Response 200 (application/json)   
+
+        {
+            "metaData": [
+                {
+                    "serviceAlias": "vmzParking",
+                    "lastUpdateTime": "2014-11-21T05:55:47+01:00",
+                    "messages": []
+                },
+                {
+                    "serviceAlias": "city2eParking",
+                    "lastUpdateTime": "2014-11-21T06:45:08+01:00",
+                    "messages": []
+                },
+                {
+                    "serviceAlias": "parkUParking",
+                    "lastUpdateTime": "2014-11-21T06:45:09+01:00",
+                    "messages": []
+                }
+            ],
+            "resources": [
+                {
+                    "actions": [],
+                    "id": 121,
+                    "description": "Einemstraße",
+                    "type": "ParkingOnStreetSpace",
+                    "uri": "Resources/Parking/OnStreetSpaces/121",
+                    "location": {
+                    "latitude": 52.502795,
+                    "longitude": 13.352953,
+                    "system": "WGS_84"
+                    },
+                    "provider": "parkUParking",
+                    "availability": 100,
+                    "operator": "ParkU",
+                    "size": "Large",
+                    "accessibility": null
+                }
+            ]
+        }
+        
+            
             
 
 # Group Public Transport
