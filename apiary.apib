@@ -2934,6 +2934,99 @@ Parts of the data structure might be omitted if the information is not available
             ]
         }
         
+## All Parking Garages or OnStreet parking spaces or both with specified category or size [/imp-endpoint/api/V1/Resources/Parking/All?f_onStreetSpaces={sizeJson}&f_garages={categoryJson}]    
+This collection contains a list of all parking garages or OnStreet parking spaces or both in an area of interest for specified option of garage category (viz. P+R or P) or size (Small, Medium or Large).
+
+The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+
+The response contains attributes from parking garages or OnStreet parking spaces or both
+
+
+Parts of the data structure might be omitted if the information is not available. 
+    
+### Getting all parking garages or OnStreet parking spaces or both with specified size and category [GET]
+@testable
+
++ Parameters
+    + sizeJson (optional, string, `{"size":"Large"}`) ... String `sizeJson` size json data. Example value `{"size":"Large"}` or `{"size":"Medium"}`or `{"size":"Small"}
+    + categoryJson (optional, string, `{"category":"P%2BR"}`) ... String `categoryJson` category json data. Example value `{"category":"P+R"}` or `{"category":"P"}`
+    
++ Request
+
+    + Headers
+    
+            If-Modified-Since: Wed, 09 Apr 2008 23:55:38 GMT 
+        
++ Response 200 (application/json)   
+
+        {
+            "metaData": [
+                {
+                    "serviceAlias": "vmzParking",
+                    "lastUpdateTime": "2014-11-20T12:55:14+01:00",
+                    "messages": []
+                                    },
+                {
+                    "serviceAlias": "city2eParking",
+                    "lastUpdateTime": "2014-11-20T13:22:50+01:00",
+                    "messages": []
+                },
+                {
+                    "serviceAlias": "parkUParking",
+                    "lastUpdateTime": "2014-11-20T13:22:54+01:00",
+                    "messages": []
+                }
+            ],
+            "resources": [
+                {
+                    "actions": [
+                        {
+                            "name": "consume",
+                            "method": "POST",
+                            "uri": "Resources/Parking/Garages/9693/Process?action=consume"
+                        }
+                    ],
+                    "id": 9693,
+                    "description": "P+R, S Marienfelde",
+                    "type": "ParkingGarage",
+                    "uri": "Resources/Parking/Garages/9693",
+                    "location": {
+                    "latitude": 52.42318,
+                    "longitude": 13.37442,
+                    "system": "WGS_84"
+                    },
+                    "provider": "vmzParking",
+                    "availability": null,
+                    "operator": "P",
+                    "totalnumber": {
+                    "others": 75,
+                    "handicappedOnly": 0,
+                    "womenOnly": 0
+                    },
+                    "lottype": "Parkplatz"
+                },
+                {
+                    "actions": [],
+                    "id": 121,
+                    "description": "Einemstraße",
+                    "type": "ParkingOnStreetSpace",
+                    "uri": "Resources/Parking/OnStreetSpaces/121",
+                    "location": {
+                    "latitude": 52.502795,
+                    "longitude": 13.352953,
+                    "system": "WGS_84"
+                    },
+                    "provider": "parkUParking",
+                    "availability": 100,
+                    "operator": "ParkU",
+                    "size": "Large",
+                    "accessibility": null
+                }
+            ]
+        }
+
+
             
             
 
