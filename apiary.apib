@@ -739,74 +739,115 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
     + Body
     
             {
-            "metaData": [
+              "metaData": [
                 {
-                    "serviceAlias": "driveNow",
-                    "lastUpdateTime": "2014-07-09T12:36:24+02:00",
-                    "messages": []
+                  "serviceAlias": "flinkster",
+                  "lastUpdateTime": "2014-11-22T03:14:44+0100",
+                  "messages": []
                 },
                 {
-                    "serviceAlias": "car2Go",
-                    "lastUpdateTime": "2014-07-09T12:36:38+02:00",
-                    "messages": []
+                  "serviceAlias": "car2Go",
+                  "lastUpdateTime": "2014-11-22T03:20:51+0100",
+                  "messages": []
                 },
                 {
-                    "serviceAlias": "flinkster",
-                    "lastUpdateTime": "2014-07-09T12:36:46+02:00",
-                    "messages": []
+                  "serviceAlias": "driveNow",
+                  "lastUpdateTime": "2014-11-22T03:20:16+0100",
+                  "messages": []
                 },
                 {
-                    "serviceAlias": "citeeCar",
-                    "lastUpdateTime": "2014-07-09T12:26:09+02:00",
-                    "messages": []
+                  "serviceAlias": "citeeCar",
+                  "lastUpdateTime": "2014-11-22T03:19:51+0100",
+                  "messages": []
+                },
+                {
+                  "serviceAlias": "multiCity",
+                  "lastUpdateTime": "2014-11-22T03:20:34+0100",
+                  "messages": []
                 }
-            ],
-            "resources": [
+              ],
+              "resources": [
                 {
-                    "actions": [
-                        {
-                            "name": "book",
-                            "method": "POST",
-                            "uri": "Resources/CarSharing/Cars/235787/Process?action=book"
-                        }
-                    ],
-                    "id": 235787,
-                    "description": "Philbert",
-                    "type": "Cars",
-                    "uri": "Resources/CarSharing/Cars/235787",
-                    "location": {
-                        "latitude": 52.520018,
-                        "longitude": 13.390876,
-                        "system": "WGS_84"
-                    },
-                    "provider": "driveNow",
-                    "availability": 100,
-                    "operator": "DriveNow",
-                    "modFlag": "Relocated"
+                  "actions": [],
+                  "id": 49483,
+                  "description": "B-CC 1426",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/49483",
+                  "location": {
+                    "latitude": 52.525909423828125,
+                    "longitude": 13.390524864196777,
+                    "system": "WGS_84"
+                  },
+                  "provider": "citeeCar",
+                  "availability": null,
+                  "operator": "CiteeCar",
+                  "modFlag": "Relocated"
                 },
                 {
-                    "actions": [
-                        {
-                            "name": "book",
-                            "method": "POST",
-                            "uri": "Resources/CarSharing/Cars/235788/Process?action=book"
-                        }
-                    ],
-                    "id": 235788,
-                    "description": "Chico",
-                    "type": "Cars",
-                    "uri": "Resources/CarSharing/Cars/235788",
-                    "location": {
-                        "latitude": 52.513842,
-                        "longitude": 13.385001,
-                        "system": "WGS_84"
-                    },
-                    "provider": "driveNow",
-                    "availability": 100,
-                    "operator": "DriveNow",
-                    "modFlag": "Deleted"
+                  "actions": [],
+                  "id": 48831,
+                  "description": "B-CC 6109",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/48831",
+                  "location": {
+                    "latitude": 52.51978302001953,
+                    "longitude": 13.393811225891113,
+                    "system": "WGS_84"
+                  },
+                  "provider": "citeeCar",
+                  "availability": null,
+                  "operator": "CiteeCar",
+                  "modFlag": "Relocated"
+                },
+                {
+                  "actions": [],
+                  "id": 56507,
+                  "description": "114071",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/56507",
+                  "location": {
+                    "latitude": 52.5156,
+                    "longitude": 13.3879333,
+                    "system": "WGS_84"
+                  },
+                  "provider": "multiCity",
+                  "availability": 100,
+                  "operator": "Multicity",
+                  "modFlag": "Modified"
+                },
+                {
+                  "actions": [],
+                  "id": 49498,
+                  "description": "151616",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/49498",
+                  "location": {
+                    "latitude": 52.5271867,
+                    "longitude": 13.3861633,
+                    "system": "WGS_84"
+                  },
+                  "provider": "multiCity",
+                  "availability": 100,
+                  "operator": "Multicity",
+                  "modFlag": "Modified"
+                },
+                {
+                  "actions": [],
+                  "id": 50280,
+                  "description": "151683",
+                  "type": "Cars",
+                  "uri": "Resources/CarSharing/Cars/50280",
+                  "location": {
+                    "latitude": 52.5198967,
+                    "longitude": 13.3961867,
+                    "system": "WGS_84"
+                  },
+                  "provider": "multiCity",
+                  "availability": 100,
+                  "operator": "Multicity",
+                  "modFlag": "Modified"
                 }
-                ]
+              ]
             } 
 
 ## List of All Car Sharing Locations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/All] 
@@ -2440,7 +2481,7 @@ Parts of the data structure might be omitted if the information is not available
     + lat (number, `52.43`) ... latitude value. Has example value.
     + lng (number, `13.38`) ... longitude value. Has example value.
     + radius (number, `2000`) ... longitude value. Has example value.
-    + categoryJson (optional, string, `{"category" : ["P%2BR"]}`) ... String `categoryJson` category json data. Example value `{"category" : ["P+R"]}` or `{"category" : ["P"]}`
+    + categoryJson (optional, string, `{"category": ["P+R"]}`) ... String `categoryJson` category json data. Example value `{"category":["P+R"]}` or `{"category":["P"]}`
     
 + Request
 
