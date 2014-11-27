@@ -3920,7 +3920,7 @@ attribute | json data type | comments
 origin | Object | start point specified by a geo location (optionally can also include starttime).
 destination | Object | end point specified by a geo location (optional can also include endtime). 
 viapoints | Array of Objects | list of geolocations the route should pass
-costfunctions | Array of Objects | list of cost factors, Note: Only Duration is supported by OTP, with a percentual weight. Sample custfunction: {"costType":"Duration","percentage":"100"}
+costfunctions | Array of Objects | list of cost factors, Note: Only Duration or Emission is supported by OTP, with a percentual weight. One with greater percentile is selected. Sample custfunction: {"costType":"Duration","percentage":"100"}
 userId | String | traveller id that requests a trip. Note: currently not used by IMP and can be any string
 trafficTypes | Array | list of traffic types which should be included into trip proposal calculation. Currently possible: Walk,Bus, Train, Bike, Car, Tram, UBahn, Ferry.
 routingConstraints | Array of Objects | list of constraints to be taken into account for various traffic types, specified by max values. E.q. maximal distance in meters the traveller agrees to walk: {"routingConstraintType": "Distance", "trafficType": "Walk", "max":{"value":600, "unit":"Meter"}}
