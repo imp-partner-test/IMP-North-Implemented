@@ -2711,14 +2711,13 @@ usage | String |
             }
             
         
-## All Parking Garages or OnStreet parking spaces or both with specified category or size [/imp-endpoint/api/V1/Resources/Parking/All?f_onStreetSpaces={sizeJson}&f_garages={categoryJson}]    
-This collection contains a list of all parking garages or OnStreet parking spaces or both in an area of interest for specified option of garage category (viz. P+R or P) or size (Small, Medium or Large).
+## All Parking Garages or OnStreet parking spaces or both [/imp-endpoint/api/V1/Resources/Parking/All?f_onStreetSpaces={sizeJson}&f_garages={categoryJson}]    
+This collection contains a list of all parking garages or OnStreet parking spaces or both in an area of interest. The parking possibilities can be filtered by garage category (viz. P+R or P) or space size (Small, Medium or Large).
 
 The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
 Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
 The response contains attributes from parking garages or OnStreet parking spaces or both
-
 
 Parts of the data structure might be omitted if the information is not available. 
     
