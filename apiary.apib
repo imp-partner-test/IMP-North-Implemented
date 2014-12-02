@@ -2481,6 +2481,70 @@ services | Array | Special services { "WomenParking", "DisabledParking", "Monito
 securityComment | String |  Securtiy features
 entrance | String |
 
+### Getting a specific garage [GET] 
+@nottestable
+
++ Parameters
+    + id (string, `878`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/Parking/Garages?lat={lat}&lng={lng}&radius={radius}]* .
+        
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "actions": [
+                    {
+                        "name": "consume",
+                        "method": "POST",
+                        "uri": "Resources/Parking/Garages/878/Process?action=consume"
+                    }
+                ],
+                "id": 878,
+                "description": "Mitte, An der Friedrichswerderschen Kirche",
+                "type": "ParkingGarageDetails",
+                "uri": "Resources/Parking/Garages/878",
+                "location": {
+                    "latitude": 52.515930000000004,
+                    "longitude": 13.39694,
+                    "system": "WGS_84"
+                },
+                "provider": "vmzParking",
+                "availability": null,
+                "operator": "P",
+                "totalnumber": {
+                    "others": 75,
+                    "handicappedOnly": 0,
+                    "womenOnly": 0
+                },
+                "lottype": "Parkplatz",
+                "address": {
+                    "citycode": "10117",
+                    "city": "Berlin",
+                    "street": "Oberwallstr.",
+                    "houseno": null,
+                    "district": null,
+                    "region": null,
+                    "country": null
+                },
+                "pricing": "EUR 0,25 pro 15 min.<br>Mo-Fr von 19 - 9 Uhr: kostenlos<br>Sa von 14 - 9 Uhr: kostenlos<br>So: kostenlos",
+                "payment": [
+                    "COINPAY"
+                ],
+                "category": [
+                    "P"
+                ],
+                "openingHours": null,
+                "bookable": false,
+                "heightLimit": null,
+                "occupancyRate": null,
+                "allowedStay": null,
+                "generalInformations": null,
+                "restrictions": null,
+                "services": null,
+                "securityComment": null,
+                "entrance": null
+            }
+
 ## OnStreet Parking Spaces [/imp-endpoint/api/V1/Resources/Parking/OnStreetSpaces?lat={lat}&lng={lng}&radius={radius}&f_onStreetSpaces={sizeJson}]
 This collection contains a list of OnStreet parking spaces for specified size in an area of interest specified by query parameters together with an URI to acquire more details. OnStreet spaces can be filtered by the space size.
 
