@@ -2370,7 +2370,7 @@ Parts of the data structure might be omitted if the information is not available
     + lat (optional, number, `52.52`) ... latitude value. Has example value.
     + lng (optional, number, `13.39`) ... longitude value. Has example value.
     + radius (optional, number, `1000`) ... longitude value. Has example value.
-    + categoryJson (optional, string, `{"category": ["P+R"]}`) ... String `categoryJson` category json data, containing a list of possible category values conbined by OR. Example value `{"category":["P+R"]}` or `{"category":["P"]}`
+    + categoryJson (optional, string, `{"category": ["P%2BR"]}`) ... String `categoryJson` category json data, containing a list of possible category values conbined by OR. Example value `{"category":["P%2BR"]}` or `{"category":["P"]}`, P%2BR stands for P+R
 
     
 + Request
@@ -2658,7 +2658,7 @@ attribute | json data type | comments
 address | Object | Address {"citycode": String, "city": String, "street": String, "houseno": String }
 barrier | boolean |  
 indoor | boolean | 
-patio | String | P - parking, P+R park and ride, etc. { "P+R","B+R", "P", ... } 
+patio | String | 
 barrierFree | boolean | 
 category | Enum |  
 usage | String |  
