@@ -2630,6 +2630,69 @@ Parts of the data structure might be omitted if the information is not available
             ]
         }
 
+## OnStreet Space with Detailed Info [/imp-endpoint/api/V1/Resources/Parking/OnStreetSpaces/{id}]
+
+A single onStreet Space object with Detailed Information. 
+The data structure of the response contains the attributes with the basic information and additionally the following attributes:
+
+attribute | json data type | comments
+--- | --- | ---
+... | ... | ...
+address | Object | Address {"citycode": String, "city": String, "street": String, "houseno": String }
+barrier | boolean |  
+indoor | boolean | 
+patio | String | P - parking, P+R park and ride, etc. { "P+R","B+R", "P", ... } 
+barrierFree | boolean | 
+category | Enum |  
+usage | String |  
+
+### Getting a specific onStreet Space [GET] 
+@nottestable
+
++ Parameters
+    + id (string, `907`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/Parking/OnStreetSpaces?lat={lat}&lng={lng}&radius={radius}]* .
+        
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "actions": [],
+                "id": 907,
+                "description": "Kleine Rosenthaler Str.",
+                "type": "ParkingOnStreetSpaceDetails",
+                "uri": "Resources/Parking/OnStreetSpaces/907",
+                "location": {
+                    "latitude": 52.528512,
+                    "longitude": 13.403188,
+                    "system": "WGS_84"
+                },
+                "provider": "parkUParking",
+                "availability": 100,
+                "operator": "ParkU",
+                "size": "Large",
+                "accessibility": null,
+                "address": {
+                    "citycode": "10119",
+                    "city": "Berlin",
+                    "street": "Kleine Rosenthaler Str.",
+                    "houseno": "12",
+                    "district": null,
+                    "region": null,
+                    "country": "DE"
+                },
+                "barrier": true,
+                "indoor": true,
+                "patio": null,
+                "barrierFree": true,
+                "category": [
+                    "attribute/available/true",
+                    "attribute/traffic/sharingOperator/ParkU",
+                    "point/traffic/parking/p/dynamic"
+                ],
+                "usage": "Tiefgarage Hotel  AMANO, kameraüberwacht, freie Platzwahl, Ausfahrt Rosenthaler Straße (QR-Code auf Rezeptionsklingel); zum Öffnen der Tore benötigen Sie die parku-App.\r\n\r\n5 Minuten zum Hackeschen Markt oder Rosenthaler Platz."
+            }
+            
         
 ## All Parking Garages or OnStreet parking spaces or both with specified category or size [/imp-endpoint/api/V1/Resources/Parking/All?f_onStreetSpaces={sizeJson}&f_garages={categoryJson}]    
 This collection contains a list of all parking garages or OnStreet parking spaces or both in an area of interest for specified option of garage category (viz. P+R or P) or size (Small, Medium or Large).
