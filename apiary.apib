@@ -1735,8 +1735,8 @@ comments | String |
 @nottestable
 
 + Parameters
-    + stationId (string, `1`) ... String `stationId`
-    + carId (string, `2`) ... String `carId` 
+    + stationId (string, `1`) ... String `id` as retrieved through [/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}] or similar.
+    + carId (string, `2`) ... String `id` as retrieved through [/imp-endpoint/api/V1/Resources/CarSharing/Stations/{stationId}/Cars]
 
 
 + Request
@@ -1778,7 +1778,7 @@ comments | String |
 @nottestable
 
 + Parameters
-    + stationId (string, `2`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}]*
+    + stationId (string, `2`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* or similar.
 
 + Request
 
@@ -1797,18 +1797,18 @@ comments | String |
         }         
 
 # Group EV Charging
-This is a group of all EV Charging related rest resources    
+This is a group of all EV Charging related rest resources.
     
 ## List of EV Charging Stations with Basic Info [/imp-endpoint/api/V1/Resources/EVCharging/Stations?lat={lat}&lng={lng}&radius={radius}]
 This collection contains a list of all electric vehicle (EV) charging stations in an area of interest specified by query parameters, 
 together with geo location, name, and a URI to acquire more details.
-Note: The area of interest can be defined as:
+The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 attribute | json data type | comments
 --- | --- | ---
@@ -1817,17 +1817,17 @@ metadata | Object | List of service providers and the last update times and fail
 resources | Array | Array of resources within the search area
 --- | --- | ---
 actions | Array | List of available actions on this resource
-id | Number | Internal charging station identification numberg
+id | Number | Internal charging station identification number
 description | String | Approximate location or parking garage operator
 type | String | ="EVChargingStation" 
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider |  String| Charging station operator (usually equals provider)
+provider |  String| Service provider
 availability | Double | Availability in percentage
-operator | String | Charging station provider (usually equals operator)
+operator | String | Resource operator
 address | Object | 
-plugTypes | Enum value | Type of the plug.
-power | Number |  
+plugTypes | Enum value | Types of plugs
+power | Object | Unit and value 
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
 
 ### Getting EV charging stations [GET]
@@ -1894,8 +1894,8 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 ## List of All EV Charging Stations with Basic Info [/imp-endpoint/api/V1/Resources/EVCharging/Stations/All]
 This collection contains a list of all electric vehicle (EV) charging stations.
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 attribute | json data type | comments
 --- | --- | ---
@@ -1904,17 +1904,17 @@ metadata | Object | List of service providers and the last update times and fail
 resources | Array | Array of resources within the search area
 --- | --- | ---
 actions | Array | List of available actions on this resource
-id | Number | Internal charging station identification numberg
+id | Number | Internal charging station identification number
 description | String | Approximate location or parking garage operator
 type | String | ="EVChargingStation" 
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider |  String| Charging station operator (usually equals provider)
+provider |  String| Service provider
 availability | Double | Availability in percentage
-operator | String | Charging station provider (usually equals operator)
+operator | String | Resource operator
 address | Object | 
-plugTypes | Enum value | Type of the plug.
-power | Number |  
+plugTypes | Enum value | Types of plugs
+power | Object | Unit and value
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
 
 ### Getting EV charging stations [GET]
@@ -1986,18 +1986,18 @@ attribute | json data type | comments
 chargingStationType | String |  
 managedChargeable | Boolean |  
 owner | String |  
-plugTypes | Enum value | Type of the plug.
-power | Number |  
 voltage | Number |  
 chargingPoints |  |  
 properties |  |  
+numberOfUnits | Number | Total number of charging poles
+availableUnits | Number | Number of available charging poles 
 units | EVChargingUnit | Details of EV Charging units
 
 ### Getting a specific charging station [GET] 
 @nottestable
 
 + Parameters
-    + stationId (string, `203869`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/EVCharging/Stations?lat={lat}&lng={lng}&radius={radius}]*
+    + stationId (string, `203869`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/EVCharging/Stations?lat={lat}&lng={lng}&radius={radius}]* or similar.
 
         
 + Response 200 (application/json)
@@ -2053,6 +2053,8 @@ units | EVChargingUnit | Details of EV Charging units
 
 # Group Ticketing
 This is a group of all handy ticketing related rest resources.
+
+Usually, a ticket is bought in three steps: First, the available tickets for a defined service will be requested. Then the selected ticket will be bought and finally the receipt of the ticket has to be confirmed.
     
 ## Available Tickets [/imp-endpoint/api/V1/Resources/Ticketing/Tickets]    
 This collection contains a list of available products (tickets) for specified origin and destination. Both are public transport stations and are identified by `{pointId}`. 
@@ -2066,7 +2068,7 @@ origin | Object | Point id and address string
 destination | Object | Point id and address string
 viaPoints | Object | List of geo locations the route should pass
 numberOfTickets | Object | Number of tickets
-ticketingCategory | String | Specified zone. Possible values: B0, B1, B2, B3
+ticketingCategory | String | Code for category defined by the operator, e.g. service class and specified zone. Possible values for Berlin: B0, B1, B2, B3
 
 
 The data structure of the response contains the following attributes:
@@ -2079,9 +2081,9 @@ description | String |
 type | String | 
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | 
+provider | String | Service provider
 operator | String | Name of Ticket Operator
-tariffText | String | Contains Zone and Validity inforation
+tariffText | String | Contains Zone and Validity information
 tariffInformation | String | Conditions applied for ticket
 price | double | Price of ticket
 currency | String | Currency
@@ -2146,7 +2148,7 @@ The data structure of the request body:
 attribute | json data type | comments
 --- | --- | ---
 name | String | Name of Ticket Operator
-userId | String | Point id and address string
+userId | String | Traveler Id
 password | String | Password for buying ticket
 
 The data structure of the response contains the following attributes:
