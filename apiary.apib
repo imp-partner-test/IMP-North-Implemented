@@ -8,29 +8,28 @@ This is API in a new format 1A
 
 Please keep the groovy generating script in synch with this documentation. Read more on Wiki: https://confluence.imp.mobilitaetsdienste.de/display/IMP/Apiary. 
 
-*update the goovy script if you change names of any chapter* 
-*chapter names can not contain special characters "(", ")", "\", etc. which have a meaning in regular expressions*
+* update the groovy script if you change names of any chapter 
+* chapter names can not contain special characters "(", ")", "\", etc. which have a meaning in regular expressions
 
 # Introduction
 
-This is a description of a public REST interface offered by Siemens AG and its subsidiary VMZ Berlin Betreibergesellschaft GmbH 
-in the project Open Mobility Berlin. A mockup of this interface can be tried using the URLs listed on the right. For access to the production
+This is a description of a public REST interface of the platform SiMobility Connect offered by Siemens AG. A mockup of this interface can be tried using the URLs listed on the right. For access to the production
 system please write an email to `henrik.koberg@siemens.com`
 
 (c) Siemens AG 2014 All rights reserved
 
 # Group Bike Sharing
-This is a group of all bike sharing related rest resources
+This is a group of all bike sharing related rest resources.
     
 ## Bike Sharing Stations [/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]    
-This collection contains a list of all bike sharing stations in an area of interest specified by query parameters. (for station-based bike sharing)
-Note: The area of interest can be defined as:
+This collection contains a list of all bike sharing stations in an area of interest as specified in the query parameters. 
+The area of interest can be defined as:
 
 * a bounding circle (lat={lat}&lng={lng}&radius={radius})
 * a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 The data structure of the response contains the following attributes: 
 
