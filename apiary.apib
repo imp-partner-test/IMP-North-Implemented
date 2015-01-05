@@ -551,7 +551,7 @@ address | Object |
 numberOfBikes | Number | 
 numberOfFreeBikes | Number | 
 services | Array | 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request.  
 
 Parts of the data structure might be omitted if the information is not available. 
     
@@ -588,7 +588,7 @@ Parts of the data structure might be omitted if the information is not available
         }
         
         
-## Getting details of flaoting bike [/imp-endpoint/api/V1/Resources/BikeSharing/Bikes/{bikeId}]
+## Getting details of a floating bike [/imp-endpoint/api/V1/Resources/BikeSharing/Bikes/{bikeId}]
 Get details of floating bike determined by a specific bikeId
 The data structure of the response contains the attributes with the basic information and additionally the following attributes:
 
@@ -597,11 +597,11 @@ attribute | json data type | comments
 ... | ... | ...
 
 
-### Getting details of flaoting bike [GET] 
+### Getting details of a floating bike [GET] 
 @nottestable
 
 + Parameters
-    + bikeId (string, `18644`) ... String `bikeId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Bikes?lat={lat}&lng={lng}&radius={radius}]* .
+    + bikeId (string, `18644`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Bikes?lat={lat}&lng={lng}&radius={radius}]* or similar.
         
 + Response 200 (application/json)
 
@@ -651,7 +651,7 @@ comments | String |
 @nottestable
 
 + Parameters
-    + bikeId (string, `1`) ... Bike to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Bikes?lat={lat}&lng={lng}&radius={radius}]* .
+    + bikeId (string, `1`) ... Bike to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Bikes?lat={lat}&lng={lng}&radius={radius}]* or similar.
 
 + Request
 
@@ -687,36 +687,36 @@ comments | String |
         
         
 # Group Car Sharing
-This is a group of all car sharing related rest resources
+This is a group of all car sharing related rest resources.
 
 ## List of Car Sharing Locations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/All?lat={lat}&lng={lng}&radius={radius}] 
 
-This collection contains list of available car sharing locations in an area of interest specified by the query parameters (both free-floating cars and/or car stations) 
-with basic information and a URI to acquire more details.
-In case of station-based cars, only the URI of the Car Sharing station is returned; in case of free-floating cars, the URI to the car itself.
-Note: The area of interest can be defined as:
+This collection contains a list of available car sharing locations in an area of interest specified by the query parameters (both free-floating cars and/or car sharing stations) 
+with basic information and an URI to acquire more details.
+In case of station-based cars, only the URI of the Car Sharing station is returned; in case of free-floating cars, the URI to the car itself is returned.
+The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
 attribute | json data type | comments
 --- | --- | ---
 metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
 --- | --- | ---
-resources | Array | Array of resources
+resources | Array | Array of resources within the area of interest
 --- | --- | ---
 actions | Array | 
 id | Number | 
 description | String | License ID or approximate location
-type | String | 
+type | String | Type of resource
 uri | URI | URI
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | 
+provider | String | Service provider
 availability | Double | Availability in percentage
-operator | String | 
+operator | String | Resource operator
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request
 
 ### Getting all car sharing locations [GET]
@@ -851,27 +851,27 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 
 ## List of All Car Sharing Locations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/All] 
 
-This collection contains list of all available car sharing locations (both free-floating cars and/or car stations) 
-with basic information and a URI to acquire more details.
-In case of station-based cars, only the URI of the Car Sharing station is returned; in case of free-floating cars, the URI to the car itself.
+This collection contains a list of all available car sharing locations (both free-floating cars and/or car sharing stations) 
+with basic information and an URI to acquire more details.
+In case of station-based cars, only the URI of the Car Sharing station is returned; in case of free-floating cars, the URI to the car itself is returned.
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time. Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 attribute | json data type | comments
 --- | --- | ---
 metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
 --- | --- | ---
-resources | Array | Array of resources
+resources | Array | Array of resources within defined business area
 --- | --- | ---
 actions | Array | 
 id | Number | 
 description | String | License ID or approximate location
-type | String | 
+type | String | Type of resource
 uri | URI | URI
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | 
+provider | String | Service provider
 availability | Double | Availability in percentage
-operator | String | 
+operator | String | Resource operator
 modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request
 
 ### Getting all car sharing locations [GET]
@@ -1180,15 +1180,15 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 
 ## List of free-floating Cars with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/Cars?lat={lat}&lng={lng}&radius={radius}&f_cars={fuelTypeJson}]
 
-This collection contains a list of available free-floating cars in a specific area specified by query parameters (for free-floating car sharing only!).
-Note: The area of interest can be defined as:
+This collection contains a list of available free-floating cars in a specific area specified by query parameters.
+The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The optional filter `f_cars` can be used to get cars with a specific `fuelType`
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time. Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 attribute | json data type | comments
 --- | --- | ---
@@ -1202,17 +1202,17 @@ description | String | License ID or approximate location
 type | String | "CarSharingCarDetails"
 uri | URI | URI
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | 
-availability | Double | Svailability in percentage
-operator | String | "Car2Go_Berlin" etc.
-model | String | 
+provider | String | Service provider
+availability | Double | Availability in percentage
+operator | String | Resource operator
+model | String | Car model
 address | String | Street, city, etc.
 licenseId | String | License ID
 category | String | ENUM{"Fullsize", "Compact", "Smallsize", ... }
 fuelType | String | electric vehicle ("ELECTRICITY") or petrol car ("PETROL")
 fuelLevel | Double | Fuel level in percentage
 imageLink | Link | link to the car image
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request.
 
 ### Getting free-floating Cars [GET] 
 @testable
@@ -1318,22 +1318,22 @@ The data structure of the response contains the attributes with the basic inform
 attribute | json data type | comments
 --- | --- | ---
 ... | ... | ...
-model | String | car model
-name | String | car name
+model | String | Car model
+name | String | Car name
 power | String | 
-seatCount | Number | number of sits
-doorCount | Number | number of doors
-colour | String  | car colour
+seatCount | Number | Number of seats
+doorCount | Number | Number of doors
+colour | String  | Car colour
 properties | Array | List of properties: "ABS" etc.
 locationNote | String | 
-operatorURI | URI | operator URI
-fee | String | car costs per time unit
+operatorURI | URI | Operator URI
+fee | String | Car costs per distance/time unit
 
-### Getting a specific car [GET] 
+### Getting details of a specific car [GET] 
 @nottestable
 
 + Parameters
-    + carId (string, `203869`) ... String `carId` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/All?lat={lat}&lng={lng}&radius={radius}]* .
+    + carId (string, `203869`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/All?lat={lat}&lng={lng}&radius={radius}]* or similar.
 
         
 + Response 200 (application/json)
@@ -1388,16 +1388,18 @@ fee | String | car costs per time unit
     
 ## List of Stations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}&f_cars={fuelTypeJson}&operatorId={operatorId}]
 
-This collection contains a list of car sharing stations in a specific area (for station-based car sharing) specified by the query parameters,
-together with basic information and URI to acquire more details.
-Note: The area of interest can be defined as:
+This collection contains a list of car sharing stations in an area of interest specified by the query parameters,
+together with basic information and an URI to acquire more details.
+The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The optional filter `f_cars` can be used to get cars with a specific `fuelType`
+The optional filter `f_cars` can be used to get only car sharing stations providing cars with a specific `fuelType`.
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The optional filter `operatorID` can be used to get only car sharing stations provided by a specific service provider.
+
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time. Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 attribute | json data type | comments
 --- | --- | ---
@@ -1406,18 +1408,18 @@ metadata | Object | List of service providers and the last update times and fail
 resources | Array | Array of resources within the search area
 --- | --- | ---
 actions | Array | 
-id | Number | 
+id | Number | Internal car sharing station identification number
 description | String | Approximate location
 type | String | 
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | 
+provider | String | Service provider
 availability | Double | Availability in percentage
-operator | String | 
+operator | String | Resource operator
 operatorURI | String | 
-operatorName | String | 
+operatorName | String | Resource operator
 address | Object | {"cityCode": String, "city": String, "street": String, "houseNo": String, "district": String, "region": String, "country": String}
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request. 
 
 ### Getting car sharing station list [GET] 
 @testable
@@ -1516,11 +1518,11 @@ notes | String |
 services | Array | 
 availableCars | Number | number of available cars
 
-### Getting a specific station [GET] 
+### Getting details of a specific station [GET] 
 @nottestable
 
 + Parameters
-    + stationId (string, `203869`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
+    + stationId (string, `203869`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* or similar.
         
 + Response 200 (application/json)
 
@@ -1566,16 +1568,16 @@ availableCars | Number | number of available cars
             }        
 
 ## List of Cars at a specific Station with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/Stations/{stationId}/Cars]
-This collection contains a list of cars at a specific car sharing stations.
+This collection contains a list of cars at a specific car sharing station.
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 ### Getting cars at a specific station [GET]
 @nottestable
 
 + Parameters
-    + stationId (string, `203869`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}]*
+    + stationId (string, `203869`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* or similar.
     
 + Request
 
@@ -1692,7 +1694,7 @@ comments | String |
 @nottestable
 
 + Parameters
-    + carId (string, `2`) ... String `carId` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/Cars?lat={lat}&lng={lng}&radius={radius}]* .
+    + carId (string, `2`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/CarSharing/Cars?lat={lat}&lng={lng}&radius={radius}]* or similar.
 
 
 + Request
