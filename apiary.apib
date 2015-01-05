@@ -2,18 +2,18 @@ FORMAT: 1A
 HOST: https://as.production.imp.mobilitaetsdienste.de:8443/
 
 # IMP North. Implemented. V1
-This is API in a new format 1A 
+This is the API specified in new apiary format 1A.
 
 # Readme before making any changes   
 
 Please keep the groovy generating script in synch with this documentation. Read more on Wiki: https://confluence.imp.mobilitaetsdienste.de/display/IMP/Apiary. 
 
-* update the groovy script if you change names of any chapter 
-* chapter names can not contain special characters "(", ")", "\", etc. which have a meaning in regular expressions
+* *update the groovy script if you change names of any chapter* 
+* *chapter names can not contain special characters "(", ")", "\", etc. which have a meaning in regular expressions*
 
 # Introduction
 
-This is a description of a public REST interface of the platform SiMobility Connect offered by Siemens AG. A mockup of this interface can be tried using the URLs listed on the right. For access to the production
+This is the description of version V1 of the public REST interface of the platform SiMobility Connect offered by Siemens AG. A mockup of this interface can be tried using the URLs listed on the right. For access to the production
 system please write an email to `henrik.koberg@siemens.com`
 
 (c) Siemens AG 2014 All rights reserved
@@ -25,8 +25,8 @@ This is a group of all bike sharing related rest resources.
 This collection contains a list of all bike sharing stations in an area of interest as specified in the query parameters. 
 The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
 Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
@@ -37,25 +37,25 @@ attribute | json data type | comments
 --- | --- | ---
 metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
 --- | --- | ---
-resources | Array | Array of resources within the search area
+resources | Array | Array of resources within the area of interest
 --- | --- | ---
 actions | Array | Available actions
 id | Number | Internal bike sharing station identification number
-description | String | Approximate location
+description | String | Textual description of location
 type | String | Type of bike sharing station
 uri | URI | URI to request more details.
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | service provider
+provider | String | Service provider
 availability | Double | Availability in percentage
-operator | String | resource operator
+operator | String | Resource operator
 phoneNo | String | 
 operatorURI | String |
-operatorName | String | 
+operatorName | String | Resource operator
 address | Object | 
-numberOfBikes | Number | 
-numberOfFreeBikes | Number | 
+numberOfBikes | Number | Number of bikes or storing positions
+numberOfFreeBikes | Number | Number of currently available bikes
 services | Array | 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request.  
 
 Parts of the data structure might be omitted if the information is not available. 
     
@@ -151,10 +151,10 @@ Parts of the data structure might be omitted if the information is not available
         }
         
 ## All Bike Sharing Stations [/imp-endpoint/api/V1/Resources/BikeSharing/All]    
-This collection contains a list of all bike sharing stations (for station-based bike sharing)
+This collection contains a list of all bike sharing stations.
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 The data structure of the response contains the following attributes: 
 
@@ -162,25 +162,25 @@ attribute | json data type | comments
 --- | --- | ---
 metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
 --- | --- | ---
-resources | Array | Array of resources within the search area
+resources | Array | Array of resources within the defined business area
 --- | --- | ---
 actions | Array | Available actions
 id | Number | Internal bike sharing station identification number
-description | String | Approximate location
+description | String | Textual description of location
 type | String | Type of bike sharing station
 uri | URI | URI to request more details.
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | service provider
+provider | String | Service provider
 availability | Double | Availability in percentage
-operator | String | resource operator
+operator | String | Resource operator
 phoneNo | String | 
 operatorURI | String |
-operatorName | String | 
+operatorName | String | Resource operator
 address | Object | 
-numberOfBikes | Number | 
-numberOfFreeBikes | Number | 
+numberOfBikes | Number | Number of bikes or storing positions
+numberOfFreeBikes | Number | Number of currently available bikes
 services | Array | 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request  
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request.  
 
 Parts of the data structure might be omitted if the information is not available. 
     
@@ -271,7 +271,7 @@ attribute | json data type | comments
 @nottestable
 
 + Parameters
-    + stationId (string, `203869`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
+    + stationId (string, `203869`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* or similar.
         
 + Response 200 (application/json)
 
@@ -314,13 +314,13 @@ The data structure of the response contains the attributes with the basic inform
 attribute | json data type | comments
 --- | --- | ---
 ... | ... | ...
-unitId | String | 
+unitId | String | Internal identification number of a specific bike
 
 ### Getting bikes for a specific station [GET] 
 @nottestable
 
 + Parameters
-    + stationId (string, `203869`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
+    + stationId (string, `203869`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* or similar.
         
 + Response 200 (application/json)
 
@@ -373,8 +373,8 @@ attribute | json data type | comments
 @nottestable
 
 + Parameters
-    + stationId (string, `203869`) ... String `stationId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
-    + bikeId (string, `18644`) ... String `bikeId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes]* .
+    + stationId (string, `203869`) ... String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* or similar.
+    + bikeId (string, `18644`) ... String `unitId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes]* .
         
 + Response 200 (application/json)
 
@@ -405,7 +405,7 @@ attribute | json data type | comments
      
             
         
-## Book a bike available at a bike sharing station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{id}/Process?action=book]
+## Book an available bike at a bike sharing station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Process?action=book]
 
 The data structure of the request contains the following attributes:
 
@@ -426,7 +426,7 @@ comments | String |
 @nottestable
 
 + Parameters
-    + id (string, `2`) ... Bike sharing station id where the bike is to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
+    + stationId (string, `2`) ... Bike sharing station id where the bike is to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* or similar.
 
 + Request
 
@@ -461,7 +461,7 @@ comments | String |
         }
 
 
-## Book a specific bike of bike sharing station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes/{bikeId}/Process?action=book]
+## Book a specific bike at a bike sharing station [/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes/{bikeId}/Process?action=book]
 
 The data structure of the request contains the following attributes:
 
@@ -478,12 +478,12 @@ attribute | json data type | comments
 confirmationId | String | 
 comments | String | 
 
-### Book a specific bike of bike sharing station [POST]
+### Book a specific bike at a bike sharing station [POST]
 @nottestable
 
 + Parameters
-    + stationId (string, `2`) ... Bike sharing station id where the bike is to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* .
-    + bikeId (string, `1`) ... Bike to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes]* .
+    + stationId (string, `2`) ... Bike sharing station id where the bike is to be booked. String `id` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations?lat={lat}&lng={lng}&radius={radius}]* or similar.
+    + bikeId (string, `1`) ... Bike to be booked. String `unitId` as retrieved through *[/imp-endpoint/api/V1/Resources/BikeSharing/Stations/{stationId}/Bikes]* .
 
 + Request
 
@@ -519,13 +519,13 @@ comments | String |
 
 ## Get floating bikes [/imp-endpoint/api/V1/Resources/BikeSharing/Bikes?lat={lat}&lng={lng}&radius={radius}]    
 This collection contains a list of all floating bikes in an area of interest specified by query parameters.
-Note: The area of interest can be defined as:
+The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 The data structure of the response contains the following attributes: 
 
@@ -537,16 +537,16 @@ resources | Array | Array of resources within the search area
 --- | --- | ---
 actions | Array | Available actions
 id | Number | Internal bike sharing station identification number
-description | String | Approximate location
-type | String | Type of bike sharing station
-uri | URI | URI to request more details.
+description | String | Textual description of location
+type | String | Type of floating bike
+uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | String | service provider
+provider | String | Service provider
 availability | Double | Availability in percentage
-operator | String | resource operator
+operator | String | Resource operator
 phoneNo | String | 
 operatorURI | String |
-operatorName | String | 
+operatorName | String | Resource operator
 address | Object | 
 numberOfBikes | Number | 
 numberOfFreeBikes | Number | 
