@@ -2324,7 +2324,7 @@ availability | Double | Availability in percentage
 operator | String | Parking space operator (usually equals provider)
 totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
 lottype | Enum | Type of garage {"Parkhaus", "Parkzone", "Tiefgarage", "Parkplatz"} 
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Sinceodified-Since header is passed in the request 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request. 
 
 Parts of the data structure might be omitted if the information is not available. 
     
@@ -2335,7 +2335,7 @@ Parts of the data structure might be omitted if the information is not available
     + lat (optional, number, `52.52`) ... latitude value. Has example value.
     + lng (optional, number, `13.39`) ... longitude value. Has example value.
     + radius (optional, number, `10000`) ... longitude value. Has example value.
-    + categoryJson (optional, string, `{"category": ["P%2BR"]}`) ... String `categoryJson` category json data, containing a list of possible category values conbined by OR. Example value `{"category":["P%2BR"]}` or `{"category":["P"]}`, P%2BR stands for P+R
+    + categoryJson (optional, string, `{"category": ["P%2BR"]}`) ... String `categoryJson` category json data, containing a list of possible category values combined by OR. Example value `{"category":["P%2BR"]}` or `{"category":["P"]}`, P%2BR stands for P+R
 
     
 + Request
@@ -2465,12 +2465,12 @@ category | Enum | P - parking, P+R park and ride, etc. { "P+R","B+R", "P", ... }
 openingHours | String | Opening hours
 bookable | Boolean |  
 heightLimit | Object | Height limit { "value": Number, "unit": String } 
-occupancyRate | Number | Occupany rate in percent (real time data) 
+occupancyRate | Number | Occupancy rate in percent (real time data) 
 allowedStay | Object | Allowed stay { "value": Number, "unit": String } 
 generalInformations | String |
 restrictions | Array | Usage restrictions {"VisitorsOnly","GuestsOnly"}
 services | Array | Special services { "WomenParking", "DisabledParking", "Monitored", "ChargingStation", "ParentChild", "MotorCycle", ... } 
-securityComment | String |  Securtiy features
+securityComment | String |  Security features
 entrance | String |
 
 ### Getting a specific garage [GET] 
@@ -2540,8 +2540,8 @@ entrance | String |
 ## OnStreet Parking Spaces [/imp-endpoint/api/V1/Resources/Parking/OnStreetSpaces?lat={lat}&lng={lng}&radius={radius}&f_onStreetSpaces={sizeJson}]
 This collection contains a list of OnStreet parking spaces for specified size in an area of interest specified by query parameters together with an URI to acquire more details. OnStreet spaces can be filtered by the space size.
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 The data structure of the response contains the following attributes:
 
@@ -2561,8 +2561,8 @@ provider | String | Parking service provider (usually equals operator)
 availability | Double | Availability in percentage
 operator | String | Parking space operator (usually equals provider)
 size | Enum | Size of OnStreet parking space {"Large", "Medium", "Small", "Unknown"} 
-accessibility | Enum | Accessbility of OnStreet parking space {"Private","Public","SemiPublic","Unknown"}
-modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request 
+accessibility | Enum | Accessibility of OnStreet parking space {"Private","Public","SemiPublic","Unknown"}
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request. 
 
 Parts of the data structure might be omitted if the information is not available. 
 
@@ -2624,7 +2624,7 @@ Parts of the data structure might be omitted if the information is not available
 
 ## OnStreet Space with Detailed Info [/imp-endpoint/api/V1/Resources/Parking/OnStreetSpaces/{id}]
 
-A single onStreet Space object with Detailed Information. 
+A single OnStreet Space object with Detailed Information. 
 The data structure of the response contains the attributes with the basic information and additionally the following attributes:
 
 attribute | json data type | comments
@@ -2638,7 +2638,7 @@ barrierFree | boolean |
 category | Enum |  
 usage | String |  
 
-### Getting a specific onStreet Space [GET] 
+### Getting a specific OnStreet Space [GET] 
 @nottestable
 
 + Parameters
@@ -2689,10 +2689,10 @@ usage | String |
 ## All Parking Garages or OnStreet parking spaces or both [/imp-endpoint/api/V1/Resources/Parking/All?f_onStreetSpaces={sizeJson}&f_garages={categoryJson}]    
 This collection contains a list of all parking garages or OnStreet parking spaces or both in an area of interest. The parking possibilities can be filtered by garage category (viz. P+R or P) or space size (Small, Medium or Large).
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
-The response contains attributes from parking garages or OnStreet parking spaces or both
+The response contains attributes from parking garages or OnStreet parking spaces or both.
 
 Parts of the data structure might be omitted if the information is not available. 
     
