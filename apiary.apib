@@ -2160,7 +2160,7 @@ processId | Number | BPMN process id
 confirmation | Object | Buy ticket response data
 
 
-confirmation contains following fileds:
+confirmation contains following fields:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -2236,7 +2236,7 @@ processId | Number | BPMN process id
 confirmation | Object | Confirm ticket response data
 
 
-confirmation contains following fileds:
+confirmation contains following fields:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -2244,7 +2244,7 @@ featureType | String | Feature type
 confirmationId | String | 
 confirmationData | Object | Response of confirm ticket request
 
-confirmationData contains following fileds:
+confirmationData contains following fields:
 
 attribute | json data type | comments
 --- | --- | ---
@@ -2293,17 +2293,17 @@ confirmed | Boolean | Value indicating success/failure
             }
 
 # Group Parking
-This is a group of all parking related rest resources. Parking Garages & On-street Paring Vacancies
+This is a group of all parking related rest resources including Parking Garages and On-street Parking Vacancies.
     
 ## Parking Garages with Basic Info [/imp-endpoint/api/V1/Resources/Parking/Garages?lat={lat}&lng={lng}&radius={radius}&f_garages={categoryJson}]  
 This collection contains a list of all parking garages in an area of interest specified by query parameters together with an URI to acquire more details. Parking garages can be filtered by category.
-Note: The area of interest can be defined as:
+The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time.
-Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time.
+Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 The data structure of the response contains the following attributes:
 
@@ -2319,7 +2319,7 @@ description | String | Approximate location
 type | String | (="ParkingGarage")
 uri | URI | URI to request more details
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
-provider | String | Parking service provider (usually equals operator)
+provider | String | Service provider (usually equals operator)
 availability | Double | Availability in percentage
 operator | String | Parking space operator (usually equals provider)
 totalnumber | Object | Number of lots for different categories { "handicappedOnly":Int, "womenOnly":Int, "others":Int }
