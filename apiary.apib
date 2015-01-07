@@ -3198,20 +3198,39 @@ Please note: The expectedTime is not always available.
             }
 
 # Group Taxi Service
-This is a group of all taxi related rest resources.
+This is a group of all taxi related REST resources.
 
 ## List of available Taxis with Basic Info [/imp-endpoint/api/V1/Resources/TaxiService/Taxis?lat={lat}&lng={lng}&radius={radius}] 
 
-This collection contains list of taxis in a specific area with basic information and a URI to get more details.
-Note: The area of interest can be defined as:
+This collection contains a list of taxis in a specified area with basic information and a URI to get more details.
+The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time. Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
-### Get taxis in a specific area [GET]
+### Get taxis in a specified area [GET]
 @testable
+
+attribute | json data type | comments
+--- | --- | ---
+metadata | Object | List of service providers and the last update times and failures if any [{serviceAlias:"XXX",lastUpdateTime:dd-mm-yyyyThhmmssZ,messages:[]}]
+--- | --- | ---
+resources | Array | Array of resources within the search area
+--- | --- | ---
+id | Number | Internal taxi identification number
+description | String | Approximate location
+type | String | Type of taxi
+uri | URI | URI to request more details
+location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  } 
+provider | String | Service provider 
+availability | Double | Availability in percentage
+operator | String | Resource operator 
+size | Enum | Size of car 
+modFlag | Enum | Type of modification to resource [New / Modified / Relocated / Deleted]. This attribute is present only when the If-Modified-Since header is passed in the request. 
+
+Parts of the data structure might be omitted if the information is not available. 
 
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
@@ -3239,9 +3258,9 @@ The If-Modified-Since (optional) can be set to a specific date-time in order to 
 
 ## List of All available Taxis with Basic Info [/imp-endpoint/api/V1/Resources/TaxiService/Taxis/All] 
 
-This collection contains list of taxis.
+This collection contains a list of taxis.
 
-The If-Modified-Since (optional) can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
+The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time. Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
 ### Get taxis in a specific area [GET]
 @testable
@@ -3268,24 +3287,34 @@ The If-Modified-Since (optional) can be set to a specific date-time in order to 
 
 ## Fare for the specified trip [/imp-endpoint/api/V1/Resources/TaxiService/Fares?origin_lat={lat}&origin_lng={lng}&radius={radius}] 
 
-This response contains estimated fare for trips from origin and distanse from origin.
+This response contains an estimated fare for trips from origin with distance.
 
-### Get fare information for the trip specified by origing and radius [GET]
+### Get fare information for the trip specified by origin and distance [GET]
 @nottestable
+
+attribute | json data type | comments
+--- | --- | ---
+fareQuality | Double | Degree of quality
+startTime | String | Date and time of start
+arrivalTime | String | Date and time of arrival
+totalTime | Object | Journey time and unit
+totalDistance | Object | Distance and unit
+costs | Object | Contains total costs, flag fall and distance costs as well as surcharges for additional passengers
+services | Object | Set of available services
 
 + Parameters
     + lat (number, `52.482780222078205`) ... latitude value. Has example value.
     + lng (number, `13.3154296875`) ... longitude value. Has example value.
-    + radius (number, `2000`) ... radius in meter. Has example value.
+    + radius (number, `2000`) ... distance in meter. Has example value.
 
 + Response 200 (application/json)
 
         {
             "fareQuality": 1.0,
             "startTime": "2013-07-09T08:09:17",
-            "arrivalTime": { "value": 360, "unit": "sec"},
+            "arrivalTime": "2013-07-09T08:20:17",
             "totalTime":   { "value": 660, "unit": "sec"},
-            "totalDistance": { "value": 5000, "unit": "m" },
+            "totalDistance": { "value": 5000, "unit": "meter" },
             "costs": { 
                 "flagFall": { "value":300, "currency":"EuroCent"},
                 "total":    { "value":960, "currency":"EuroCent"}, 
@@ -3313,25 +3342,25 @@ This response contains estimated fare for trips from origin and distanse from or
 
 ## Fare for the specified trip [/imp-endpoint/api/V1/Resources/TaxiService/Fares?origin_lat={lat}&origin_lng={lng}&dest_lat={dlat}&dest_lng={dlng}] 
 
-This response contains estimated fare for trips from origin and distanse from origin.
+This response contains estimated fare for trips from origin to destination.
 
 ### Get fare information for the trip specified by origin and destination [GET]
 @nottestable
 
 + Parameters
-    + lat (number, `52.482780222078205`) ... latitude value. Has example value.
-    + lng (number, `13.3154296875`) ... longitude value. Has example value.
-    + dlat (number, `53.57914`) ... latitude value. Has example value.
-    + dlng (number, `13.40603`) ... longitude value. Has example value.
+    + lat (number, `52.482780222078205`) ... latitude value of origin. Has example value.
+    + lng (number, `13.3154296875`) ... longitude value of origin. Has example value.
+    + dlat (number, `53.57914`) ... latitude value of destination. Has example value.
+    + dlng (number, `13.40603`) ... longitude value of destination. Has example value.
 
 + Response 200 (application/json)
 
         {
             "fareQuality": 1.0,
             "startTime": "2013-07-09T08:09:17",
-            "arrivalTime": { "value": 360, "unit": "sec"},
+            "arrivalTime": "2013-07-09T08:20:17",
             "totalTime":   { "value": 660, "unit": "sec"},
-            "totalDistance": { "value": 5000, "unit": "m" },
+            "totalDistance": { "value": 5000, "unit": "meter" },
             "costs": { 
                 "flagFall": { "value":300, "currency":"EuroCent"},
                 "total":    { "value":960, "currency":"EuroCent"}, 
@@ -3361,21 +3390,21 @@ This response contains estimated fare for trips from origin and distanse from or
 ## Booking a taxi [/imp-endpoint/api/V1/Resources/TaxiService/Taxis/Processes?action=Book] 
 
 Book a Taxi: The taxi ride is specified by providing the starting point (address and/or geo location) and the destination.
-This means that no specific, previously selected taxi, is booked.
+This means that no specific, previously selected taxi is booked.
 
 Input in request body: 
-operator: name, userId and password (for authentication)
-origin of the taxi ride and optional start time
-destination of the taxi ride
-further parameters might later detail the request by specifying the number of passengers, availability of child seats, extra luggage etc.
+operator: name, userId and password (for authentication),
+origin of the taxi ride and optional start time,
+destination of the taxi ride.
 
+Further parameters might detail the request by specifying the number of passengers, availability of child seats, extra luggage etc.
 
-The response contains the estimated costs, the taxi's licence id, and a booking id are returned; the latter can be used to cancel the booking.
+The response contains the estimated costs, the taxi's licence id, and a booking id; the latter can be used to cancel the booking.
 
 Please note: 
 Since data about the traveler is usually requested by the taxi SP, we assume that the end-user (or the mobility provider) himself is responsible to register at the service provider.
 We currently require one operator in the input body.
-If booking is not possible: response body explains the reason why
+If booking is not possible, the response body explains the reason why.
 
 ### Book a taxi [POST]
 @nottestable
@@ -3449,17 +3478,17 @@ If booking is not possible: response body explains the reason why
 
 ## Canceling a taxi [/imp-endpoint/api/V1/Process/123?action=Cancel] 
 
-Cancel a booking for a taxi that has been booked before with a booking id 4711.
+Cancel a booking for a taxi that has been booked before. The booking id (123 in the example below) has to be provided as processID in the request.
 
 Input in request body: 
-operator: name, userId and password (for authentication)
+operator including name, userId and password (for authentication)
 
 The response contains information about the originally planned taxi ride and the cancelation fee.
 
 Please note: 
-If booking is not possible: response body explains the reason why
+If canceling is not possible, the response body explains the reason why.
 
-### Book a taxi [POST]
+### Cancel a taxi booking [POST]
 @nottestable
     
 + Request
