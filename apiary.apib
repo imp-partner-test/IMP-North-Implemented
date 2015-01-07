@@ -65,7 +65,7 @@ Parts of the data structure might be omitted if the information is not available
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `1000`) ... radius value. Has example value.
+    + radius (number, `1000`) ... radius in meter. Has example value.
     
 + Request
 
@@ -561,7 +561,7 @@ Parts of the data structure might be omitted if the information is not available
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `1000`) ... longitude value. Has example value.
+    + radius (number, `1000`) ... radius in meter. Has example value.
     
 + Request
 
@@ -725,7 +725,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 + Parameters
     + lat (optional, number, `52.52`) ... latitude value. Has example value.
     + lng (optional, number, `13.39`) ... longitude value. Has example value.
-    + radius (optional, number, `5000`) ... radius value. Has example value.
+    + radius (optional, number, `5000`) ... radius in meter. Has example value.
 
 + Request
 
@@ -1220,7 +1220,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `3000`) ... radius value. Has example value.
+    + radius (number, `3000`) ... radius in meter. Has example value.
     + fuelTypeJson (optional, string, `{"fuelType":"ELECTRICITY"}`) ... String `fuelTypeJson` fuel type json data. Example value `{"fuelType":"ELECTRICITY"}` or `{"fuelType":"PETROL"}`
 
 + Request
@@ -1427,7 +1427,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `3000`) ... radius value. Has example value.
+    + radius (number, `3000`) ... radius in meter. Has example value.
     + fuelTypeJson (optional, string, `{"fuelType":"ELECTRICITY"}`) ... String `fuelTypeJson` fuel type json data. Example value `{"fuelType":"ELECTRICITY"}` or `{"fuelType":"PETROL"}`
     + operatorId (optional, string, `FlinksterDB`) ... String `operatorId` operator id data. Has example value.
 
@@ -1836,7 +1836,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `1000`) ... longitude value. Has example value.
+    + radius (number, `1000`) ... radius in meter. Has example value.
     
 + Request
 
@@ -2334,7 +2334,7 @@ Parts of the data structure might be omitted if the information is not available
 + Parameters
     + lat (optional, number, `52.52`) ... latitude value. Has example value.
     + lng (optional, number, `13.39`) ... longitude value. Has example value.
-    + radius (optional, number, `10000`) ... longitude value. Has example value.
+    + radius (optional, number, `10000`) ... radius in meter. Has example value.
     + categoryJson (optional, string, `{"category": ["P%2BR"]}`) ... String `categoryJson` category json data, containing a list of possible category values combined by OR. Example value `{"category":["P%2BR"]}` or `{"category":["P"]}`, P%2BR stands for P+R
 
     
@@ -2572,7 +2572,7 @@ Parts of the data structure might be omitted if the information is not available
 + Parameters
     + lat (optional, number, `52.50`) ... latitude value. Has example value.
     + lng (optional, number, `13.35`) ... longitude value. Has example value.
-    + radius (optional, number, `5000`) ... longitude value. Has example value.
+    + radius (optional, number, `5000`) ... radius in meter. Has example value.
     + sizeJson (optional, string, `{"size":"Large"}`) ... String `sizeJson` size json data. Example value `{"size":"Large"}` or `{"size":"Medium"}`
 
 + Request
@@ -2802,7 +2802,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `1000`) ... radius value. Has example value.
+    + radius (number, `1000`) ... radius in meter. Has example value.
     + f_stations (optional, string, `{"stationType":"BusTramStation"}`) ... String `f_stations` filter value. Has example value.
 + Model (application/json)
 
@@ -3216,7 +3216,7 @@ The If-Modified-Since (optional) can be set to a specific date-time in order to 
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `1000`) ... radius value. Has example value.
+    + radius (number, `1000`) ... radius in meter. Has example value.
     
 + Request
 
@@ -3276,7 +3276,7 @@ This response contains estimated fare for trips from origin and distanse from or
 + Parameters
     + lat (number, `52.482780222078205`) ... latitude value. Has example value.
     + lng (number, `13.3154296875`) ... longitude value. Has example value.
-    + radius (number, `2000`) ... radius value. Has example value.
+    + radius (number, `2000`) ... radius in meter. Has example value.
 
 + Response 200 (application/json)
 
@@ -4636,7 +4636,7 @@ provider | Enum | {"News", etc.}
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `2000`) ... radius value. Has example value.
+    + radius (number, `2000`) ... radius in meter. Has example value.
     
 + Model (application/json)
 
@@ -4753,7 +4753,7 @@ The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Inc
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `2000`) ... radius value. Has example value.
+    + radius (number, `2000`) ... radius in meter. Has example value.
     
 + Model
 
@@ -4835,7 +4835,7 @@ The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Inc
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
-    + radius (number, `2000`) ... longitude value. Has example value.
+    + radius (number, `2000`) ... radius in meter. Has example value.
 
 + Model (application/json)
 
@@ -5261,12 +5261,12 @@ If the date is in the history, the returned image with green dots represents his
 
 + Parameters
     + date (required, number, `1404892800000`) ... a date in the history for historical data / in the future for predictions. Has example value.
-    + lllat (required, number, `52.482780222078205`) ... 
-    + lllng (required, number, `13.3154296875`) ...     
-    + rulng (required, number, `13.359375`) ... 
-    + rulat (required, number, `52.50953477032729`) ... 
-    + wdval (required, number, `480`) ... 
-    + htval (required, number, `800`) ... 
+    + lllat (required, number, `52.482780222078205`) ... lower left latitude
+    + lllng (required, number, `13.3154296875`) ... lower left longitude   
+    + rulng (required, number, `13.359375`) ... right upper longitude
+    + rulat (required, number, `52.50953477032729`) ... right upper latitude
+    + wdval (required, number, `480`) ... width of image in pixels
+    + htval (required, number, `800`) ... height of image in pixels
     
 + Request
 
@@ -5288,12 +5288,12 @@ Get WMS PNG file for bikesharing for a specific date and for a specific bounding
 
 + Parameters
     + date (required, number, `1404892800000`) ... a date in the history (later also in the future) Has example value.
-    + lllat (required, number, `52.482780222078205`) ... 
-    + lllng (required, number, `13.3154296875`) ...     
-    + rulng (required, number, `13.359375`) ... 
-    + rulat (required, number, `52.50953477032729`) ... 
-    + wdval (required, number, `255`) ... 
-    + htval (required, number, `255`) ... 
+    + lllat (required, number, `52.482780222078205`) ... lower left latitude
+    + lllng (required, number, `13.3154296875`) ... lower left longitude    
+    + rulng (required, number, `13.359375`) ... right upper longitude
+    + rulat (required, number, `52.50953477032729`) ... right upper latitude
+    + wdval (required, number, `255`) ... width of image in pixels
+    + htval (required, number, `255`) ... height of image in pixels
 
 + Request
 
