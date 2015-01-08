@@ -3541,18 +3541,18 @@ This is a group of all IMR journey planner related rest resources.
 
 ## List of Trip Proposals with Basic Info. Intermodal Router [/imp-endpoint/api/V1/TripProposals/IMR] 
 
-This collection contains a list of trip proposals with basic information for specified trip criteria. Note: the trip proposals can be multimodal or intermodal, depending on which routing service the user is subscribed to.
+This collection contains a list of trip proposals with basic information for specified trip criteria. Note: The trip proposals can be multimodal or intermodal, depending on which routing service the user is subscribed to.
 
 The data structure of collection contains a list of trip proposals. Each trip proposal contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-url | URI | URI to request more details
-origin | Object | start point of the proposed trip
-destination | Object | endpoint of the proposed trip
-trafficTypes | Array | list of traffic types used in the proposed trip. Possible values: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking
-description | String | description of the trip proposal
-costs | Array | list of costs for the proposed trip including distance, duration, price, etc.
+url | URI | URI containing proposalId to request more details
+origin | Object | Start point of the proposed trip
+destination | Object | Endpoint of the proposed trip
+trafficTypes | Array | List of traffic types used in the proposed trip. Possible values: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. The trafficType Other is used in the segments for the start/stop procedures of car rental/parking.
+description | String | Description of the trip proposal
+costs | Array | List of costs for the proposed trip including distance, duration, price, CO2 emission and if applicable public transport ticket price.
 
     
 + Model (application/json)
@@ -3662,21 +3662,21 @@ Selection criteria for trip proposals is specified in the request body as descri
 
 attribute | json data type | comments
 --- | --- | ---
-origin | Object | start point specified by a geo location (optionally can also include starttime). (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
-destination | Object | end point specified by a geo location (optional can also include endtime). Note if time in the origin is specified, time in the destination is discarded! If no time is specified current time is taken.
-viapoints | Array of Objects | list of geolocations the route should pass
-costfunctions | Array of Objects | list of cost factors, (such as Distance, Duration, Price, Emission), each with a percentual weight. Sample custfunction: {"costType":"Duration","percentage":"100"}
-ownVehicles | Array of Objects | list of own vehicles which should be included into trip proposal calculation. Sample object value {"trafficType":"Car", "useParking":true,"useParkAndRide":false, "location":{"longitude":13.064472900000055,"latitude":52.3905689,"system":"WGS84"}}
-userId | String | traveller id that requests a trip. Note: currently not used by IMP and can be any string
-trafficTypes | Array | list of traffic types wich should be included into trip proposal calculation. Currently possible: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking
-routingConstraints | Array of Objects | list of constraints to be taken into account for various traffic types, specified by min/max values. E.q. maximal distance in meters the traveller agrees to walk: {"routingConstraintType": "Distance", "trafficType": "Walk", "min": { "value": 0,"unit": "Meter" }, "max":{"value":600, "unit":"Meter"}}
-useBikeSharing | Boolean | use bike sharing services for routing [default: false]
-useCarSharing | Boolean | use car sharing services for routing [default: false]
+origin | Object | Start point specified by a geo location (optionally the start time can be set). (Addresses can be converted into geo locations by means of "GET /Resources/GeoLocations".)
+destination | Object | End point specified by a geo location (optionally the end time can be set). Tf time in the origin is specified, the time in the destination is ignored. If neither start nor end time is specified, current time is used as start time.
+viapoints | Array of Objects | List of geolocations the route should pass in the given sequence
+costFunctions | Array of Objects | List of cost factors, (such as Distance, Duration, Price, Emission), each with a percentaged weight. Sample cost function: {"costType":"Duration","percentage":100}
+ownVehicles | Array of Objects | List of own vehicles which should be included into trip proposal calculation. Sample object value {"trafficType":"Car", "useParking":true,"useParkAndRide":false, "location":{"longitude":13.064472900000055,"latitude":52.3905689,"system":"WGS84"}}
+userId | String | Traveler id that requests a trip. Note: Currently not used by IMP and can be any string
+trafficTypes | Array | List of traffic types wich may be considered in the trip proposal calculation. Currently possible: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn.
+routingConstraints | Array of Objects | List of constraints to be taken into account for various traffic types, specified by min/max values. E.q. maximal distance in meters the traveller agrees to walk: {"routingConstraintType": "Distance", "trafficType": "Walk", "min": { "value": 0,"unit": "Meter" }, "max":{"value":600, "unit":"Meter"}}
+useBikeSharing | Boolean | Use bike sharing services for routing [default: false]
+useCarSharing | Boolean | Use car sharing services for routing [default: false]
 
 Notes:
-- IMR also provides routes in the past, but not for public transport
-- route calculation the IMR takes into account information about current traffic situation (traffic jams/road works/...)
-- Traveling time costs for proposed journeys include the following extra time: 2 minutes set-up time and 1 minute return time for free-floating car sharing and bike sharing; 2 minutes set-up time and 0 minutes return time for station-based car and bike sharing, 5 minutes parking time for free-floating car sharing and own car
+- The IMR also provides routes in the past, but not for public transport.
+- The IMR takes into account information about current traffic situation (traffic jams/road works/...) for route calculation.
+- Traveling time costs for proposed journeys include the following extra times: 2 minutes set-up time and 1 minute return time for free-floating car sharing and bike sharing; 2 minutes set-up time and 0 minutes return time for station-based car and bike sharing, 5 minutes parking time for free-floating car sharing and own car.
 
 
 
@@ -3760,19 +3760,19 @@ Notes:
 
 A single trip proposal object with Detailed Information. 
 Each trip proposal consists of several segments, one segment for one transportation modality such as bike, car, train, etc. 
-There is also a separate segment if the traveler shall use different lines of the same transport modality, 
-for instance, first U5 from A to B and then U4 from B to C. Each segement has an origin and a destination with corresponding timestamps when to arrive and depart.
+There are also separate segments if the traveler shall use different lines of the same transport modality, 
+for instance, first U5 from A to B and then U4 from B to C. Each segment has an origin and a destination with corresponding timestamps when to arrive and depart.
 A segment consists of a sequence of wayPoints and guidingPoints.
 A wayPoint describes an intermediate geo location useful for displaying the trip proposal in a map.
-A guidingPoint gives a traveler hints how to travel, e.g., whenever to change the road at a crossing. GuidingPoints are a subset of wayPoints
+A guidingPoint gives a traveler hints how to travel (turn-by-turn instructions), e.g. whenever to change the road at a crossing. GuidingPoints are a subset of wayPoints.
 
-The data structure of the trip proposal with detailed info contains the basic information attributes (*[POST /imp-endpoint/api/V1/TripProposals/IMR]*) and additionally the following attributes:
+The data structure of the trip proposal with detailed info contains the basic information attributes (*[POST /imp-endpoint/api/V1/TripProposals/IMR]*) and additionally a description of each contained segment with the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
-segmentId | URI | URI to request more details
-origin | Object | start point of the proposed trip. For car sharing segment we have "operatorId" and "unitId" and for CityTrain/RegioTrain segment we have "platform", "stationId" and "direction"
-destination | Object | endpoint of the proposed trip
+segmentId | Number | Id of the segment
+origin | Object | Start point of the segment. For a car sharing segment we have "operatorId" and "unitId" and for CityTrain/RegioTrain segment we have "platform", "stationId" and "direction".
+destination | Object | Endpoint of the segment
 
 
 Notes:
@@ -3782,7 +3782,7 @@ Notes:
 @nottestable
 
 + Parameters
-    + proposalId (string, `21844`) ... String `proposalId` as retrieved through *[GET /imp-endpoint/api/V1/TripProposals/IMR]*
+    + proposalId (string, `21844`) ... The Id contained in the `url` as retrieved through *[GET /imp-endpoint/api/V1/TripProposals/IMR]*.
 
         
 + Response 200 (application/json)
@@ -4511,7 +4511,7 @@ Notes:
             }
 
 # Group Journey Planner. Car Router
-This is a group of all journey planner Car Router related rest resources.
+This is a group of all journey planner Car Router related REST resources.
             
 ## List of Trip Proposals with Basic Info. Car Journey Planner [/imp-endpoint/api/V1/TripProposals/CarRouter] 
 
@@ -4521,20 +4521,11 @@ The data structure of the response contains the following attributes:
 attribute | json data type | comments
 --- | --- | ---
 url | URI | URI to request more details
-origin | Object | start point of the proposed trip
-destination | Object | endpoint of the proposed trip
-trafficTypes | Array | list of traffic types used in the proposed trip. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking  
+origin | Object | Start point of the proposed trip
+destination | Object | Endpoint of the proposed trip
+trafficTypes | Array | List of traffic types used in the proposed trip. Currently: Bike, Bus, Car, CityTrain, Ferry, Metro, Other, RegioTrain, Unknown, Train, Tram, Walk, UBahn. trafficType Other is used in the segments for car rental/parking  
 description | String | 
-costs | Array | list of costs for the proposed trip
-useBikeSharing | Boolean | use bike sharing services for routing [default: false]
-useCarSharing | Boolean | use car sharing services for routing [default: false]
---- | --- | ---
-ownVehicles | Object | 
---- | --- | ---
-trafficType | Enum | Own vehicle type - Car / Bike
-useParking | Boolean | Use parking for own vehicle 
-useParkAndRide | Boolean | Use parking and ride for own vehicle 
-
+costs | Array | List of costs for the proposed trip
     
 + Model (application/json)
 
@@ -4583,13 +4574,18 @@ useParkAndRide | Boolean | Use parking and ride for own vehicle
 @testable
 
 Selection criteria is specified in the request body as described in the sample request:
-origin: start point specified by a geo location (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
-destination: start point specified by a geo location
-either orgin or destination might specify a time
-viaPoints: list of geo locations that the route should use
-costFunction: list of cost factors (such as Distance, Duration, Price, Emission), each with a percentual weight 
-routingConstraints: list of constraints to be taken into account for various traffic types, specified by min/max values
-userId: user that requests a trip
+
+origin: Start point specified by a geo location (addresses can be converted into geo locations by means of "GET /Resources/GeoLocations")
+
+destination: Start point specified by a geo location. Either orgin or destination might specify a time.
+
+viaPoints: List of geo locations that the route should pass in the given sequence
+
+costFunctions: List of cost factors (such as Distance, Duration, Price, Emission), each with a percentual weight 
+
+routingConstraints: List of constraints to be taken into account for various traffic types, specified by min/max values
+
+userId: User that requests a trip
 
 + Request
 
