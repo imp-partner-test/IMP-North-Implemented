@@ -4625,15 +4625,15 @@ userId: User that requests a trip
 
 
 # Group Incidents / Traffic Info
-This is a group of all incidents related rest resources.
+This is a group of all incidents related REST resources.
 
 ## List of Incidents [/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius}] 
 
-This collection contains list of recent general incidents (incidents that affect public AND individual transport) in a specific area of interest with an URI to get more details.
-Note: The area of interest can be defined as:
+This collection contains a list of recent general incidents (incidents that affect public AND individual transport) in a specified area of interest with an URI to get more details.
+The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
 The data structure of the response contains the following attributes:
 
@@ -4641,22 +4641,21 @@ attribute | json data type | comments
 --- | --- | ---
 category | Enum | {"Roadworks", "Blockade", "Indefinition"} are the categories for the incidents with type "IncidentIndividualTransport", {"ConstructionProject", "Imbalance", "Diversion", "RailReplacement", "ShuttleService"} are the categories for incidents with type "IncidentPublicTransport"
 message | String | 
-timePeriod | Object | time period of the incident
-coordinates | Object | coordinates of the incident
-reason | String | reason description
-reasonShort | String | reason description
-consequence | String | consequense description
-consequenceShort | String | consequense description
-location | String | location as String
-source | String | {= "PT", "INKO", etc.}
-affectedTrips | Array | list of affected trips
-net | NetType  | 
-description | String | description of an incident information
-type | String | There are 2 types of incidents: Incidents with the type "IncidentIndividualTransport" affect individual transport (car, bycicle), incidents with the type "IncidentPublicTransport" affect public transport (bus, tram, etc.)
-uri | URI | URI
+timePeriod | Object | Time period of the incident
+reason | String | Full description of reason
+reasonShort | String | Short description of reason
+consequence | String | Full description of consequence
+consequenceShort | String | Short description of consequence
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | Enum | {"News", etc.}
-
+source | String | {= "PT", "INKO", etc.}
+affectedTrips | Array | List of affected trips
+net | NetType  | 
+description | String | Description of an incident information
+type | String | There are 2 types of incidents: Incidents with the type "IncidentIndividualTransport" affect individual transport (car, bicycle), incidents with the type "IncidentPublicTransport" affect public transport (bus, tram, etc.).
+uri | URI | URI
+provider | String | Service provider
+operator | Enum | {"News", etc.}
+externalResourceId | String | ID in external provider system
 
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
@@ -4732,28 +4731,29 @@ provider | Enum | {"News", etc.}
     
 ## List of All Incidents [/imp-endpoint/api/V1/Info/Incidents/All] 
 
-This collection contains list of recent general incidents (incidents that affect public AND individual transport). 
+This collection contains a list of recent general incidents (incidents that affect public AND individual transport). 
 The data structure of the response contains the following attributes:
 
 attribute | json data type | comments
 --- | --- | ---
 category | Enum | {"Roadworks", "Blockade", "Indefinition", "Congestion"} are the categories for the incidents with type "IncidentIndividualTransport", {"Construction", "Imbalance", "Diversion", "RailReplacement"} are the categories for incidents with type "IncidentPublicTransport"
 message | String | 
-timePeriod | Object | time period of the incident
-coordinates | Object | coordinates of the incident
-reason | String | reason description
-reasonShort | String | reason description
-consequence | String | consequense description
-consequenceShort | String | consequense description
-location | String | location as String
-source | String | {= "PT", "INKO", etc.}
-affectedTrips | Array | list of affected trips
-net | NetType  | 
-description | String | description of an incident information
-type | String | There are 2 types of incidents: Incidents with the type "IncidentIndividualTransport" affect individual transport (car, bycicle), incidents with the type "IncidentPublicTransport" affect public transport (bus, tram, etc.)
-uri | URI | URI
+timePeriod | Object | Time period of the incident
+reason | String | Full description of reason
+reasonShort | String |  Short description of reason
+consequence | String |  Full description of consequence
+consequenceShort | String | Short description of consequence
 location | Object | Standard WGS 84 for polar coordinates { "latitude":Number, "longitude":Number, "system": ENUM{"WGS_84","GK4","ETRS89",...}  }
-provider | Enum | {"News", etc.}
+source | String | {= "PT", "INKO", etc.}
+affectedTrips | Array | List of affected trips
+net | NetType  | 
+description | String | Description of an incident information
+type | String | There are 2 types of incidents: Incidents with the type "IncidentIndividualTransport" affect individual transport (car, bicycle), incidents with the type "IncidentPublicTransport" affect public transport (bus, tram, etc.).
+uri | URI | URI
+provider | String | Service provider
+operator | Enum | {"News", etc.}
+externalResourceId | String | ID in external provider system
+
 
 
 ### Getting all incidents [GET]
@@ -4767,13 +4767,13 @@ provider | Enum | {"News", etc.}
     
 ## List of individual transport Incidents [/imp-endpoint/api/V1/Info/Incidents/IndividualTransport?lat={lat}&lng={lng}&radius={radius}] 
 
-This collection contains list of recent incidents that affect individual transport only in a specific area of interest.
-Note: The area of interest can be defined as:
+This collection contains list of recent incidents that affect individual transport only in a specified area of interest.
+The area of interest can be defined as:
 
-* a bounding circle (lat={lat}&lng={lng}&radius={radius})
-* a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
+* an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
+* an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]* and additionally roadName attribute
+The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]* and additionally the roadName attribute.
 
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
@@ -4849,13 +4849,13 @@ The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Inc
 
 ## List of public transport Incidents [/imp-endpoint/api/V1/Info/Incidents/PublicTransport?lat={lat}&lng={lng}&radius={radius}] 
 
-This collection contains list of recent incidents that affect public transport only in a specific area.
-Note: The area of interest can be defined as:
+This collection contains a list of recent incidents that affect public transport only in a specified area.
+The area of interest can be defined as:
 
 * a bounding circle (lat={lat}&lng={lng}&radius={radius})
 * a bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]* and additionally information about line name, first and last stops and line direction
+The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Incidents?lat={lat}&lng={lng}&radius={radius]* and additionally information about line name, first and last stop and line direction.
 
 + Parameters
     + lat (number, `52.52`) ... latitude value. Has example value.
@@ -4946,23 +4946,24 @@ The data structure contains the attributes as in *[/imp-endpoint/api/V1/Info/Inc
 
 
 # Group WMS
-This is a group of all rest resources delivered as WMS
+This is a group of all REST resources delivered as WMS.
 
 ## WMS PNG file for Points of Interest [/imp-endpoint/api/V1/Resources?left_lower_lat={lllat}&left_lower_lng={lllng}&right_upper_lng={rulng}&right_upper_lat={rulat}&width={w}&heigth={h}&serviceNames={categories}]
 Get WMS PNG file for points of interests specified by (several) service categories (e.g. PublicTransport, Parking, etc.)
 
 ### Getting a WMS PNG file [GET] 
 @nottestable
-Please note: The accept-header of this request must be set to "image/png"
+
+Please note, the accept-header of this request must be set to "image/png".
 
 + Parameters
-    + lllat (number, `52.482780222078205`) ... 
-    + lllng (number, `13.3154296875`) ...     
-    + rulng (number, `13.359375`) ... 
-    + rulat (number, `52.50953477032729`) ... 
-    + categories (string, `Parking,PublicTransport`) ... service names, comma-separated list of service categories (currently offered as WMS layers by VMZ), e.g. PublicTransport, Parking
-    + h (optional, number, `250`) ... height of map output in pixels (semantics according to WMS GetMap request). the default value is height=250
-    + w (optional, number, `250`) ... width of map output in pixels (semantics according to WMS GetMap request). the default value is width=250
+    + lllat (number, `52.482780222078205`) ... Left lower latitude
+    + lllng (number, `13.3154296875`) ... Left lower longitude    
+    + rulng (number, `13.359375`) ... Right upper longitude
+    + rulat (number, `52.50953477032729`) ... Right upper latitude
+    + categories (string, `Parking,PublicTransport`) ... Service names, comma-separated list of service categories (currently offered as WMS layers by VMZ), e.g. PublicTransport, Parking
+    + h (optional, number, `250`) ... Height of map output in pixels (semantics according to WMS GetMap request). The default value is height=250.
+    + w (optional, number, `250`) ... Width of map output in pixels (semantics according to WMS GetMap request). The default value is width=250.
 
 + Request
 
@@ -4985,12 +4986,12 @@ Get WMS PNG file for public transport stations
 Please note: The accept-header of this request must be set to "image/png"
 
 + Parameters
-    + lllat (number, `52.482780222078205`) ... 
-    + lllng (number, `13.3154296875`) ...     
-    + rulng (number, `13.359375`) ... 
-    + rulat (number, `52.50953477032729`) ... 
-    + h (optional, number, `250`) ... height of map output in pixels (semantics according to WMS GetMap request). the default value is height=250
-    + w (optional, number, `250`) ... width of map output in pixels (semantics according to WMS GetMap request). the default value is width=250
+    + lllat (number, `52.482780222078205`) ... Left lower latitude
+    + lllng (number, `13.3154296875`) ... Left lower longitude    
+    + rulng (number, `13.359375`) ... Right upper longitude
+    + rulat (number, `52.50953477032729`) ... Right upper latitude
+    + h (optional, number, `250`) ... Height of map output in pixels (semantics according to WMS GetMap request). The default value is height=250.
+    + w (optional, number, `250`) ... Width of map output in pixels (semantics according to WMS GetMap request). The default value is width=250.
 
 + Request
 
@@ -5013,12 +5014,12 @@ Get WMS PNG file for current traffic
 Please note: The accept-header of this request must be set to "image/png"
 
 + Parameters
-    + lllat (number, `52.482780222078205`) ... 
-    + lllng (number, `13.3154296875`) ...     
-    + rulng (number, `13.359375`) ... 
-    + rulat (number, `52.50953477032729`) ... 
-    + h (optional, number, `250`) ... height of map output in pixels (semantics according to WMS GetMap request). the default value is height=250
-    + w (optional, number, `250`) ... width of map output in pixels (semantics according to WMS GetMap request). the default value is width=250
+    + lllat (number, `52.482780222078205`) ... Left lower latitude
+    + lllng (number, `13.3154296875`) ... Left lower longitude    
+    + rulng (number, `13.359375`) ... Right upper longitude
+    + rulat (number, `52.50953477032729`) ... Right upper latitude
+    + h (optional, number, `250`) ... Height of map output in pixels (semantics according to WMS GetMap request). The default value is height=250.
+    + w (optional, number, `250`) ... Width of map output in pixels (semantics according to WMS GetMap request). The default value is width=250.
 
 + Request
 
@@ -5034,7 +5035,7 @@ Please note: The accept-header of this request must be set to "image/png"
             
 
 # Group Partners
-This is a group of all IMP partner related rest resources.
+This is a group of all IMP partner related REST resources.
 
  
 ## Partner [/imp-endpoint/api/V1/Partners/{PartnerId}]
@@ -5067,6 +5068,7 @@ The Partner resource has the following attributes:
             
 ### Request update of Partner details [PUT]
 @nottestable
+
 Starts "Update Partner" Process (UC PM-1)
 
 + Request
@@ -5086,6 +5088,7 @@ Starts "Update Partner" Process (UC PM-1)
 
 ### Request deletion of specified Partner [DELETE]
 @nottestable
+
 Starts "Delete Partner" Process (UC PM-1)
         
 + Response 204
@@ -5107,14 +5110,16 @@ Collection of all Partners
 
 ### List all registered Partners [GET]
 @nottestable
+
 Only for admins
 
 + Response 200
 
     [Partners Collection][]
 
-### Request a creation of a new Partner [POST]
+### Request creation of a new Partner [POST]
 @nottestable
+
 Starts "New Partner" Process
 
 + Request
@@ -5141,7 +5146,7 @@ The User Token resource has the following attributes:
 - token
 
 + Parameters
-    + action (string, `register`) ... String `action` must have value "register" to start token generation
+    + action (string, `register`) ... String `action` must have value "register" to start token generation.
     
 + Model
 
@@ -5154,6 +5159,7 @@ The User Token resource has the following attributes:
 
 ### Generate User Token [POST]
 @nottestable
+
 Starts "User Token Generation" Process
 
 + Request
@@ -5182,8 +5188,8 @@ The User Transactions Collection resource has the following attributes:
 
 + Parameters
 
-    + startDate (string, `2013-12-18`, optional) ... If date range not provided then results are fetched for last one month
-    + endDate (string, `2013-12-30`, optional) ... If date range not provided then results are fetched for last one month
+    + startDate (string, `2013-12-18`, optional) ... If date range is not provided, then results are fetched for the last month.
+    + endDate (string, `2013-12-30`, optional) ... If date range is not provided, then results are fetched for the last month.
     
 + Model
 
@@ -5229,7 +5235,7 @@ Attribute | JSON Data Type | Comments
 operator | String |  operator id. Example values: Car2Go_Berlin, DriveNow, NextBike, CallABike etc
 description | String |  ...
 serviceCategory |ENUM | IMP service categories "CarSharing", "BikeSharing", etc
-businessBoundary | Object | business area specified as MultyPolygon conform to the following GeoJSON Format Specification: http://geojson.org/geojson-spec.html
+businessBoundary | Object | business area specified as MultiPolygon conform to the following GeoJSON Format Specification: http://geojson.org/geojson-spec.html
 
 ### Getting Business Area [GET]
 @nottestable
@@ -5274,24 +5280,24 @@ businessBoundary | Object | business area specified as MultyPolygon conform to t
             }
             
 # Group Heatmap
-This is a group of all rest resources related to heatmap as PNG file. Heat map is a graphical representation of data where the individual values are represented as colors.
-Currently it is used to represent two service categories: CarSharing and BikeSharing services
+This is a group of all REST resources related to request heatmaps as PNG files. A heat map is a graphical representation of data where the individual values are represented as colors.
+Currently it is used to represent distribution of the resouces of two service categories, Car and Bike Sharing.
 
 ## CarSharing Heatmap [/imp-endpoint/api/V1/Info/Heatmap/CarSharing?date={x}&left_lower_lat={lllat}&left_lower_lng={lllng}&right_upper_lng={rulng}&right_upper_lat={rulat}&width={wdval}&height={htval}]    
-Get WMS PNG file for carSharing for a specific date (in the history, current date or in the future) and for a specific bounding box (place).
-If the date is in the history, the returned image with green dots represents historycal data of carsharing availability, if the date is in the future, the returned image with blue dots represent prediction of carsharing availability.
+Get WMS PNG file for carSharing for a specific date (in the past, current date or in the future) and for a specific bounding box (place).
+If the date is in the past, the returned image with green areas represents historical data of car sharing availability, if the date is in the future, the returned image with blue dots represents a prediction of car sharing availability.
 
 ### Getting heatmap as PNG image [GET]
 @nottestable
 
 + Parameters
-    + date (required, number, `1404892800000`) ... a date in the history for historical data / in the future for predictions. Has example value.
-    + lllat (required, number, `52.482780222078205`) ... lower left latitude
-    + lllng (required, number, `13.3154296875`) ... lower left longitude   
-    + rulng (required, number, `13.359375`) ... right upper longitude
-    + rulat (required, number, `52.50953477032729`) ... right upper latitude
-    + wdval (required, number, `480`) ... width of image in pixels
-    + htval (required, number, `800`) ... height of image in pixels
+    + date (required, number, `1404892800000`) ... A date in the past for historical data / in the future for predictions. Has example value.
+    + lllat (required, number, `52.482780222078205`) ... Lower left latitude
+    + lllng (required, number, `13.3154296875`) ... Lower left longitude   
+    + rulng (required, number, `13.359375`) ... Right upper longitude
+    + rulat (required, number, `52.50953477032729`) ... Right upper latitude
+    + wdval (required, number, `480`) ... Width of image in pixels
+    + htval (required, number, `800`) ... Height of image in pixels
     
 + Request
 
@@ -5306,19 +5312,19 @@ If the date is in the history, the returned image with green dots represents his
             �PNG
 
 ## BikeSharing Heatmap [/imp-endpoint/api/V1/Info/Heatmap/BikeSharing?date={x}&left_lower_lat={lllat}&left_lower_lng={lllng}&right_upper_lng={rulng}&right_upper_lat={rulat}&width={wdval}&height={htval}]    
-Get WMS PNG file for bikesharing for a specific date and for a specific bounding box (place).
+Get WMS PNG file for bike sharing for a specific date and for a specific bounding box (place).
 
 ### Getting heatmap as PNG image [GET]
 @nottestable
 
 + Parameters
-    + date (required, number, `1404892800000`) ... a date in the history (later also in the future) Has example value.
-    + lllat (required, number, `52.482780222078205`) ... lower left latitude
-    + lllng (required, number, `13.3154296875`) ... lower left longitude    
-    + rulng (required, number, `13.359375`) ... right upper longitude
-    + rulat (required, number, `52.50953477032729`) ... right upper latitude
-    + wdval (required, number, `255`) ... width of image in pixels
-    + htval (required, number, `255`) ... height of image in pixels
+    + date (required, number, `1404892800000`) ... A date in the past (later also in the future) Has example value.
+    + lllat (required, number, `52.482780222078205`) ... Lower left latitude
+    + lllng (required, number, `13.3154296875`) ... Lower left longitude    
+    + rulng (required, number, `13.359375`) ... Right upper longitude
+    + rulat (required, number, `52.50953477032729`) ... Right upper latitude
+    + wdval (required, number, `255`) ... Width of image in pixels
+    + htval (required, number, `255`) ... Height of image in pixels
 
 + Request
 
@@ -5338,7 +5344,7 @@ Get WMS PNG file for bikesharing for a specific date and for a specific bounding
 ## ServiceOfferings [/imp-endpoint/api/V1/ServiceOfferings] 
 
 RESPONSE:
-This collection contains a list service offerings :
+This collection contains a list service offerings.
 
 attribute | json data type | comments
 --- | --- | ---
@@ -5611,7 +5617,7 @@ x | String | xx
         ]
 
 
-### getting all service offerings [GET]
+### Getting all service offerings [GET]
 @nottestable
 
 + Response 200
@@ -5620,7 +5626,7 @@ x | String | xx
 
 ## Service Offerings per Partner [/imp-endpoint/api/V1/Partners/{partnerId}/ServiceOfferings]
 
-### getting service offerings per partner [GET]
+### Getting service offerings per partner [GET]
 @nottestable
 
 + Parameters
@@ -5637,7 +5643,7 @@ TODO
 
 # Group Service Categories
 
-This is a group of all rest resources related to service categories available. Services offered by service provider have to be classified with one of these service categories.
+This is a group of all REST resources related to available service categories. Services offered by service providers have to be classified with one of these service categories.
 
 ## Service Categories [/imp-endpoint/api/V1/ServiceCategories] 
 
@@ -5714,8 +5720,8 @@ name | String | Service Category name
 
 # Group Process Definitions
 
-Some of IMP resources are linked to BPMN processes. These resources contain action in the URL, similar to "Resources/Parking/Garages/270113/Process?action=consume"
-This group describes rest resources which can be used to list possible BPMN process definitions.
+Some of IMP resources are linked to BPMN processes. These resources contain actions in the URL, similar to "Resources/Parking/Garages/270113/Process?action=consume"
+This group describes REST resources which can be used to list possible BPMN process definitions.
 
 ## All Process Definitions [/imp-endpoint/api/V1/ProcessDefinitions] 
 
@@ -5724,11 +5730,11 @@ This collection contains a list of all Processes. Each service usage has the fol
 
 attribute | json data type | comments
 --- | --- | ---
-id | String | process id
-name | String | process name
+id | String | Process id
+name | String | Process name
 description | String | 
-processCategory | String | category of the process (ServiceUsage, ...)
-requiredFeatures | Array | list of features (BOOKING, CANCELATION, etc.)
+processCategory | String | Category of the process (ServiceUsage, ...)
+requiredFeatures | Array | List of features (BOOKING, CANCELATION, etc.)
 
 + Model (application/json)
     
@@ -5775,7 +5781,7 @@ requiredFeatures | Array | list of features (BOOKING, CANCELATION, etc.)
         ]
 
 
-### getting all BPMN process definitions [GET]
+### Getting all BPMN process definitions [GET]
 @nottestable
 
 + Response 200
@@ -5790,11 +5796,11 @@ This collection contains a list of process definitions of the type service usage
 
 attribute | json data type | comments
 --- | --- | ---
-id | String | process id
-name | String | process name
+id | String | Process id
+name | String | Process name
 description | String | 
-processCategory | String | category of the process (ServiceUsage, ...)
-requiredFeatures | Array | list of features (BOOKING, CANCELATION, etc.)
+processCategory | String | Category of the process (ServiceUsage, ...)
+requiredFeatures | Array | List of features (BOOKING, CANCELATION, etc.)
 
 + Model (application/json)
     
@@ -5855,11 +5861,11 @@ This collection contains a list of process definitions of the type service subsc
 
 attribute | json data type | comments
 --- | --- | ---
-id | String | process id
-name | String | process name
+id | String | Process id
+name | String | Process name
 description | String | 
-processCategory | String | category of the process (ServiceUsage, ...)
-requiredFeatures | Array | list of features (BOOKING, CANCELATION, etc.)
+processCategory | String | Category of the process (ServiceUsage, ...)
+requiredFeatures | Array | List of features (BOOKING, CANCELATION, etc.)
 
 + Model (application/json)
     
@@ -5897,7 +5903,7 @@ requiredFeatures | Array | list of features (BOOKING, CANCELATION, etc.)
 
 # Group Reporting
 
-This is a group of all rest resources related to reporting
+This is a group of all REST resources related to reporting.
 
 ## Report [/imp-endpoint/api/V1/Reporting/CustomReport?reportName={reportName}] 
 
