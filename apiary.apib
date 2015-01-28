@@ -1388,7 +1388,7 @@ fee | String | Car costs per distance/time unit
                 "fee": null
             }        
     
-## List of Stations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}&f_cars={fuelTypeJson}&operatorId={operatorId}]
+## List of Stations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/Stations?lat={lat}&lng={lng}&radius={radius}&f_cars={fuelTypeJson,operatorJson}
 
 This collection contains a list of car sharing stations in an area of interest specified by the query parameters,
 together with basic information and an URI to acquire more details.
@@ -1397,9 +1397,7 @@ The area of interest can be defined as:
 * an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
 * an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The optional filter `f_cars` can be used to get only car sharing stations providing cars with a specific `fuelType`.
-
-The optional filter `operatorID` can be used to get only car sharing stations provided by a specific service provider.
+The optional filter `f_cars` can be used to get only car sharing stations providing cars with a specific `fuelType` and `operator`.
 
 The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time. Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
@@ -1431,7 +1429,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
     + lng (number, `13.39`) ... longitude value. Has example value.
     + radius (number, `10000`) ... radius in meter. Has example value.
     + fuelTypeJson (optional, string, `{"fuelType":"ELECTRICITY"}`) ... String `fuelTypeJson` fuel type json data. Example value `{"fuelType":"ELECTRICITY"}` or `{"fuelType":"PETROL"}`
-    + operatorId (optional, string, `FlinksterDB`) ... String `operatorId` operator id data. Has example value.
+    + operatorJson (optional, string, `{"operator":"FlinksterDB"}`) ... String `operatorJson` operator id json data. Example value {"operator":FlinksterDB"}.
 
 + Request
 
