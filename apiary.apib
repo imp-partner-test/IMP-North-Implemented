@@ -691,7 +691,7 @@ comments | String |
 # Group Car Sharing
 This is a group of all car sharing related rest resources.
 
-## List of Car Sharing Locations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/All?lat={lat}&lng={lng}&radius={radius}] 
+## List of Car Sharing Locations with Basic Info [/imp-endpoint/api/V1/Resources/CarSharing/All?lat={lat}&lng={lng}&radius={radius}&f_cars={f_carsJson}] 
 
 This collection contains a list of available car sharing locations in an area of interest specified by the query parameters (both free-floating cars and/or car sharing stations) 
 with basic information and an URI to acquire more details.
@@ -701,6 +701,7 @@ The area of interest can be defined as:
 * an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
 * an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
+The optional filter `f_cars` can be used to get only car sharing stations providing cars with a specific `fuelType`, `provider` and `operator`.
 
 The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time. Date time in HTTP date format for e.g. Wed, 09 Apr 2008 23:55:38 GMT
 
@@ -728,6 +729,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
     + lat (optional, number, `52.52`) ... latitude value. Has example value.
     + lng (optional, number, `13.39`) ... longitude value. Has example value.
     + radius (optional, number, `5000`) ... radius in meter. Has example value.
+    + f_carsJson (optional, string, `{"fuelType":"ELECTRICITY", "operator":"FlinksterDB"}`) ... String `f_carsJson` may contain fuel type and operator filter as json data. Example values `{"fuelType":"ELECTRICITY"}`, `{"fuelType":"PETROL"}` or `{"operator":FlinksterDB"}`.
 
 + Request
 
@@ -1397,7 +1399,7 @@ The area of interest can be defined as:
 * an (optional) bounding circle (lat={lat}&lng={lng}&radius={radius})
 * an (optional) bounding box (left_lower_lat={min_lat}&left_lower_lng={min_lng}&right_upper_lat={max_lat}&right_upper_lng={max_lng})
 
-The optional filter `f_cars` can be used to get only car sharing stations providing cars with a specific `fuelType` and `operator`.
+The optional filter `f_cars` can be used to get only car sharing stations providing cars with a specific `fuelType`, `provider` and `operator`.
 
 The (optional) If-Modified-Since can be set to a specific date-time in order to request only resources modified after a particular date-time. Date-time is in HTTP date format, e.g. Wed, 09 Apr 2008 23:55:38 GMT.
 
@@ -1428,7 +1430,7 @@ modFlag | Enum | Type of modification to resource [New / Modified / Relocated / 
     + lat (number, `52.52`) ... latitude value. Has example value.
     + lng (number, `13.39`) ... longitude value. Has example value.
     + radius (number, `10000`) ... radius in meter. Has example value.
-    + f_carsJson (optional, string, `{"fuelType":"ELECTRICITY", "operator":"FlinksterDB"}`) ... String `f_carsJson` may contain fuel type and operator filter as json data. Example values `{"fuelType":"ELECTRICITY"}`, `{"fuelType":"PETROL"}` or `{"operator":FlinksterDB"}`.
+    + f_carsJson (optional, string, `{"fuelType":"ELECTRICITY", "operator":"FlinksterDB"}`) ... String `f_carsJson` may contain fuel type and operator filter as json data. Example values `{"fuelType":"ELECTRICITY"}`, `{"fuelType":"PETROL"}` or `{"operator":"FlinksterDB"}`.
     
 + Request
 
